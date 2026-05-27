@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     const datos = req.body;
 
     console.log("Nuevo asistente:");
+    //console.log("Nuevo registro:");
 
     console.log(datos);
 
