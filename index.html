@@ -1,240 +1,539 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro al Evento</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <title>San Juan 2025</title>
 
-        body {
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+  <style>
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
-        }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI, sans-serif;
+    }
 
-        h1 {
-            color: #1f2937;
-            margin-bottom: 10px;
-            font-size: 24px;
-            text-align: center;
-        }
+    body{
+      background:#f3f4f6;
+      padding:30px;
+      color:#1f2937;
+    }
 
-        p {
-            color: #4b5563;
-            margin-bottom: 25px;
-            font-size: 14px;
-            text-align: center;
-        }
+    .container{
+      max-width:1400px;
+      margin:auto;
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:25px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #374151;
-            font-weight: 600;
-            font-size: 14px;
-        }
+    .card{
+      background:white;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.2s;
-        }
+    h1{
+      font-size:38px;
+      margin-bottom:10px;
+    }
 
-        input:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
+    h2{
+      margin-bottom:20px;
+      font-size:24px;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+    p.subtitle{
+      color:#6b7280;
+      margin-bottom:35px;
+    }
 
-        button:hover {
-            background-color: #1d4ed8;
-        }
+    .section{
+      margin-bottom:40px;
+    }
 
-        button:disabled {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-        }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
 
-        .message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:600;
+    }
 
-        .success {
-            background-color: #def7ec;
-            color: #03543f;
-            display: block;
-        }
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
 
-        .error {
-            background-color: #fde8e8;
-            color: #9b1c1c;
-            display: block;
-        }
-    </style>
+    .counter-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:20px;
+      border:1px solid #e5e7eb;
+    }
+
+    .buttons{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:15px 25px;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:#2563eb;
+      color:white;
+    }
+
+    .btn-green{
+      background:#16a34a;
+      color:white;
+    }
+
+    .sidebar-title{
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    .plato{
+      background:#eff6ff;
+      padding:12px 15px;
+      border-radius:12px;
+      margin-bottom:10px;
+    }
+
+    .plato-kids{
+      background:#fdf2f8;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:16px;
+    }
+
+    .badge{
+      background:#dbeafe;
+      color:#1d4ed8;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:14px;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .success{
+      margin-top:20px;
+      padding:15px;
+      background:#dcfce7;
+      color:#166534;
+      border-radius:12px;
+    }
+
+    @media(max-width:900px){
+
+      .container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-    <div class="card">
-        <h1>Registro al Evento</h1>
+  <div class="container">
 
-        <p>
-            Completa tus datos para asegurar tu entrada
-            y recibir tu confirmación por correo.
+    <!-- IZQUIERDA -->
+
+    <div>
+
+      <div class="card">
+
+        <h1>🔥 San Juan 2025</h1>
+
+        <p class="subtitle">
+          Gestión de asistentes y buffet compartido
         </p>
 
-        <form id="registrationForm">
+        <!-- DATOS FAMILIA -->
 
-            <div class="form-group">
-                <label for="nombre">Nombre Completo</label>
+        <div class="section">
 
-                <input
-                    type="text"
-                    id="nombre"
-                    required
-                    placeholder="Ej. Juan Pérez"
-                >
+          <h2>Datos inscripción</h2>
+
+          <div class="grid">
+
+            <div>
+              <label>Nombre familia / persona</label>
+
+              <input
+                type="text"
+                id="nombre"
+                placeholder="Ej. Familia García"
+              />
             </div>
 
-            <div class="form-group">
-                <label for="correo">Correo Electrónico</label>
+            <div>
+              <label>Persona contacto</label>
 
-                <input
-                    type="email"
-                    id="correo"
-                    required
-                    placeholder="ejemplo@correo.com"
-                >
+              <input
+                type="text"
+                id="contacto"
+                placeholder="Ej. María García"
+              />
             </div>
 
-            <button type="submit" id="btnEnviar">
-                Confirmar Asistencia
-            </button>
+          </div>
 
-        </form>
+        </div>
 
-        <div id="statusMessage" class="message"></div>
+        <!-- ASISTENTES -->
+
+        <div class="section">
+
+          <h2>Asistentes</h2>
+
+          <div class="grid">
+
+            <div class="counter-card">
+
+              <label>Adultos</label>
+
+              <input
+                type="number"
+                id="adultos"
+                min="0"
+                value="2"
+              />
+
+            </div>
+
+            <div class="counter-card">
+
+              <label>Juveniles (12-18)</label>
+
+              <input
+                type="number"
+                id="juveniles"
+                min="0"
+                value="0"
+              />
+
+            </div>
+
+            <div class="counter-card">
+
+              <label>Infantiles (&lt;12)</label>
+
+              <input
+                type="number"
+                id="infantiles"
+                min="0"
+                value="0"
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- BUFFET -->
+
+        <div class="section">
+
+          <h2>Buffet compartido</h2>
+
+          <div class="grid">
+
+            <div>
+
+              <label>Plato que traeréis</label>
+
+              <input
+                type="text"
+                id="plato"
+                placeholder="Ej. Tortilla"
+              />
+
+            </div>
+
+            <div id="buffetContainer">
+
+              <label>Tipo buffet</label>
+
+              <select id="tipoBuffet">
+
+                <option value="adulto">
+                  Buffet Adulto
+                </option>
+
+                <option value="infantil">
+                  Buffet Infantil
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- EXTRAS -->
+
+        <div class="section">
+
+          <h2>Extras</h2>
+
+          <div style="display:flex; flex-direction:column; gap:15px;">
+
+            <label>
+              <input type="checkbox" />
+              Necesitamos mesa familiar
+            </label>
+
+            <label>
+              <input type="checkbox" />
+              Tenemos alergias alimentarias
+            </label>
+
+          </div>
+
+        </div>
+
+        <!-- BOTONES -->
+
+        <div class="buttons">
+
+          <button
+            class="btn-primary"
+            id="btnConfirmar"
+          >
+            Confirmar asistencia
+          </button>
+
+          <button
+            class="btn-green"
+            id="btnExcel"
+          >
+            Exportar Excel
+          </button>
+
+        </div>
+
+        <div
+          id="mensaje"
+          class="success hidden"
+        >
+          Registro guardado correctamente
+        </div>
+
+      </div>
+
     </div>
 
-    <script>
-        document
-            .getElementById('registrationForm')
-            .addEventListener('submit', async (e) => {
+    <!-- DERECHA -->
 
-            e.preventDefault();
+    <div>
 
-            const btn = document.getElementById('btnEnviar');
-            const msg = document.getElementById('statusMessage');
+      <!-- RESUMEN -->
 
-            // const nombre = document.getelementbyid('nombre').value;
-            // const correo = document.getelementbyid('correo').value;
+      <div class="card" style="margin-bottom:25px;">
 
-            btn.disabled = true;
-            btn.innerText = "Procesando...";
+        <h2 class="sidebar-title">
+          Resumen
+        </h2>
 
-            msg.className = "message";
-            msg.innerText = "";
+        <div class="summary-item">
+          <span>Familias</span>
+          <strong>12</strong>
+        </div>
 
-            // try {
+        <div class="summary-item">
+          <span>Adultos</span>
+          <strong>26</strong>
+        </div>
 
-            //     const response = await fetch('/api/registrarAsistencia', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         },
-            //         body: JSON.stringify({ nombre, correo })
-            //     });
+        <div class="summary-item">
+          <span>Juveniles</span>
+          <strong>8</strong>
+        </div>
 
-            //     if (response.ok) {
+        <div class="summary-item">
+          <span>Infantiles</span>
+          <strong>10</strong>
+        </div>
 
-            //         msg.innerText =
-            //             "¡Registro exitoso! Revisa tu correo.";
+      </div>
 
-            //         msg.classList.add('success');
+      <!-- BUFFET ADULTO -->
 
-            //         document
-            //             .getElementById('registrationForm')
-            //             .reset();
+      <div class="card" style="margin-bottom:25px;">
 
-            //     } else {
-            //         throw new Error();
-            //     }
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+          "
+        >
 
-            // } catch (error) {
+          <h2 class="sidebar-title">
+            Buffet Adulto
+          </h2>
 
-            //     msg.innerText =
-            //         "Hubo un error al registrarte.";
+          <span class="badge">
+            6 platos
+          </span>
 
-            //     msg.classList.add('error');
+        </div>
 
-            // } finally {
+        <div class="plato">
+          Tortilla española
+        </div>
 
-            //     btn.disabled = false;
-            //     btn.innerText = "Confirmar Asistencia";
-            // }
-			// Simulación de registro correcto
-			setTimeout(() => {
+        <div class="plato">
+          Empanada
+        </div>
 
-            msg.innerText =
-                "¡Registro exitoso!";
+        <div class="plato">
+          Croquetas
+        </div>
 
-            msg.classList.add('success');
+      </div>
 
-            document
-                .getElementById('registrationForm')
-                .reset();
+      <!-- BUFFET INFANTIL -->
 
-            btn.disabled = false;
+      <div
+        class="card"
+        id="buffetInfantilPanel"
+      >
 
-            btn.innerText =
-                "Confirmar Asistencia";
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+          "
+        >
 
-        }, 1000);
-        });
-    </script>
+          <h2 class="sidebar-title">
+            Buffet Infantil
+          </h2>
+
+          <span class="badge">
+            2 platos
+          </span>
+
+        </div>
+
+        <div class="plato plato-kids">
+          Mini pizzas
+        </div>
+
+        <div class="plato plato-kids">
+          Nuggets
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const infantilesInput =
+      document.getElementById("infantiles");
+
+    const buffetPanel =
+      document.getElementById("buffetInfantilPanel");
+
+    const buffetSelector =
+      document.getElementById("buffetContainer");
+
+    const mensaje =
+      document.getElementById("mensaje");
+
+    // Mostrar/ocultar buffet infantil
+    function actualizarBuffetInfantil(){
+
+      const infantiles =
+        parseInt(infantilesInput.value);
+
+      if(infantiles <= 0){
+
+        buffetPanel.classList.add("hidden");
+
+      } else {
+
+        buffetPanel.classList.remove("hidden");
+
+      }
+
+    }
+
+    infantilesInput.addEventListener(
+      "input",
+      actualizarBuffetInfantil
+    );
+
+    actualizarBuffetInfantil();
+
+    // Simulación guardar
+    document
+      .getElementById("btnConfirmar")
+      .addEventListener("click", () => {
+
+        mensaje.classList.remove("hidden");
+
+        setTimeout(() => {
+
+          mensaje.classList.add("hidden");
+
+        }, 3000);
+
+      });
+
+    // Simulación exportar Excel
+    document
+      .getElementById("btnExcel")
+      .addEventListener("click", () => {
+
+        alert(
+          "Más adelante exportaremos el Excel real"
+        );
+
+      });
+
+  </script>
 
 </body>
 </html>
