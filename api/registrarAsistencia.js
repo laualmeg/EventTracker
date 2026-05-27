@@ -1,73 +1,44 @@
 export default async function handler(req, res) {
 
-    if (req.method !== 'POST') {
-        return res.status(405).json({
-            error: 'Método no permitido'
-        });
-    }
+  if(req.method !== "POST"){
 
-    try {
+    return res.status(405).json({
+      error: "Método no permitido"
+    });
 
-        const { nombre, correo } = req.body;
+  }
 
-        if (!nombre || !correo) {
-            return res.status(400).json({
-                error: 'Faltan datos'
-            });
-        }
+  try{
 
-        const response = await fetch(
-            'https://api.resend.com/emails',
-            {
-                method: 'POST',
+    const datos = req.body;
 
-                headers: {
-                    'Authorization':
-                        `Bearer ${process.env.RESEND_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
+    console.log("Nuevo asistente:");
 
-                body: JSON.stringify({
-                    from: 'Eventos <onboarding@resend.dev>',
-                    to: [correo],
-                    subject: 'Confirmación de asistencia',
+    console.log(datos);
 
-                    html: `
-                        <h2>Hola ${nombre}</h2>
+    /*
+      Aquí luego guardarás en BD
 
-                        <p>
-                            Tu asistencia fue confirmada correctamente.
-                        </p>
+      Ejemplo futuro:
+      await supabase
+        .from("asistentes")
+        .insert([datos]);
+    */
 
-                        <p>
-                            ¡Te esperamos!
-                        </p>
-                    `
-                })
-            }
-        );
+    return res.status(200).json({
+      ok: true,
+      mensaje: "Asistente guardado"
+    });
 
-        if (!response.ok) {
+  } catch(error){
 
-            const error = await response.text();
+    console.error(error);
 
-            console.error(error);
+    return res.status(500).json({
+      ok: false,
+      error: "Error interno"
+    });
 
-            return res.status(500).json({
-                error: 'Error enviando correo'
-            });
-        }
+  }
 
-        return res.status(200).json({
-            mensaje: 'Registro exitoso'
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            error: 'Error interno'
-        });
-    }
 }

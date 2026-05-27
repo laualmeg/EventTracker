@@ -152,6 +152,14 @@
       border-radius:12px;
     }
 
+    .error{
+      margin-top:20px;
+      padding:15px;
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:12px;
+    }
+
     @media(max-width:900px){
 
       .container{
@@ -306,7 +314,7 @@
 
         <!-- EXTRAS -->
 
-        <div class="section">
+        <!-- <div class="section">
 
           <h2>Extras</h2>
 
@@ -324,7 +332,7 @@
 
           </div>
 
-        </div>
+        </div> -->
 
         <!-- BOTONES -->
 
@@ -347,10 +355,17 @@
         </div>
 
         <div
-          id="mensaje"
+          id="mensajeOk"
           class="success hidden"
         >
           Registro guardado correctamente
+        </div>
+
+        <div
+          id="mensajeError"
+          class="error hidden"
+        >
+          Error guardando el registro
         </div>
 
       </div>
@@ -476,11 +491,11 @@
     const buffetPanel =
       document.getElementById("buffetInfantilPanel");
 
-    const buffetSelector =
-      document.getElementById("buffetContainer");
+    const mensajeOk =
+      document.getElementById("mensajeOk");
 
-    const mensaje =
-      document.getElementById("mensaje");
+    const mensajeError =
+      document.getElementById("mensajeError");
 
     // Mostrar/ocultar buffet infantil
     function actualizarBuffetInfantil(){
@@ -507,22 +522,92 @@
 
     actualizarBuffetInfantil();
 
-    // Simulación guardar
+    // GUARDAR REGISTRO REAL
+
     document
       .getElementById("btnConfirmar")
-      .addEventListener("click", () => {
+      .addEventListener("click", async () => {
 
-        mensaje.classList.remove("hidden");
+        mensajeOk.classList.add("hidden");
+        mensajeError.classList.add("hidden");
 
-        setTimeout(() => {
+        const datos = {
 
-          mensaje.classList.add("hidden");
+          nombre:
+            document.getElementById("nombre").value,
 
-        }, 3000);
+          contacto:
+            document.getElementById("contacto").value,
+
+          adultos:
+            parseInt(
+              document.getElementById("adultos").value
+            ),
+
+          juveniles:
+            parseInt(
+              document.getElementById("juveniles").value
+            ),
+
+          infantiles:
+            parseInt(
+              document.getElementById("infantiles").value
+            ),
+
+          plato:
+            document.getElementById("plato").value,
+
+          tipoBuffet:
+            document.getElementById("tipoBuffet").value,
+
+        //   mesa:
+        //     document.getElementById("mesa").checked,
+
+        //   alergias:
+        //     document.getElementById("alergias").checked
+
+        };
+
+        try{
+
+          const response = await fetch(
+            "/api/asistentes",
+            {
+              method:"POST",
+
+              headers:{
+                "Content-Type":"application/json"
+              },
+
+              body:JSON.stringify(datos)
+            }
+          );
+
+          const resultado =
+            await response.json();
+
+          if(resultado.ok){
+
+            mensajeOk.classList.remove("hidden");
+
+          } else {
+
+            mensajeError.classList.remove("hidden");
+
+          }
+
+        } catch(error){
+
+          console.error(error);
+
+          mensajeError.classList.remove("hidden");
+
+        }
 
       });
 
-    // Simulación exportar Excel
+    // EXPORTAR EXCEL
+
     document
       .getElementById("btnExcel")
       .addEventListener("click", () => {
