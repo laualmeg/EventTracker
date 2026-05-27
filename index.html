@@ -169,8 +169,8 @@
             const btn = document.getElementById('btnEnviar');
             const msg = document.getElementById('statusMessage');
 
-            const nombre = document.getElementById('nombre').value;
-            const correo = document.getElementById('correo').value;
+            <!-- const nombre = document.getElementById('nombre').value; -->
+            <!-- const correo = document.getElementById('correo').value; -->
 
             btn.disabled = true;
             btn.innerText = "Procesando...";
@@ -178,43 +178,61 @@
             msg.className = "message";
             msg.innerText = "";
 
-            try {
+            <!-- try { -->
 
-                const response = await fetch('/api/registrarAsistencia', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ nombre, correo })
-                });
+                <!-- const response = await fetch('/api/registrarAsistencia', { -->
+                    <!-- method: 'POST', -->
+                    <!-- headers: { -->
+                        <!-- 'Content-Type': 'application/json' -->
+                    <!-- }, -->
+                    <!-- body: JSON.stringify({ nombre, correo }) -->
+                <!-- }); -->
 
-                if (response.ok) {
+                <!-- if (response.ok) { -->
 
-                    msg.innerText =
-                        "¡Registro exitoso! Revisa tu correo.";
+                    <!-- msg.innerText = -->
+                        <!-- "¡Registro exitoso! Revisa tu correo."; -->
 
-                    msg.classList.add('success');
+                    <!-- msg.classList.add('success'); -->
 
-                    document
-                        .getElementById('registrationForm')
-                        .reset();
+                    <!-- document -->
+                        <!-- .getElementById('registrationForm') -->
+                        <!-- .reset(); -->
 
-                } else {
-                    throw new Error();
-                }
+                <!-- } else { -->
+                    <!-- throw new Error(); -->
+                <!-- } -->
 
-            } catch (error) {
+            <!-- } catch (error) { -->
 
-                msg.innerText =
-                    "Hubo un error al registrarte.";
+                <!-- msg.innerText = -->
+                    <!-- "Hubo un error al registrarte."; -->
 
-                msg.classList.add('error');
+                <!-- msg.classList.add('error'); -->
 
-            } finally {
+            <!-- } finally { -->
 
-                btn.disabled = false;
-                btn.innerText = "Confirmar Asistencia";
-            }
+                <!-- btn.disabled = false; -->
+                <!-- btn.innerText = "Confirmar Asistencia"; -->
+            <!-- } -->
+			// Simulación de registro correcto
+			setTimeout(() => {
+
+            msg.innerText =
+                "¡Registro exitoso!";
+
+            msg.classList.add('success');
+
+            document
+                .getElementById('registrationForm')
+                .reset();
+
+            btn.disabled = false;
+
+            btn.innerText =
+                "Confirmar Asistencia";
+
+        }, 1000);
         });
     </script>
 
