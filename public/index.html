@@ -528,6 +528,10 @@
       .getElementById("btnConfirmar")
       .addEventListener("click", async () => {
 
+        event.preventDefault();
+
+        console.log("CLICK BOTON");
+
         mensajeOk.classList.add("hidden");
         mensajeError.classList.add("hidden");
 
@@ -536,18 +540,18 @@
           nombre:
             document.getElementById("nombre").value,
 
-          contacto:
-            document.getElementById("contacto").value,
+          // contacto:
+          //   document.getElementById("contacto").value,
 
           adultos:
             parseInt(
               document.getElementById("adultos").value
             ),
 
-          juveniles:
-            parseInt(
-              document.getElementById("juveniles").value
-            ),
+          // juveniles:
+          //   parseInt(
+          //     document.getElementById("juveniles").value
+          //   ),
 
           infantiles:
             parseInt(
@@ -568,10 +572,14 @@
 
         };
 
+        console.log("DATOS:", datos);
+        
         try{
 
+          console.log("ENVIANDO DATOS...");
+
           const response = await fetch(
-            "/api/asistentes",
+            "/api/registarAsistencia",
             {
               method:"POST",
 
@@ -583,8 +591,9 @@
             }
           );
 
-          const resultado =
-            await response.json();
+          console.log("STATUS:", response.status);
+
+          const resultado = await response.json();
 
           if(resultado.ok){
 
@@ -598,7 +607,7 @@
 
         } catch(error){
 
-          console.error(error);
+          console.error( "ERROR FETCH:", error);
 
           mensajeError.classList.remove("hidden");
 
