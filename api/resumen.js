@@ -29,12 +29,12 @@ export default async function handler(req, res) {
 
     const buffetAdulto = data.filter(
       item =>
-        item.tipoBuffet === "adulto"
+        item.tipo_buffet === "adulto"
     );
 
     const buffetInfantil = data.filter(
       item =>
-        item.tipoBuffet === "infantil"
+        item.tipo_buffet === "infantil"
     );
 
     return res.status(200).json({
