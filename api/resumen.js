@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from("asistentes")
-      .select("adultos, infantiles");
+      .select("adultos, infantiles, plato, tipo_buffet");
 
     if (error) {
       throw error;
