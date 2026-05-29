@@ -27,9 +27,21 @@ export default async function handler(req, res) {
       0
     );
 
+    const buffetAdulto = data.filter(
+      item =>
+        item.tipoBuffet === "adulto"
+    );
+
+    const buffetInfantil = data.filter(
+      item =>
+        item.tipoBuffet === "infantil"
+    );
+
     return res.status(200).json({
       totalAdultos,
-      totalInfantiles
+      totalInfantiles,
+      buffetAdulto,
+      buffetInfantil
     });
 
   } catch (error) {

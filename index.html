@@ -196,23 +196,15 @@
           <div class="grid">
 
             <div>
-              <label>Nombre familia / persona</label>
+              <label>Nombre persona</label>
 
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Ej. Familia García"
-              />
+              <input type="text" id="nombre" placeholder="Ej. Rubén García" />
             </div>
 
             <!-- <div>
               <label>Persona contacto</label>
 
-              <input
-                type="text"
-                id="contacto"
-                placeholder="Ej. María García"
-              />
+              <input type="text" id="contacto" placeholder="Ej. María García" />
             </div> -->
 
           </div>
@@ -231,12 +223,7 @@
 
               <label>Adultos</label>
 
-              <input
-                type="number"
-                id="adultos"
-                min="0"
-                value="2"
-              />
+              <input type="number" id="adultos" min="0" value="2" />
 
             </div>
 
@@ -244,12 +231,7 @@
 
               <label>Juveniles (12-18)</label>
 
-              <input
-                type="number"
-                id="juveniles"
-                min="0"
-                value="0"
-              />
+              <input type="number" id="juveniles" min="0" value="0" />
 
             </div> -->
 
@@ -257,12 +239,7 @@
 
               <label>Infantiles (&lt;14)</label>
 
-              <input
-                type="number"
-                id="infantiles"
-                min="0"
-                value="0"
-              />
+              <input type="number" id="infantiles" min="0" value="0" />
 
             </div>
 
@@ -282,11 +259,7 @@
 
               <label>Plato que traeréis</label>
 
-              <input
-                type="text"
-                id="plato"
-                placeholder="Ej. Tortilla"
-              />
+              <input type="text" id="plato" placeholder="Ej. Tortilla" />
 
             </div>
 
@@ -338,33 +311,21 @@
 
         <div class="buttons">
 
-          <button
-            class="btn-primary"
-            id="btnConfirmar"
-          >
+          <button class="btn-primary" id="btnConfirmar" >
             Confirmar asistencia
           </button>
 
-          <button
-            class="btn-green"
-            id="btnExcel"
-          >
+          <button class="btn-green" id="btnExcel" >
             Exportar Excel
           </button>
 
         </div>
 
-        <div
-          id="mensajeOk"
-          class="success hidden"
-        >
+        <div id="mensajeOk" class="success hidden">
           Registro guardado correctamente
         </div>
 
-        <div
-          id="mensajeError"
-          class="error hidden"
-        >
+        <div id="mensajeError" class="error hidden">
           Error guardando el registro
         </div>
 
@@ -418,26 +379,21 @@
 
       <div class="card" style="margin-bottom:25px;">
 
-        <div
-          style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:20px;
-          "
-        >
+        <div style=" display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
 
-          <h2 class="sidebar-title">
+          <h2 class="sidebar-title"> 
             Buffet Adulto
           </h2>
 
-          <span class="badge">
-            3 platos
+          <span class="badge" id="totalPlatosAdulto">
+            0 platos
           </span>
 
         </div>
 
-        <div class="plato">
+        <div id="listadoBuffetAdulto">
+
+        <!-- <div class="plato">
           Tortilla española
         </div>
 
@@ -447,43 +403,28 @@
 
         <div class="plato">
           Croquetas
+        </div> -->
+
         </div>
 
       </div>
 
       <!-- BUFFET INFANTIL -->
 
-      <div
-        class="card"
-        id="buffetInfantilPanel"
-      >
-
-        <div
-          style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:20px;
-          "
-        >
+      <div class="card" id="buffetInfantilPanel" >
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
 
           <h2 class="sidebar-title">
             Buffet Infantil
           </h2>
 
-          <span class="badge">
-            2 platos
+          <span class="badge" id="totalPlatosInfantil">
+            0 platos
           </span>
 
         </div>
 
-        <div class="plato plato-kids">
-          Mini pizzas
-        </div>
-
-        <div class="plato plato-kids">
-          Nuggets
-        </div>
+        <div id="listaBuffetInfantil"></div>
 
       </div>
 
@@ -627,6 +568,14 @@
 
     const totalInfantiles = document.getElementById("totalInfantiles");
 
+    const listadoBuffetAdulto = document.getElementById("listadoBuffetAdulto");
+
+    const listaBuffetInfantil = document.getElementById("listaBuffetInfantil");
+
+    const totalPlatosAdulto = document.getElementById("totalPlatosAdulto");
+
+    const totalPlatosInfantil = document.getElementById("totalPlatosInfantil");
+
     async function cargarResumen(){
 
       try{
@@ -638,6 +587,30 @@
         totalAdultos.textContent = datos.totalAdultos || 0;
 
         totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+        // Renderizar buffet adulto
+        if (listadoBuffetAdulto && datos.buffetAdulto) {
+          listadoBuffetAdulto.innerHTML = "";
+          datos.buffetAdulto.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listadoBuffetAdulto.appendChild(platoDiv);
+          });
+          totalPlatosAdulto.textContent = datos.buffetAdulto.length + " platos";
+        }
+
+        // Renderizar buffet infantil
+        if (listaBuffetInfantil && datos.buffetInfantil) {
+          listaBuffetInfantil.innerHTML = "";
+          datos.buffetInfantil.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato plato-kids";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listaBuffetInfantil.appendChild(platoDiv);
+          });
+          totalPlatosInfantil.textContent = datos.buffetInfantil.length + " platos";
+        }
 
       } catch(error){
 
