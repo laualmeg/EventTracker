@@ -526,7 +526,7 @@
 
     document
       .getElementById("btnConfirmar")
-      .addEventListener("click", async () => {
+      .addEventListener("click", async (event) => {
 
         event.preventDefault();
 
@@ -594,13 +594,16 @@
           console.log("STATUS:", response.status);
 
           const resultado = await response.json();
+          console.log("RESULTADO:", resultado);
 
           if(resultado.ok){
 
             mensajeOk.classList.remove("hidden");
+            mensajeError.classList.add("hidden");
 
           } else {
 
+            mensajeError.textContent = resultado.error || "Error guardando el registro";
             mensajeError.classList.remove("hidden");
 
           }
@@ -608,7 +611,7 @@
         } catch(error){
 
           console.error( "ERROR FETCH:", error);
-
+          mensajeError.textContent = error?.message || "Error guardando el registro";
           mensajeError.classList.remove("hidden");
 
         }
