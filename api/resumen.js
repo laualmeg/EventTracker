@@ -1,4 +1,11 @@
-app.get("/api/resumen", async (req, res) => {
+import supabase from "../lib/supabase.js";
+
+export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      error: "Método no permitido"
+    });
+  }
 
   try {
 
@@ -20,7 +27,7 @@ app.get("/api/resumen", async (req, res) => {
       0
     );
 
-    res.json({
+    return res.status(200).json({
       totalAdultos,
       totalInfantiles
     });
@@ -28,11 +35,8 @@ app.get("/api/resumen", async (req, res) => {
   } catch (error) {
 
     console.error(error);
-
-    res.status(500).json({
+    return res.status(500).json({
       error: "Error obteniendo resumen"
     });
-
   }
-
-});
+}
