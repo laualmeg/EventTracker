@@ -1,5 +1,9 @@
 import supabase from "../lib/supabase.js";
 
+console.log("API registrarAsistencia: SUPABASE_URL set?", Boolean(process.env.SUPABASE_URL));
+console.log("API registrarAsistencia: SUPABASE_KEY set?", Boolean(process.env.SUPABASE_KEY));
+console.log("API registrarAsistencia: SUPABASE_SERVICE_ROLE_KEY set?", Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY));
+
 export default async function handler(req, res) {
 
   // SOLO POST

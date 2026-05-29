@@ -389,9 +389,13 @@
           <strong>12</strong>
         </div> -->
 
-        <div class="summary-item">
+        <!-- <div class="summary-item">
           <span>Adultos</span>
           <strong>26</strong>
+        </div> -->
+        <div class="summary-item">
+          <span>Adultos</span>
+          <strong id="totalAdultos">0</strong>
         </div>
 
         <!-- <div class="summary-item">
@@ -399,9 +403,13 @@
           <strong>8</strong>
         </div> -->
 
-        <div class="summary-item">
+        <!-- <div class="summary-item">
           <span>Infantiles</span>
           <strong>10</strong>
+        </div> -->
+        <div class="summary-item">
+          <span>Infantiles</span>
+          <strong id="totalInfantiles">0</strong>
         </div>
 
       </div>
@@ -483,25 +491,20 @@
 
   </div>
 
-  <script>
+  <script> // Frontend JavaScript
 
-    const infantilesInput =
-      document.getElementById("infantiles");
+    const infantilesInput = document.getElementById("infantiles");
 
-    const buffetPanel =
-      document.getElementById("buffetInfantilPanel");
+    const buffetPanel = document.getElementById("buffetInfantilPanel");
 
-    const mensajeOk =
-      document.getElementById("mensajeOk");
+    const mensajeOk = document.getElementById("mensajeOk");
 
-    const mensajeError =
-      document.getElementById("mensajeError");
+    const mensajeError = document.getElementById("mensajeError");
 
     // Mostrar/ocultar buffet infantil
     function actualizarBuffetInfantil(){
 
-      const infantiles =
-        parseInt(infantilesInput.value);
+      const infantiles = parseInt(infantilesInput.value);
 
       if(infantiles <= 0){
 
@@ -515,10 +518,7 @@
 
     }
 
-    infantilesInput.addEventListener(
-      "input",
-      actualizarBuffetInfantil
-    );
+    infantilesInput.addEventListener("input", actualizarBuffetInfantil);
 
     actualizarBuffetInfantil();
 
@@ -544,19 +544,13 @@
           //   document.getElementById("contacto").value,
 
           adultos:
-            parseInt(
-              document.getElementById("adultos").value
-            ),
+            parseInt(document.getElementById("adultos").value),
 
           // juveniles:
-          //   parseInt(
-          //     document.getElementById("juveniles").value
-          //   ),
+          //   parseInt(document.getElementById("juveniles").value   ),
 
           infantiles:
-            parseInt(
-              document.getElementById("infantiles").value
-            ),
+            parseInt(document.getElementById("infantiles").value),
 
           plato:
             document.getElementById("plato").value,
@@ -578,14 +572,11 @@
 
           console.log("ENVIANDO DATOS...");
 
-          const response = await fetch(
-            "/api/registrarAsistencia",
+          const response = await fetch("/api/registrarAsistencia",
             {
               method:"POST",
 
-              headers:{
-                "Content-Type":"application/json"
-              },
+              headers:{"Content-Type":"application/json"},
 
               body:JSON.stringify(datos)
             }
@@ -600,6 +591,8 @@
 
             mensajeOk.classList.remove("hidden");
             mensajeError.classList.add("hidden");
+            
+            await cargarResumen();
 
           } else {
 
@@ -624,11 +617,37 @@
       .getElementById("btnExcel")
       .addEventListener("click", () => {
 
-        alert(
-          "Más adelante exportaremos el Excel real"
-        );
+        alert( "Más adelante exportaremos el Excel real");
 
       });
+
+    // CARGAR RESUMEN INICIAL
+
+    const totalAdultos = document.getElementById("totalAdultos");
+
+    const totalInfantiles = document.getElementById("totalInfantiles");
+
+    async function cargarResumen(){
+
+      try{
+
+        const response = await fetch("/api/resumen");
+
+        const datos = await response.json();
+
+        totalAdultos.textContent = datos.totalAdultos || 0;
+
+        totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+      } catch(error){
+
+        console.error("Error cargando resumen", error);
+
+      }
+
+  }
+
+  cargarResumen();
 
   </script>
 
