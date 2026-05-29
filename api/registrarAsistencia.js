@@ -1,9 +1,14 @@
+import supabase from "../lib/supabase.js";
+
 export default async function handler(req, res) {
+
+  // SOLO POST
 
   if(req.method !== "POST"){
 
     return res.status(405).json({
-      error: "Método no permitido"
+      ok:false,
+      error:"Método no permitido"
     });
 
   }
@@ -13,31 +18,77 @@ export default async function handler(req, res) {
     const datos = req.body;
 
     console.log("Nuevo asistente:");
-    //console.log("Nuevo registro:");
-
     console.log(datos);
 
-    /*
-      Aquí luego guardarás en BD
+    // VALIDACIONES
 
-      Ejemplo futuro:
+    if(!datos.nombre){
+
+      return res.status(400).json({
+        ok:false,
+        error:"Nombre obligatorio"
+      });
+
+    }
+
+    // INSERT EN SUPABASE
+
+    const { data, error } =
       await supabase
-        .from("asistentes")
-        .insert([datos]);
-    */
+      .from("asistentes")
+      .insert([
+        {
+          nombre: datos.nombre,
+
+          adultos:
+            datos.adultos || 0,
+
+          infantiles:
+            datos.infantiles || 0,
+
+          plato:
+            datos.plato || "",
+
+          tipo_buffet:
+            datos.tipoBuffet || "adulto"
+        }
+      ])
+      .select();
+
+    // ERROR SUPABASE
+
+    if(error){
+
+      console.error(
+        "Error Supabase:",
+        error
+      );
+
+      return res.status(500).json({
+        ok:false,
+        error:error.message
+      });
+
+    }
+
+    // OK
 
     return res.status(200).json({
-      ok: true,
-      mensaje: "Asistente guardado"
+      ok:true,
+      mensaje:"Asistente guardado",
+      data:data
     });
 
   } catch(error){
 
-    console.error(error);
+    console.error(
+      "Error servidor:",
+      error
+    );
 
     return res.status(500).json({
-      ok: false,
-      error: "Error interno"
+      ok:false,
+      error:"Error interno"
     });
 
   }
