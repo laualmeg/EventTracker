@@ -26,13 +26,41 @@ export default async function handler(req, res) {
 
     // VALIDACIONES
 
-    if(!datos.nombre){
-
+    if (!datos.nombre?.trim()) {
       return res.status(400).json({
-        ok:false,
-        error:"Nombre obligatorio"
+        ok: false,
+        error: "Nombre obligatorio"
       });
+    }
 
+    if (!datos.plato?.trim()) {
+      return res.status(400).json({
+        ok: false,
+        error: "Debes indicar el plato que traerás"
+      });
+    }
+
+    // COMPROBAR NOMBRE DUPLICADO
+
+    const { data: asistenteExistente, error: errorBusqueda } =
+      await supabase
+        .from("asistentes")
+        .select("id")
+        .ilike("nombre", datos.nombre.trim()) // ignora mayúsculas/minúsculas
+        .limit(1);
+
+    if (errorBusqueda) {
+      return res.status(500).json({
+        ok: false,
+        error: errorBusqueda.message
+      });
+    }
+
+    if (asistenteExistente.length > 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "Esta persona ya está registrada"
+      });
     }
 
     // INSERT EN SUPABASE
@@ -42,19 +70,15 @@ export default async function handler(req, res) {
       .from("asistentes")
       .insert([
         {
-          nombre: datos.nombre,
+          nombre: datos.nombre.trim(),
 
-          adultos:
-            datos.adultos || 0,
+          adultos: datos.adultos || 0,
 
-          infantiles:
-            datos.infantiles || 0,
+          infantiles: datos.infantiles || 0,
 
-          plato:
-            datos.plato || "",
+          plato: datos.plato.trim(),
 
-          tipo_buffet:
-            datos.tipoBuffet || "adulto"
+          tipo_buffet: datos.tipoBuffet || "adulto"
         }
       ])
       .select();
