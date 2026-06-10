@@ -447,7 +447,11 @@
 
   <script> // Frontend JavaScript
 
+    const adultosInput = document.getElementById("adultos");
+
     const infantilesInput = document.getElementById("infantiles");
+
+    const tipoBuffetSelect = document.getElementById("tipoBuffet");
 
     const buffetPanel = document.getElementById("buffetInfantilPanel");
 
@@ -455,26 +459,33 @@
 
     const mensajeError = document.getElementById("mensajeError");
 
-    // Mostrar/ocultar buffet infantil
-    function actualizarBuffetInfantil(){
+    function actualizarEleccionBuffet(){
+      const adultos = parseInt(adultosInput.value) || 0;
+      const infantiles = parseInt(infantilesInput.value) || 0;
+      const opcionAdulto = tipoBuffetSelect.querySelector('option[value="adulto"]');
 
-      const infantiles = parseInt(infantilesInput.value);
-
-      if(infantiles <= 0){
-
-        buffetPanel.classList.add("hidden");
-
+      if (infantiles > 0 && adultos === 0) {
+        tipoBuffetSelect.value = "infantil";
+        if (opcionAdulto) {
+          opcionAdulto.disabled = true;
+        }
       } else {
-
-        buffetPanel.classList.remove("hidden");
-
+        if (opcionAdulto) {
+          opcionAdulto.disabled = false;
+        }
       }
 
+      if (infantiles <= 0) {
+        buffetPanel.classList.add("hidden");
+      } else {
+        buffetPanel.classList.remove("hidden");
+      }
     }
 
-    infantilesInput.addEventListener("input", actualizarBuffetInfantil);
+    adultosInput.addEventListener("input", actualizarEleccionBuffet);
+    infantilesInput.addEventListener("input", actualizarEleccionBuffet);
 
-    actualizarBuffetInfantil();
+    actualizarEleccionBuffet();
 
     // GUARDAR REGISTRO REAL
 
@@ -522,6 +533,12 @@
         //     document.getElementById("alergias").checked
 
         };
+
+        if (datos.adultos === 0 && datos.infantiles > 0 && datos.tipoBuffet !== "infantil") {
+          mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
 
         console.log("DATOS:", datos);
         

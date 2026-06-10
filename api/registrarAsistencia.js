@@ -40,6 +40,13 @@ export default async function handler(req, res) {
       });
     }
 
+    if ((datos.adultos || 0) === 0 && (datos.infantiles || 0) > 0 && datos.tipoBuffet !== "infantil") {
+      return res.status(400).json({
+        ok: false,
+        error: "Si solo hay infantiles, solo pueden llevar algo para el buffet infantil"
+      });
+    }
+
     // COMPROBAR NOMBRE DUPLICADO
 
     const { data: asistenteExistente, error: errorBusqueda } =
