@@ -26,6 +26,7 @@ export default async function handler(req, res) {
       { header: "Nombre", key: "nombre", width: 20 },
       { header: "Adultos", key: "adultos", width: 10 },
       { header: "Infantiles", key: "infantiles", width: 12 },
+      { header: "Invitados", key: "invitados", width: 12 },
       { header: "Plato", key: "plato", width: 15 },
       { header: "TipoBuffet", key: "tipo_buffet", width: 15 }
     ];
@@ -35,6 +36,7 @@ export default async function handler(req, res) {
         nombre: item.nombre,
         adultos: item.adultos,
         infantiles: item.infantiles,
+        invitados: item.invitados,
         plato: item.plato,
         tipo_buffet: item.tipo_buffet
       });
