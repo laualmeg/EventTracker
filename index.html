@@ -159,17 +159,18 @@
       color:#991b1b;
       border-radius:12px;
     } */
-    .success,
+    /* .success,
     .error{
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px 22px;
-      border-radius: 14px;
-      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 60px 20px 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
       z-index: 1000;
-      min-width: 280px;
-      animation: aparecer .3s ease;
+      min-width: 350px;
+      text-align: center;
     }
 
     .success{
@@ -180,6 +181,83 @@
     .error{
       background: #fee2e2;
       color: #991b1b;
+    } */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:999;
+    }
+
+    .modal{
+
+      position:fixed;
+
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%,-50%);
+
+      background:white;
+
+      padding:35px;
+
+      min-width:380px;
+
+      border-radius:20px;
+
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+
+      text-align:center;
+
+      z-index:1000;
+    }
+
+    .success{
+      border-top:8px solid #16a34a;
+    }
+
+    .error{
+      border-top:8px solid #dc2626;
+    }
+
+    .modal h3{
+      margin-bottom:15px;
+    }
+
+    .modal p{
+      margin-bottom:25px;
+    }
+
+    .modal button{
+
+      background:#2563eb;
+
+      color:white;
+
+      padding:14px 25px;
+
+      border:none;
+
+      border-radius:12px;
+
+      cursor:pointer;
+    }
+
+    .cerrar{
+
+      position:absolute;
+
+      top:15px;
+
+      right:20px;
+
+      font-size:22px;
+
+      font-weight:bold;
+
+      cursor:pointer;
+
     }
 
     @keyframes aparecer{
@@ -362,12 +440,25 @@
 
         </div>
 
-        <div id="mensajeOk" class="success hidden">
+        <!-- <div id="mensajeOk" class="success hidden">
           Registro guardado correctamente
         </div>
 
         <div id="mensajeError" class="error hidden">
           Error guardando el registro
+        </div> -->
+        <div id="mensajeOk" class="modal success hidden">
+            <span class="cerrar" onclick="cerrarMensajes()">✕</span>
+            <h3>✔ Registro guardado</h3>
+            <p>La inscripción se ha realizado correctamente.</p>
+            <button onclick="cerrarMensajes()">Aceptar</button>
+        </div>
+
+        <div id="mensajeError" class="modal error hidden">
+            <span class="cerrar" onclick="cerrarMensajes()">✕</span>
+            <h3>✕ Error</h3>
+            <p id="textoError">Error guardando el registro</p>
+            <button onclick="cerrarMensajes()">Aceptar</button>
         </div>
 
       </div>
@@ -492,6 +583,10 @@
 
     const mensajeError = document.getElementById("mensajeError");
 
+    const fondoModal = document.getElementById("fondoModal");
+
+    const textoError = document.getElementById("textoError");
+
     function actualizarEleccionBuffet(){
       const adultos = parseInt(adultosInput.value) || 0;
       const infantiles = parseInt(infantilesInput.value) || 0;
@@ -513,6 +608,16 @@
       } else {
         buffetPanel.classList.remove("hidden");
       }
+    }
+
+    function cerrarMensajes(){
+
+      mensajeOk.classList.add("hidden");
+
+      mensajeError.classList.add("hidden");
+
+      fondoModal.classList.add("hidden");
+
     }
 
     adultosInput.addEventListener("input", actualizarEleccionBuffet);
@@ -568,7 +673,10 @@
         };
 
         if (datos.adultos === 0 && datos.infantiles > 0 && datos.tipoBuffet !== "infantil") {
-          mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          // mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          // mensajeError.classList.remove("hidden");
+          textoError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          fondoModal.classList.remove("hidden");
           mensajeError.classList.remove("hidden");
           return;
         }
@@ -596,14 +704,24 @@
 
           if(resultado.ok){
 
-            mensajeOk.classList.remove("hidden");
-            mensajeError.classList.add("hidden");
+            // mensajeOk.classList.remove("hidden");
+            // mensajeError.classList.add("hidden");
+              fondoModal.classList.remove("hidden");
+
+              mensajeError.classList.add("hidden");
+
+              mensajeOk.classList.remove("hidden");
             
             await cargarResumen();
 
           } else {
 
-            mensajeError.textContent = resultado.error || "Error guardando el registro";
+            // mensajeError.textContent = resultado.error || "Error guardando el registro";
+            // mensajeError.classList.remove("hidden");
+            textoError.textContent = resultado.error || "Error guardando el registro";
+
+            fondoModal.classList.remove("hidden");
+
             mensajeError.classList.remove("hidden");
 
           }
@@ -611,7 +729,12 @@
         } catch(error){
 
           console.error( "ERROR FETCH:", error);
-          mensajeError.textContent = error?.message || "Error guardando el registro";
+          // mensajeError.textContent = error?.message || "Error guardando el registro";
+          // mensajeError.classList.remove("hidden");
+          textoError.textContent = error?.message || "Error guardando el registro";
+
+          fondoModal.classList.remove("hidden");
+
           mensajeError.classList.remove("hidden");
 
         }
