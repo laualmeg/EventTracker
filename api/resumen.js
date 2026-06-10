@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from("asistentes")
-      .select("adultos, infantiles, plato, tipo_buffet");
+      .select("adultos, infantiles, invitados, plato, tipo_buffet");
 
     if (error) {
       throw error;
@@ -24,6 +24,11 @@ export default async function handler(req, res) {
 
     const totalInfantiles = data.reduce(
       (acc, item) => acc + (item.infantiles || 0),
+      0
+    );
+
+    const totalInvitados = data.reduce(
+      (acc, item) => acc + (item.invitados || 0),
       0
     );
 
@@ -40,6 +45,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       totalAdultos,
       totalInfantiles,
+      totalInvitados,
       buffetAdulto,
       buffetInfantil
     });

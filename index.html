@@ -243,6 +243,14 @@
 
             </div>
 
+            <div class="counter-card">
+
+              <label>Invitados</label>
+
+              <input type="number" id="invitados" min="0" value="0" />
+
+            </div>
+
           </div>
 
         </div>
@@ -361,7 +369,7 @@
 
         <!-- <div class="summary-item">
           <span>Juveniles</span>
-          <strong>8</strong>
+          <strong id="totalJuveniles">0</strong>
         </div> -->
 
         <!-- <div class="summary-item">
@@ -371,6 +379,11 @@
         <div class="summary-item">
           <span>Infantiles</span>
           <strong id="totalInfantiles">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Invitados</span>
+          <strong id="totalInvitados">0</strong>
         </div>
 
       </div>
@@ -493,6 +506,9 @@
           infantiles:
             parseInt(document.getElementById("infantiles").value),
 
+          invitados:
+            parseInt(document.getElementById("invitados").value),
+
           plato:
             document.getElementById("plato").value,
 
@@ -568,6 +584,8 @@
 
     const totalInfantiles = document.getElementById("totalInfantiles");
 
+    const totalInvitados = document.getElementById("totalInvitados");
+
     const listadoBuffetAdulto = document.getElementById("listadoBuffetAdulto");
 
     const listaBuffetInfantil = document.getElementById("listaBuffetInfantil");
@@ -587,6 +605,8 @@
         totalAdultos.textContent = datos.totalAdultos || 0;
 
         totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+        totalInvitados.textContent = datos.totalInvitados || 0;
 
         // Renderizar buffet adulto
         if (listadoBuffetAdulto && datos.buffetAdulto) {

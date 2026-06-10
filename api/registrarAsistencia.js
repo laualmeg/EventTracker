@@ -76,6 +76,8 @@ export default async function handler(req, res) {
 
           infantiles: datos.infantiles || 0,
 
+          invitados: datos.invitados || 0,
+
           plato: datos.plato.trim(),
 
           tipo_buffet: datos.tipoBuffet || "adulto"
