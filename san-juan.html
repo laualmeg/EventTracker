@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>San Juan 2026</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI, sans-serif;
+    }
+
+    body{
+      background:#f3f4f6;
+      padding:30px;
+      color:#1f2937;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:auto;
+
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:25px;
+    }
+
+    .card{
+      background:white;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    h1{
+      font-size:38px;
+      margin-bottom:10px;
+    }
+
+    h2{
+      margin-bottom:20px;
+      font-size:24px;
+    }
+
+    p.subtitle{
+      color:#6b7280;
+      margin-bottom:35px;
+    }
+
+    .section{
+      margin-bottom:40px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
+
+    .counter-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:20px;
+      border:1px solid #e5e7eb;
+    }
+
+    .buttons{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:15px 25px;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:#2563eb;
+      color:white;
+    }
+
+    .btn-green{
+      background:#16a34a;
+      color:white;
+    }
+
+    .sidebar-title{
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    .plato{
+      background:#eff6ff;
+      padding:12px 15px;
+      border-radius:12px;
+      margin-bottom:10px;
+    }
+
+    .plato-kids{
+      background:#fdf2f8;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:16px;
+    }
+
+    .badge{
+      background:#dbeafe;
+      color:#1d4ed8;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:14px;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .success{
+      margin-top:20px;
+      padding:15px;
+      background:#dcfce7;
+      color:#166534;
+      border-radius:12px;
+    }
+
+    .error{
+      margin-top:20px;
+      padding:15px;
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:12px;
+    }
+    /* .success,
+    .error{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 60px 20px 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
+      z-index: 1000;
+      min-width: 350px;
+      text-align: center;
+    }
+
+    .success{
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error{
+      background: #fee2e2;
+      color: #991b1b;
+    } */
+    /* .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:999;
+    }
+
+    .modal{
+
+      position:fixed;
+
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%,-50%);
+
+      background:white;
+
+      padding:35px;
+
+      min-width:380px;
+
+      border-radius:20px;
+
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+
+      text-align:center;
+
+      z-index:1000;
+    }
+
+    .success{
+      border-top:8px solid #16a34a;
+    }
+
+    .error{
+      border-top:8px solid #dc2626;
+    }
+
+    .modal h3{
+      margin-bottom:15px;
+    }
+
+    .modal p{
+      margin-bottom:25px;
+    }
+
+    .modal button{
+
+      background:#2563eb;
+
+      color:white;
+
+      padding:14px 25px;
+
+      border:none;
+
+      border-radius:12px;
+
+      cursor:pointer;
+    }
+
+    .cerrar{
+
+      position:absolute;
+
+      top:15px;
+
+      right:20px;
+
+      font-size:22px;
+
+      font-weight:bold;
+
+      cursor:pointer;
+
+    } */
+
+    /* @keyframes aparecer{
+      from{
+        opacity:0;
+        transform:translateY(-10px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    } */
+
+    @media(max-width:900px){
+
+      .container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- IZQUIERDA -->
+
+    <div>
+
+      <div class="card">
+
+        <h1>🔥 San Juan 2026</h1>
+
+        <p class="subtitle">
+          Gestión de asistentes y buffet compartido
+        </p>
+
+        <!-- DATOS FAMILIA -->
+
+        <div class="section">
+
+          <h2>Datos inscripción</h2>
+
+          <div class="grid">
+
+            <div>
+              <label>Nombre persona</label>
+
+              <input type="text" id="nombre" placeholder="Ej. Rubén García" />
+            </div>
+
+            <!-- <div>
+              <label>Persona contacto</label>
+
+              <input type="text" id="contacto" placeholder="Ej. María García" />
+            </div> -->
+
+          </div>
+
+        </div>
+
+        <!-- ASISTENTES -->
+
+        <div class="section">
+
+          <h2>Asistentes</h2>
+
+          <div class="grid">
+
+            <div class="counter-card">
+
+              <label>Adultos</label>
+
+              <input type="number" id="adultos" min="0" value="2" />
+
+            </div>
+
+            <!-- <div class="counter-card">
+
+              <label>Juveniles (12-18)</label>
+
+              <input type="number" id="juveniles" min="0" value="0" />
+
+            </div> -->
+
+            <div class="counter-card">
+
+              <label>Infantiles (&lt;14)</label>
+
+              <input type="number" id="infantiles" min="0" value="0" />
+
+            </div>
+
+            <div class="counter-card">
+
+              <label>Invitados</label>
+
+              <input type="number" id="invitados" min="0" value="0" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- BUFFET -->
+
+        <div class="section">
+
+          <h2>Buffet compartido</h2>
+
+          <div class="grid">
+
+            <div>
+
+              <label>Plato que traeréis</label>
+
+              <input type="text" id="plato" placeholder="Ej. Tortilla" />
+
+            </div>
+
+            <div id="buffetContainer">
+
+              <label>Tipo buffet</label>
+
+              <select id="tipoBuffet">
+
+                <option value="adulto">
+                  Buffet Adulto
+                </option>
+
+                <option value="infantil">
+                  Buffet Infantil
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- EXTRAS -->
+
+        <!-- <div class="section">
+
+          <h2>Extras</h2>
+
+          <div style="display:flex; flex-direction:column; gap:15px;">
+
+            <label>
+              <input type="checkbox" />
+              Necesitamos mesa familiar
+            </label>
+
+            <label>
+              <input type="checkbox" />
+              Tenemos alergias alimentarias
+            </label>
+
+          </div>
+
+        </div> -->
+
+        <!-- BOTONES -->
+
+        <div class="buttons">
+
+          <button class="btn-primary" id="btnConfirmar" >
+            Confirmar asistencia
+          </button>
+
+          <button class="btn-green" id="btnExcel" >
+            Exportar Excel
+          </button>
+
+        </div>
+
+        <div id="mensajeOk" class="success hidden">
+          Registro guardado correctamente
+        </div>
+
+        <div id="mensajeError" class="error hidden">
+          Error guardando el registro
+        </div>
+        <!-- Fondo oscuro
+        <div id="fondoModal" class="overlay hidden"></div>
+
+        <div id="mensajeOk" class="modal success hidden">
+            <span class="cerrar" onclick="cerrarMensajes()">✕</span>
+            <h3>✔ Registro guardado</h3>
+            <p>La inscripción se ha realizado correctamente.</p>
+            <button onclick="cerrarMensajes()">Aceptar</button>
+        </div>
+
+        <div id="mensajeError" class="modal error hidden">
+            <span class="cerrar" onclick="cerrarMensajes()">✕</span>
+            <h3>✕ Error</h3>
+            <p id="textoError">Error guardando el registro</p>
+            <button onclick="cerrarMensajes()">Aceptar</button>
+        </div> -->
+
+      </div>
+
+    </div>
+
+    <!-- DERECHA -->
+
+    <div>
+
+      <!-- RESUMEN -->
+
+      <div class="card" style="margin-bottom:25px;">
+
+        <h2 class="sidebar-title">
+          Resumen
+        </h2>
+
+        <!-- <div class="summary-item">
+          <span>Familias</span>
+          <strong>12</strong>
+        </div> -->
+
+        <!-- <div class="summary-item">
+          <span>Adultos</span>
+          <strong>26</strong>
+        </div> -->
+        <div class="summary-item">
+          <span>Adultos</span>
+          <strong id="totalAdultos">0</strong>
+        </div>
+
+        <!-- <div class="summary-item">
+          <span>Juveniles</span>
+          <strong id="totalJuveniles">0</strong>
+        </div> -->
+
+        <!-- <div class="summary-item">
+          <span>Infantiles</span>
+          <strong>10</strong>
+        </div> -->
+        <div class="summary-item">
+          <span>Infantiles</span>
+          <strong id="totalInfantiles">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Invitados</span>
+          <strong id="totalInvitados">0</strong>
+        </div>
+
+      </div>
+
+      <!-- BUFFET ADULTO -->
+
+      <div class="card" style="margin-bottom:25px;">
+
+        <div style=" display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
+
+          <h2 class="sidebar-title"> 
+            Buffet Adulto
+          </h2>
+
+          <span class="badge" id="totalPlatosAdulto">
+            0 platos
+          </span>
+
+        </div>
+
+        <div id="listadoBuffetAdulto">
+
+        <!-- <div class="plato">
+          Tortilla española
+        </div>
+
+        <div class="plato">
+          Empanada
+        </div>
+
+        <div class="plato">
+          Croquetas
+        </div> -->
+
+        </div>
+
+      </div>
+
+      <!-- BUFFET INFANTIL -->
+
+      <div class="card" id="buffetInfantilPanel" >
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
+
+          <h2 class="sidebar-title">
+            Buffet Infantil
+          </h2>
+
+          <span class="badge" id="totalPlatosInfantil">
+            0 platos
+          </span>
+
+        </div>
+
+        <div id="listaBuffetInfantil"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script> // Frontend JavaScript
+
+    const adultosInput = document.getElementById("adultos");
+
+    const infantilesInput = document.getElementById("infantiles");
+
+    const tipoBuffetSelect = document.getElementById("tipoBuffet");
+
+    const buffetPanel = document.getElementById("buffetInfantilPanel");
+
+    const mensajeOk = document.getElementById("mensajeOk");
+
+    const mensajeError = document.getElementById("mensajeError");
+
+    // const fondoModal = document.getElementById("fondoModal");
+
+    // const textoError = document.getElementById("textoError");
+
+    function actualizarEleccionBuffet(){
+      const adultos = parseInt(adultosInput.value) || 0;
+      const infantiles = parseInt(infantilesInput.value) || 0;
+      const opcionAdulto = tipoBuffetSelect.querySelector('option[value="adulto"]');
+
+      if (infantiles > 0 && adultos === 0) {
+        tipoBuffetSelect.value = "infantil";
+        if (opcionAdulto) {
+          opcionAdulto.disabled = true;
+        }
+      } else {
+        if (opcionAdulto) {
+          opcionAdulto.disabled = false;
+        }
+      }
+
+      if (infantiles <= 0) {
+        buffetPanel.classList.add("hidden");
+      } else {
+        buffetPanel.classList.remove("hidden");
+      }
+    }
+
+    // function cerrarMensajes(){
+
+    //   mensajeOk.classList.add("hidden");
+
+    //   mensajeError.classList.add("hidden");
+
+    //   fondoModal.classList.add("hidden");
+
+    // }
+
+    adultosInput.addEventListener("input", actualizarEleccionBuffet);
+    infantilesInput.addEventListener("input", actualizarEleccionBuffet);
+
+    actualizarEleccionBuffet();
+
+    // GUARDAR REGISTRO REAL
+
+    document
+      .getElementById("btnConfirmar")
+      .addEventListener("click", async (event) => {
+
+        event.preventDefault();
+
+        console.log("CLICK BOTON");
+
+        mensajeOk.classList.add("hidden");
+        mensajeError.classList.add("hidden");
+
+        const datos = {
+
+          nombre:
+            document.getElementById("nombre").value,
+
+          // contacto:
+          //   document.getElementById("contacto").value,
+
+          adultos:
+            parseInt(document.getElementById("adultos").value),
+
+          // juveniles:
+          //   parseInt(document.getElementById("juveniles").value   ),
+
+          infantiles:
+            parseInt(document.getElementById("infantiles").value),
+
+          invitados:
+            parseInt(document.getElementById("invitados").value),
+
+          plato:
+            document.getElementById("plato").value,
+
+          tipoBuffet:
+            document.getElementById("tipoBuffet").value,
+
+        //   mesa:
+        //     document.getElementById("mesa").checked,
+
+        //   alergias:
+        //     document.getElementById("alergias").checked
+
+        };
+
+        if (datos.adultos === 0 && datos.infantiles > 0 && datos.tipoBuffet !== "infantil") {
+          mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          mensajeError.classList.remove("hidden");
+          // textoError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
+          // fondoModal.classList.remove("hidden");
+          // mensajeError.classList.remove("hidden");
+          return;
+        }
+
+        console.log("DATOS:", datos);
+        
+        try{
+
+          console.log("ENVIANDO DATOS...");
+
+          const response = await fetch("/api/registrarAsistencia",
+            {
+              method:"POST",
+
+              headers:{"Content-Type":"application/json"},
+
+              body:JSON.stringify(datos)
+            }
+          );
+
+          console.log("STATUS:", response.status);
+
+          const resultado = await response.json();
+          console.log("RESULTADO:", resultado);
+
+          if(resultado.ok){
+
+            mensajeOk.classList.remove("hidden");
+            mensajeError.classList.add("hidden");
+              // fondoModal.classList.remove("hidden");
+
+              // mensajeError.classList.add("hidden");
+
+              // mensajeOk.classList.remove("hidden");
+            
+            await cargarResumen();
+
+          } else {
+
+            mensajeError.textContent = resultado.error || "Error guardando el registro";
+            mensajeError.classList.remove("hidden");
+            // textoError.textContent = resultado.error || "Error guardando el registro";
+
+            // fondoModal.classList.remove("hidden");
+
+            // mensajeError.classList.remove("hidden");
+
+          }
+
+        } catch(error){
+
+          console.error( "ERROR FETCH:", error);
+          mensajeError.textContent = error?.message || "Error guardando el registro";
+          mensajeError.classList.remove("hidden");
+          // textoError.textContent = error?.message || "Error guardando el registro";
+
+          // fondoModal.classList.remove("hidden");
+
+          // mensajeError.classList.remove("hidden");
+
+        }
+
+      });
+
+    // EXPORTAR EXCEL
+
+    document
+      .getElementById("btnExcel")
+      .addEventListener("click", () => {
+
+      window.location.href = "/api/exportarExcel";
+
+    });
+
+    // CARGAR RESUMEN INICIAL
+
+    const totalAdultos = document.getElementById("totalAdultos");
+
+    const totalInfantiles = document.getElementById("totalInfantiles");
+
+    const totalInvitados = document.getElementById("totalInvitados");
+
+    const listadoBuffetAdulto = document.getElementById("listadoBuffetAdulto");
+
+    const listaBuffetInfantil = document.getElementById("listaBuffetInfantil");
+
+    const totalPlatosAdulto = document.getElementById("totalPlatosAdulto");
+
+    const totalPlatosInfantil = document.getElementById("totalPlatosInfantil");
+
+    async function cargarResumen(){
+
+      try{
+
+        const response = await fetch("/api/resumen");
+
+        const datos = await response.json();
+
+        totalAdultos.textContent = datos.totalAdultos || 0;
+
+        totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+        totalInvitados.textContent = datos.totalInvitados || 0;
+
+        // Renderizar buffet adulto
+        if (listadoBuffetAdulto && datos.buffetAdulto) {
+          listadoBuffetAdulto.innerHTML = "";
+          datos.buffetAdulto.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listadoBuffetAdulto.appendChild(platoDiv);
+          });
+          totalPlatosAdulto.textContent = datos.buffetAdulto.length + " platos";
+        }
+
+        // Renderizar buffet infantil
+        if (listaBuffetInfantil && datos.buffetInfantil) {
+          listaBuffetInfantil.innerHTML = "";
+          datos.buffetInfantil.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato plato-kids";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listaBuffetInfantil.appendChild(platoDiv);
+          });
+          totalPlatosInfantil.textContent = datos.buffetInfantil.length + " platos";
+        }
+
+      } catch(error){
+
+        console.error("Error cargando resumen", error);
+
+      }
+
+  }
+
+  cargarResumen();
+
+  </script>
+
+</body>
+</html>
