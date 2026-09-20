@@ -699,6 +699,23 @@
 
         };
 
+        // No permitir cantidades negativas
+        if (datos.adultos < 0 || datos.infantiles < 0 || datos.invitados < 0) {
+          mensajeError.textContent =
+            "Adultos, infantiles e invitados no pueden ser negativos.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
+        // Debe haber al menos un adulto o un infantil.
+        // Los invitados no pueden inscribirse solos.
+        if (datos.adultos === 0 && datos.infantiles === 0) {
+          mensajeError.textContent =
+            "Debe haber al menos un adulto o un infantil. Los invitados no pueden inscribirse solos.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
         if (datos.adultos === 0 && datos.infantiles > 0 && datos.tipoBuffet !== "infantil") {
           mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
           mensajeError.classList.remove("hidden");
