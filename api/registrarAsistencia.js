@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     console.log("Nuevo asistente:");
     console.log(datos);
 
-    // VALIDACIONES
+        // VALIDACIONES
 
     if (!datos.nombre?.trim()) {
       return res.status(400).json({
@@ -40,33 +40,63 @@ export default async function handler(req, res) {
       });
     }
 
-    if ((datos.adultos || 0) === 0 && (datos.infantiles || 0) > 0 && datos.tipoBuffet !== "infantil") {
+    // Convertir cantidades a números
+    const adultos = Number(datos.adultos);
+    const infantiles = Number(datos.infantiles);
+    const invitados = Number(datos.invitados);
+
+    // Comprobar que las cantidades son válidas
+    if (
+      !Number.isInteger(adultos) ||
+      !Number.isInteger(infantiles) ||
+      !Number.isInteger(invitados)
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "Las cantidades de asistentes deben ser números enteros"
+      });
+    }
+
+    // No permitir cantidades negativas
+    if (adultos < 0 || infantiles < 0 || invitados < 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "Adultos, infantiles e invitados no pueden ser negativos"
+      });
+    }
+
+    // Debe haber al menos un adulto o un infantil.
+    // Los invitados no pueden inscribirse solos.
+    if (adultos === 0 && infantiles === 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "Debe haber al menos un adulto o un infantil. Los invitados no pueden inscribirse solos."
+      });
+    }
+
+    // Si hay adultos y ningún infantil,
+    // no pueden elegir buffet infantil.
+    if (
+      adultos > 0 &&
+      infantiles === 0 &&
+      datos.tipoBuffet === "infantil"
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "No puedes elegir el buffet infantil si no hay ningún infantil"
+      });
+    }
+
+    // Si solo hay infantiles,
+    // obligatoriamente buffet infantil.
+    if (
+      adultos === 0 &&
+      infantiles > 0 &&
+      datos.tipoBuffet !== "infantil"
+    ) {
       return res.status(400).json({
         ok: false,
         error: "Si solo hay infantiles, solo pueden llevar algo para el buffet infantil"
-      });
-    }
-
-    // COMPROBAR NOMBRE DUPLICADO
-
-    const { data: asistenteExistente, error: errorBusqueda } =
-      await supabase
-        .from("asistentes")
-        .select("id")
-        .ilike("nombre", datos.nombre.trim()) // ignora mayúsculas/minúsculas
-        .limit(1);
-
-    if (errorBusqueda) {
-      return res.status(500).json({
-        ok: false,
-        error: errorBusqueda.message
-      });
-    }
-
-    if (asistenteExistente.length > 0) {
-      return res.status(400).json({
-        ok: false,
-        error: "Esta persona ya está registrada"
       });
     }
 
@@ -78,13 +108,9 @@ export default async function handler(req, res) {
       .insert([
         {
           nombre: datos.nombre.trim(),
-
-          adultos: datos.adultos || 0,
-
-          infantiles: datos.infantiles || 0,
-
-          invitados: datos.invitados || 0,
-
+          adultos: adultos,
+          infantiles: infantiles,
+          invitados: invitados,
           plato: datos.plato.trim(),
 
           tipo_buffet: datos.tipoBuffet || "adulto"
