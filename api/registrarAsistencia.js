@@ -26,10 +26,34 @@ export default async function handler(req, res) {
 
         // VALIDACIONES
 
-    if (!datos.nombre?.trim()) {
+    const nombreNormalizado = datos.nombre?.trim();
+
+    if (!nombreNormalizado) {
       return res.status(400).json({
         ok: false,
         error: "Nombre obligatorio"
+      });
+    }
+
+    const { data: existentes, error: errorBusqueda } =
+      await supabase
+        .from("asistentes")
+        .select("id, nombre")
+        .ilike("nombre", nombreNormalizado)
+        .limit(1);
+
+    if (errorBusqueda) {
+      console.error("Error buscando usuario duplicado:", errorBusqueda);
+      return res.status(500).json({
+        ok: false,
+        error: errorBusqueda.message
+      });
+    }
+
+    if (existentes && existentes.length > 0) {
+      return res.status(409).json({
+        ok: false,
+        error: "Esta persona ya está registrada en San Juan"
       });
     }
 
@@ -107,7 +131,7 @@ export default async function handler(req, res) {
       .from("asistentes")
       .insert([
         {
-          nombre: datos.nombre.trim(),
+          nombre: nombreNormalizado,
           adultos: adultos,
           infantiles: infantiles,
           invitados: invitados,
