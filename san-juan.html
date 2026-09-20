@@ -716,6 +716,14 @@
           return;
         }
 
+        // Si hay adultos y ningún infantil, no se permite buffet infantil
+        if (datos.adultos > 0 && datos.infantiles === 0 && datos.tipoBuffet === "infantil") {
+          mensajeError.textContent =
+            "No puedes elegir el buffet infantil si no hay ningún infantil.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
         if (datos.adultos === 0 && datos.infantiles > 0 && datos.tipoBuffet !== "infantil") {
           mensajeError.textContent = "Si solo hay infantiles, solo se puede elegir el buffet infantil.";
           mensajeError.classList.remove("hidden");
