@@ -664,10 +664,11 @@
         mensajeOk.classList.add("hidden");
         mensajeError.classList.add("hidden");
 
+        const nombre = document.getElementById("nombre").value;
+
         const datos = {
 
-          nombre:
-            document.getElementById("nombre").value,
+          nombre,
 
           // contacto:
           //   document.getElementById("contacto").value,
@@ -697,6 +698,12 @@
         //     document.getElementById("alergias").checked
 
         };
+
+        if (!nombre.trim()) {
+          mensajeError.textContent = "El nombre es obligatorio.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
 
         // No permitir cantidades negativas
         if (datos.adultos < 0 || datos.infantiles < 0 || datos.invitados < 0) {
