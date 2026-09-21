@@ -745,7 +745,7 @@
 
           console.log("ENVIANDO DATOS...");
 
-          const response = await fetch("/api/registrarAsistencia",
+          const response = await fetch("/api/registrarEvento?evento=san-juan",
             {
               method:"POST",
 
@@ -805,7 +805,7 @@
       .getElementById("btnExcel")
       .addEventListener("click", () => {
 
-      window.location.href = "/api/exportarExcel";
+      window.location.href = "/api/exportarExcelEvento?evento=san-juan";
 
     });
 
@@ -829,7 +829,7 @@
 
       try{
 
-        const response = await fetch("/api/resumen");
+        const response = await fetch("/api/resumenEvento?evento=san-juan");
 
         const datos = await response.json();
 

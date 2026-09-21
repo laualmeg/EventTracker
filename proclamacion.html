@@ -635,7 +635,6 @@
         adultos: parseInt(document.getElementById("adultos").value),
         infantiles: parseInt(document.getElementById("infantiles").value),
         invitados: 0,
-        plato: "Proclamación 2027",
         adultosCarne: comidasAdultosCarne,
         adultosPescado: comidasAdultosPescado,
         infantilesCarne: comidasInfantilesCarne,
@@ -669,7 +668,7 @@
       console.log("DATOS:", datos);
 
       try{
-        const response = await fetch("/api/registrarAsistenciaProclamacion",
+        const response = await fetch("/api/registrarEvento?evento=proclamacion",
           {
             method:"POST",
             headers:{"Content-Type":"application/json"},
@@ -700,7 +699,7 @@
       .getElementById("btnExcel")
       .addEventListener("click", () => {
 
-      window.location.href = "/api/exportarExcelProclamacion";
+      window.location.href = "/api/exportarExcelEvento?evento=proclamacion";
 
     });
 
@@ -739,7 +738,7 @@
 
       try{
 
-        const response = await fetch("/api/resumenProclamacion");
+        const response = await fetch("/api/resumenEvento?evento=proclamacion");
 
         const datos = await response.json();
 
