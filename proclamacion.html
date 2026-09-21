@@ -564,12 +564,11 @@
 
           <div class="campo-persona">
             <label>Tipo de alimentación</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="ninguna" checked> Ninguna</label>
-              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="vegano"> Vegano</label>
-              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="vegetariano"> Vegetariano</label>
-              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="ovolactovegetariano"> Ovolactovegetariano</label>
-            </div>
+            ${opcionesSelect(
+              ["Ninguna", "Vegano", "Vegetariano", "Ovolactovegetariano"],
+              "dieta",
+              personaIndex
+            )}
           </div>
 
           <div class="campo-persona">
@@ -598,7 +597,7 @@
           persona,
           alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
           necesidadesEspeciales: [ficha.querySelector(".necesidad-select")?.value || "Ninguna"],
-          tipoDieta: ficha.querySelector(`input[name="dieta-${persona}"]:checked`)?.value || "ninguna",
+          tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
           observaciones: ficha.querySelector("textarea")?.value.trim() || ""
         };
       });
