@@ -14,6 +14,7 @@ export default async function handler(req, res) {
     const adultosPescado = Number(datos.adultosPescado);
     const infantilesCarne = Number(datos.infantilesCarne);
     const infantilesPescado = Number(datos.infantilesPescado);
+    const asistentesDieteticos = datos.asistentesDieteticos;
 
     if (!nombre) {
       return res.status(400).json({ ok: false, error: "Nombre obligatorio" });
@@ -42,6 +43,16 @@ export default async function handler(req, res) {
       return res.status(400).json({
         ok: false,
         error: "Debe haber al menos un adulto o un infantil"
+      });
+    }
+
+    if (
+      !Array.isArray(asistentesDieteticos) ||
+      asistentesDieteticos.length !== adultos + infantiles
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "La información dietética no coincide con el número de asistentes"
       });
     }
 

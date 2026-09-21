@@ -23,7 +23,10 @@ export default async function handler(req, res) {
       { header: "Adultos pescado", key: "adultos_pescado", width: 17 },
       { header: "Infantiles carne", key: "infantiles_carne", width: 17 },
       { header: "Infantiles pescado", key: "infantiles_pescado", width: 19 },
-      { header: "Plato", key: "plato", width: 15 }
+      { header: "Plato", key: "plato", width: 20 },
+      { header: "Alergias", key: "alergias", width: 35 },
+      { header: "Necesidades especiales", key: "necesidades_especiales", width: 40 },
+      { header: "Tipo de dieta", key: "tipo_dieta", width: 35 }
     ];
 
     data.forEach(item => worksheet.addRow({
@@ -34,14 +37,17 @@ export default async function handler(req, res) {
       adultos_pescado: item.adultos_pescado,
       infantiles_carne: item.infantiles_carne,
       infantiles_pescado: item.infantiles_pescado,
-      plato: item.plato
+      plato: item.plato,
+      alergias: item.alergias,
+      necesidades_especiales: item.necesidades_especiales,
+      tipo_dieta: item.tipo_dieta
     }));
 
     const buffer = await workbook.xlsx.writeBuffer();
 
     res.setHeader(
       "Content-Disposition",
-      'attachment; filename="proclamacion-2026.xlsx"'
+      'attachment; filename="proclamacion-2027.xlsx"'
     );
     res.setHeader(
       "Content-Type",
