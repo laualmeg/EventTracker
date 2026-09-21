@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Proclamación Falleras Mayores 2026 Belén y Julia</title>
+  <title>Proclamación Falleras Mayores 2027: Belén y Julia</title>
 
   <style>
 
@@ -202,6 +202,26 @@
       font-size:14px;
     }
 
+
+    .persona-dietetica{background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:14px}
+    .persona-dietetica h3{margin-bottom:14px;font-size:17px;color:#374151}
+    .checks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
+    .check-option{display:flex;align-items:center;gap:8px;background:white;border:1px solid #d1d5db;border-radius:10px;padding:9px 11px;font-weight:500;cursor:pointer}
+    .check-option input{width:auto;margin:0}
+    .campo-persona{margin-top:14px}
+    .campo-persona textarea{width:100%;min-height:70px;padding:11px;border-radius:10px;border:1px solid #d1d5db;font-size:14px;resize:vertical;font-family:inherit}
+    .ayuda-persona{color:#6b7280;font-size:13px;margin-top:6px}
+
+
+    .persona-dietetica select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+      background:white;
+    }
+
     .hidden{
       display:none;
     }
@@ -267,7 +287,7 @@
 
       <div class="card">
 
-        <h1> Proclamación Falleras Mayores 2026 Belén y Julia</h1>
+        <h1> Proclamación Falleras Mayores 2027 Belén y Julia</h1>
         <p class="event-info">31 Octubre 2026</p>
         <p class="event-info">
           Racó de L'Arnau. Av. de les Corts Valencianes, 39, Campanar, 46015 València, Valencia
@@ -361,49 +381,14 @@
           </div>
 
         </div>
-
-        <!-- INFORMACIÓN DIETÉTICA -->
+        <!-- INFORMACIÓN DIETÉTICA POR PERSONA -->
 
         <div class="section">
-
-          <h2>Información dietética y alergias</h2>
-
-          <div class="grid">
-
-            <div>
-              <label for="alergias">Alergias o intolerancias</label>
-              <input type="text" id="alergias" placeholder="Ej. Gluten, frutos secos, lactosa, ninguna" />
-            </div>
-
-            <div>
-              <label for="necesidadesEspeciales">Necesidades especiales</label>
-              <input type="text" id="necesidadesEspeciales" placeholder="Ej. Sin sal, dieta blanda, ninguna" />
-            </div>
-
-            <div>
-              <label>Tipo de dieta</label>
-              <div class="radio-group">
-
-                <label class="radio-option">
-                  <input type="radio" name="tipoDieta" value="ninguna" checked />
-                  Ninguna
-                </label>
-
-                <label class="radio-option">
-                  <input type="radio" name="tipoDieta" value="vegano" />
-                  Vegano
-                </label>
-
-                <label class="radio-option">
-                  <input type="radio" name="tipoDieta" value="vegetariano" />
-                  Vegetariano
-                </label>
-
-              </div>
-            </div>
-
-          </div>
-
+          <h2>Información dietética y alergias por persona</h2>
+          <p class="ayuda-persona">
+            Indica para cada adulto e infantil sus alergias o intolerancias, necesidades especiales y tipo de alimentación.
+          </p>
+          <div id="datosDieteticosPersonas" style="margin-top:18px;"></div>
         </div>
 
         <!-- BOTONES -->
@@ -539,143 +524,176 @@
         </div>
       `).join("");
     }
+    const contenedorDietetico = document.getElementById("datosDieteticosPersonas");
+
+    const alergiasOpciones = [
+      "Ninguna","Gluten / trigo","Leche / lactosa","Huevo","Frutos secos",
+      "Cacahuete","Pescado","Marisco","Soja","Sésamo","Mostaza","Apio","Sulfitos","Otra"
+    ];
+
+    const necesidadesOpciones = [
+      "Ninguna","Celíaco/a","Intolerancia a la lactosa","Dieta sin gluten",
+      "Dieta sin lactosa","Dieta baja en sal","Dieta blanda","Otra"
+    ];
+
+    function opcionesSelect(lista, prefijo, personaIndex) {
+      return `
+        <select name="${prefijo}-${personaIndex}"
+                class="${prefijo}-select"
+                data-persona="${personaIndex}">
+          ${lista.map(opcion => `<option value="${opcion}">${opcion}</option>`).join("")}
+        </select>
+      `;
+    }
+
+    function crearFichaDietetica(tipo, indice) {
+      const personaIndex = `${tipo}-${indice}`;
+      return `
+        <div class="persona-dietetica" data-persona="${personaIndex}">
+          <h3>${tipo} ${indice}</h3>
+
+          <div>
+            <label>Alergias o intolerancias</label>
+            ${opcionesSelect(alergiasOpciones, "alergia", personaIndex)}
+          </div>
+
+          <div class="campo-persona">
+            <label>Necesidades especiales</label>
+            ${opcionesSelect(necesidadesOpciones, "necesidad", personaIndex)}
+          </div>
+
+          <div class="campo-persona">
+            <label>Tipo de alimentación</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="ninguna" checked> Ninguna</label>
+              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="vegano"> Vegano</label>
+              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="vegetariano"> Vegetariano</label>
+              <label class="radio-option"><input type="radio" name="dieta-${personaIndex}" value="ovolactovegetariano"> Ovolactovegetariano</label>
+            </div>
+          </div>
+
+          <div class="campo-persona">
+            <label>Observaciones</label>
+            <textarea placeholder="Indica cualquier detalle importante o una indicación para el catering."></textarea>
+          </div>
+        </div>`;
+    }
+
+    function actualizarDatosDieteticos() {
+      const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
+      const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
+      let contenido = "";
+
+      for (let i = 1; i <= adultos; i++) contenido += crearFichaDietetica("Adulto", i);
+      for (let i = 1; i <= infantiles; i++) contenido += crearFichaDietetica("Infantil", i);
+
+      contenedorDietetico.innerHTML = contenido || '<p style="color:#6b7280;">Indica primero el número de adultos e infantiles.</p>';
+
+    }
+
+    function obtenerDatosDieteticos() {
+      return [...contenedorDietetico.querySelectorAll(".persona-dietetica")].map(ficha => {
+        const persona = ficha.dataset.persona;
+        return {
+          persona,
+          alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
+          necesidadesEspeciales: [ficha.querySelector(".necesidad-select")?.value || "Ninguna"],
+          tipoDieta: ficha.querySelector(`input[name="dieta-${persona}"]:checked`)?.value || "ninguna",
+          observaciones: ficha.querySelector("textarea")?.value.trim() || ""
+        };
+      });
+    }
 
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
+    adultosInput.addEventListener("input", actualizarDatosDieteticos);
+    infantilesInput.addEventListener("input", actualizarDatosDieteticos);
 
     actualizarComidas();
+    actualizarDatosDieteticos();
 
     // GUARDAR REGISTRO REAL
+    document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
+      event.preventDefault();
 
-    document
-      .getElementById("btnConfirmar")
-      .addEventListener("click", async (event) => {
+      mensajeOk.classList.add("hidden");
+      mensajeError.classList.add("hidden");
 
-        event.preventDefault();
+      const comidasSeleccionadas = [
+        ...comidasAdultos.querySelectorAll("select"),
+        ...comidasInfantiles.querySelectorAll("select")
+      ].map(select => select.value);
 
-        console.log("CLICK BOTON");
+      const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "carne").length;
+      const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "pescado").length;
+      const comidasInfantilesCarne = [...comidasInfantiles.querySelectorAll("select")].filter(s => s.value === "carne").length;
+      const comidasInfantilesPescado = [...comidasInfantiles.querySelectorAll("select")].filter(s => s.value === "pescado").length;
 
-        mensajeOk.classList.add("hidden");
-        mensajeError.classList.add("hidden");
+      const datosDieteticos = obtenerDatosDieteticos();
 
-        const tipoDieta = document.querySelector('input[name="tipoDieta"]:checked')?.value || "ninguna";
+      const datos = {
+        nombre: document.getElementById("nombre").value,
+        adultos: parseInt(document.getElementById("adultos").value),
+        infantiles: parseInt(document.getElementById("infantiles").value),
+        invitados: 0,
+        plato: "Proclamación 2027",
+        adultosCarne: comidasAdultosCarne,
+        adultosPescado: comidasAdultosPescado,
+        infantilesCarne: comidasInfantilesCarne,
+        infantilesPescado: comidasInfantilesPescado,
 
-        const comidasSeleccionadas = [
-          ...comidasAdultos.querySelectorAll("select"),
-          ...comidasInfantiles.querySelectorAll("select")
-        ].map(select => select.value);
+        // Compatibilidad con el backend actual + detalle individual.
+        alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
+        necesidadesEspeciales: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, necesidadesEspeciales:p.necesidadesEspeciales, observaciones:p.observaciones}))),
+        tipoDieta: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, tipoDieta:p.tipoDieta}))),
+        asistentesDieteticos: datosDieteticos
+      };
 
-        const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")]
-          .filter(select => select.value === "carne").length;
-        const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")]
-          .filter(select => select.value === "pescado").length;
-        const comidasInfantilesCarne = [...comidasInfantiles.querySelectorAll("select")]
-          .filter(select => select.value === "carne").length;
-        const comidasInfantilesPescado = [...comidasInfantiles.querySelectorAll("select")]
-          .filter(select => select.value === "pescado").length;
+      if (datos.adultos < 0 || datos.infantiles < 0) {
+        mensajeError.textContent = "Adultos e infantiles no pueden ser negativos.";
+        mensajeError.classList.remove("hidden");
+        return;
+      }
 
-        const datos = {
+      if (comidasSeleccionadas.length !== datos.adultos + datos.infantiles) {
+        mensajeError.textContent = "Indica si cada adulto e infantil comerá carne o pescado.";
+        mensajeError.classList.remove("hidden");
+        return;
+      }
 
-          nombre:
-            document.getElementById("nombre").value,
+      if (datosDieteticos.length !== datos.adultos + datos.infantiles) {
+        mensajeError.textContent = "Indica la información dietética de cada adulto e infantil.";
+        mensajeError.classList.remove("hidden");
+        return;
+      }
 
-          adultos:
-            parseInt(document.getElementById("adultos").value),
+      console.log("DATOS:", datos);
 
-          // juveniles:
-          //   parseInt(document.getElementById("juveniles").value   ),
-
-          infantiles:
-            parseInt(document.getElementById("infantiles").value),
-
-          invitados: 0,
-
-          plato: "Proclamación 2026",
-
-          adultosCarne: comidasAdultosCarne,
-
-          adultosPescado: comidasAdultosPescado,
-
-          infantilesCarne: comidasInfantilesCarne,
-
-          infantilesPescado: comidasInfantilesPescado,
-
-          alergias:
-            document.getElementById("alergias").value.trim(),
-
-          necesidadesEspeciales:
-            document.getElementById("necesidadesEspeciales").value.trim(),
-
-          tipoDieta
-
-        };
-
-        // No permitir cantidades negativas
-        if (datos.adultos < 0 || datos.infantiles < 0) {
-          mensajeError.textContent =
-            "Adultos e infantiles no pueden ser negativos.";
-          mensajeError.classList.remove("hidden");
-          return;
-        }
-
-        if (comidasSeleccionadas.length !== datos.adultos + datos.infantiles) {
-          mensajeError.textContent =
-            "Indica si cada adulto e infantil comerá carne o pescado.";
-          mensajeError.classList.remove("hidden");
-          return;
-        }
-
-        if (!datos.alergias || !datos.necesidadesEspeciales) {
-          mensajeError.textContent =
-            "Indica si tienes alergias o intolerancias y si necesitas algo especial.";
-          mensajeError.classList.remove("hidden");
-          return;
-        }
-
-        console.log("DATOS:", datos);
-        
-        try{
-
-          console.log("ENVIANDO DATOS...");
-
-          const response = await fetch("/api/registrarAsistenciaProclamacion",
-            {
-              method:"POST",
-
-              headers:{"Content-Type":"application/json"},
-
-              body:JSON.stringify(datos)
-            }
-          );
-
-          console.log("STATUS:", response.status);
-
-          const resultado = await response.json();
-          console.log("RESULTADO:", resultado);
-
-          if(resultado.ok){
-
-            mensajeOk.classList.remove("hidden");
-            mensajeError.classList.add("hidden");
-            
-            await cargarResumen();
-
-          } else {
-
-            mensajeError.textContent = resultado.error || "Error guardando el registro";
-            mensajeError.classList.remove("hidden");
-
+      try{
+        const response = await fetch("/api/registrarAsistenciaProclamacion",
+          {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(datos)
           }
+        );
 
-        } catch(error){
+        const resultado = await response.json();
 
-          console.error( "ERROR FETCH:", error);
-          mensajeError.textContent = error?.message || "Error guardando el registro";
+        if(resultado.ok){
+          mensajeOk.classList.remove("hidden");
+          mensajeError.classList.add("hidden");
+          await cargarResumen();
+        } else {
+          mensajeError.textContent = resultado.error || "Error guardando el registro";
           mensajeError.classList.remove("hidden");
-
         }
-
-      });
+      } catch(error){
+        console.error("ERROR FETCH:", error);
+        mensajeError.textContent = error?.message || "Error guardando el registro";
+        mensajeError.classList.remove("hidden");
+      }
+    });
 
     // EXPORTAR EXCEL
 
