@@ -105,6 +105,30 @@
       margin:0;
     }
 
+    .comidas-lista{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .comida-persona{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:10px 12px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+    }
+
+    .comida-persona select{
+      width:auto;
+      min-width:130px;
+      padding:8px 10px;
+    }
+
     .counter-card{
       background:#f9fafb;
       border-radius:16px;
@@ -302,32 +326,18 @@
 
         </div>
 
-        <!-- MENÚ -->
+        <!-- DATOS ASISTENTES -->
 
         <div class="section">
 
-          <h2>Menú</h2>
+          <h2>Datos de los asistentes</h2>
 
           <div class="grid">
 
             <div>
-
-              <label>¿Qué va a comer?</label>
-
-              <div class="radio-group">
-
-                <label class="radio-option">
-                  <input type="radio" name="tipoComida" value="carne" checked />
-                  Carne
-                </label>
-
-                <label class="radio-option">
-                  <input type="radio" name="tipoComida" value="pescado" />
-                  Pescado
-                </label>
-
-              </div>
-
+              <label>¿Qué va a comer cada persona?</label>
+              <div id="comidasAdultos" class="comidas-lista"></div>
+              <div id="comidasInfantiles" class="comidas-lista"></div>
             </div>
 
           </div>
@@ -502,6 +512,30 @@
 
     const mensajeError = document.getElementById("mensajeError");
 
+    const comidasAdultos = document.getElementById("comidasAdultos");
+
+    const comidasInfantiles = document.getElementById("comidasInfantiles");
+
+    function actualizarComidas(){
+      const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
+      const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
+
+      comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
+      comidasInfantiles.innerHTML = crearOpcionesComida("Infantil", infantiles);
+    }
+
+    function crearOpcionesComida(tipo, cantidad){
+      return Array.from({ length: cantidad }, (_, indice) => `
+        <div class="comida-persona">
+          <span>${tipo} ${indice + 1}</span>
+          <select name="${tipo.toLowerCase()}-${indice}" aria-label="Comida ${tipo.toLowerCase()} ${indice + 1}">
+            <option value="carne">Carne</option>
+            <option value="pescado">Pescado</option>
+          </select>
+        </div>
+      `).join("");
+    }
+
     function actualizarEleccionBuffet(){
       const adultos = parseInt(adultosInput.value) || 0;
       const infantiles = parseInt(infantilesInput.value) || 0;
@@ -527,8 +561,11 @@
 
     adultosInput.addEventListener("input", actualizarEleccionBuffet);
     infantilesInput.addEventListener("input", actualizarEleccionBuffet);
+    adultosInput.addEventListener("input", actualizarComidas);
+    infantilesInput.addEventListener("input", actualizarComidas);
 
     actualizarEleccionBuffet();
+    actualizarComidas();
 
     // GUARDAR REGISTRO REAL
 
@@ -543,8 +580,21 @@
         mensajeOk.classList.add("hidden");
         mensajeError.classList.add("hidden");
 
-        const tipoComida = document.querySelector('input[name="tipoComida"]:checked')?.value || "";
         const tipoDieta = document.querySelector('input[name="tipoDieta"]:checked')?.value || "ninguna";
+
+        const comidasSeleccionadas = [
+          ...comidasAdultos.querySelectorAll("select"),
+          ...comidasInfantiles.querySelectorAll("select")
+        ].map(select => select.value);
+
+        const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")]
+          .filter(select => select.value === "carne").length;
+        const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")]
+          .filter(select => select.value === "pescado").length;
+        const comidasInfantilesCarne = [...comidasInfantiles.querySelectorAll("select")]
+          .filter(select => select.value === "carne").length;
+        const comidasInfantilesPescado = [...comidasInfantiles.querySelectorAll("select")]
+          .filter(select => select.value === "pescado").length;
 
         const datos = {
 
@@ -566,7 +616,13 @@
           plato:
             document.getElementById("plato").value,
 
-          tipoComida,
+          adultosCarne: comidasAdultosCarne,
+
+          adultosPescado: comidasAdultosPescado,
+
+          infantilesCarne: comidasInfantilesCarne,
+
+          infantilesPescado: comidasInfantilesPescado,
 
           tipoBuffet:
             document.getElementById("tipoBuffet").value,
@@ -589,9 +645,9 @@
           return;
         }
 
-        if (!datos.tipoComida || !["carne", "pescado"].includes(datos.tipoComida)) {
+        if (comidasSeleccionadas.length !== datos.adultos + datos.infantiles) {
           mensajeError.textContent =
-            "Debes elegir si comes carne o pescado.";
+            "Indica si cada adulto e infantil comerá carne o pescado.";
           mensajeError.classList.remove("hidden");
           return;
         }
@@ -609,7 +665,7 @@
 
           console.log("ENVIANDO DATOS...");
 
-          const response = await fetch("/api/registrarAsistencia",
+          const response = await fetch("/api/registrarAsistenciaProclamacion",
             {
               method:"POST",
 
@@ -654,7 +710,7 @@
       .getElementById("btnExcel")
       .addEventListener("click", () => {
 
-      window.location.href = "/api/exportarExcel";
+      window.location.href = "/api/exportarExcelProclamacion";
 
     });
 
@@ -682,7 +738,7 @@
 
       try{
 
-        const response = await fetch("/api/resumen");
+        const response = await fetch("/api/resumenProclamacion");
 
         const datos = await response.json();
 
