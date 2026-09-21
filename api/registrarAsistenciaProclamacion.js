@@ -72,7 +72,9 @@ export default async function handler(req, res) {
         adultos_pescado: adultosPescado,
         infantiles_carne: infantilesCarne,
         infantiles_pescado: infantilesPescado,
-        tipo_buffet: datos.tipoBuffet || "adulto"
+        tipo_dieta: datos.tipoDieta || "ninguna",
+        alergias: datos.alergias?.trim() || "ninguna",
+        necesidades_especiales: datos.necesidadesEspeciales?.trim() || "ninguna"
       }])
       .select();
 

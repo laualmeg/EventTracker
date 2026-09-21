@@ -444,6 +444,9 @@
           Resumen
         </h2>
 
+        <!-- ASISTENTES -->
+        <h3>Asistentes</h3>
+
         <div class="summary-item">
           <span>Adultos</span>
           <strong id="totalAdultos">0</strong>
@@ -459,6 +462,11 @@
           <strong id="totalInfantiles">0</strong>
         </div>
 
+      </div>
+
+      <!-- TIPO DE PLATO -->
+        <h3 style="margin-top:25px;">Tipo de plato</h3>
+
         <div class="summary-item">
           <span>Carne</span>
           <strong id="totalCarne">0</strong>
@@ -469,48 +477,14 @@
           <strong id="totalPescado">0</strong>
         </div>
 
-      </div>
+        <!-- INFORMACIÓN DIETÉTICA -->
+        <h3 style="margin-top:25px;">Información dietética y alergias</h3>
 
-      <!-- BUFFET ADULTO -->
-
-      <div class="card" style="margin-bottom:25px;">
-
-        <div style=" display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
-
-          <h2 class="sidebar-title"> 
-            Buffet Adulto
-          </h2>
-
-          <span class="badge" id="totalPlatosAdulto">
-            0 platos
-          </span>
-
+        <div id="resumenDietetico">
+          <p style="color:#6b7280;">
+            No hay información dietética registrada.
+          </p>
         </div>
-
-        <div id="listadoBuffetAdulto">
-
-        </div>
-
-      </div>
-
-      <!-- BUFFET INFANTIL -->
-
-      <div class="card" id="buffetInfantilPanel" >
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
-
-          <h2 class="sidebar-title">
-            Buffet Infantil
-          </h2>
-
-          <span class="badge" id="totalPlatosInfantil">
-            0 platos
-          </span>
-
-        </div>
-
-        <div id="listaBuffetInfantil"></div>
-
-      </div>
 
     </div>
 
@@ -521,10 +495,6 @@
     const adultosInput = document.getElementById("adultos");
 
     const infantilesInput = document.getElementById("infantiles");
-
-    const tipoBuffetSelect = document.getElementById("tipoBuffet");
-
-    const buffetPanel = document.getElementById("buffetInfantilPanel");
 
     const mensajeOk = document.getElementById("mensajeOk");
 
@@ -560,35 +530,9 @@
       `).join("");
     }
 
-    function actualizarEleccionBuffet(){
-      const adultos = parseInt(adultosInput.value) || 0;
-      const infantiles = parseInt(infantilesInput.value) || 0;
-      const opcionAdulto = tipoBuffetSelect.querySelector('option[value="adulto"]');
-
-      if (infantiles > 0 && adultos === 0) {
-        tipoBuffetSelect.value = "infantil";
-        if (opcionAdulto) {
-          opcionAdulto.disabled = true;
-        }
-      } else {
-        if (opcionAdulto) {
-          opcionAdulto.disabled = false;
-        }
-      }
-
-      if (infantiles <= 0) {
-        buffetPanel.classList.add("hidden");
-      } else {
-        buffetPanel.classList.remove("hidden");
-      }
-    }
-
-    adultosInput.addEventListener("input", actualizarEleccionBuffet);
-    infantilesInput.addEventListener("input", actualizarEleccionBuffet);
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
 
-    actualizarEleccionBuffet();
     actualizarComidas();
 
     // GUARDAR REGISTRO REAL
@@ -634,11 +578,9 @@
           infantiles:
             parseInt(document.getElementById("infantiles").value),
 
-          invitados:
-            parseInt(document.getElementById("invitados").value),
+          invitados: 0,
 
-          plato:
-            document.getElementById("plato").value,
+          plato: "Proclamación 2026",
 
           adultosCarne: comidasAdultosCarne,
 
@@ -647,9 +589,6 @@
           infantilesCarne: comidasInfantilesCarne,
 
           infantilesPescado: comidasInfantilesPescado,
-
-          tipoBuffet:
-            document.getElementById("tipoBuffet").value,
 
           alergias:
             document.getElementById("alergias").value.trim(),
@@ -748,16 +687,27 @@
 
     const totalPescado = document.getElementById("totalPescado");
 
-    const totalInvitados = document.getElementById("totalInvitados");
+    function mostrarResumenDietetico(datos) {
+      const contenedor = document.getElementById("resumenDietetico");
+      if (!contenedor) return;
 
-    const listadoBuffetAdulto = document.getElementById("listadoBuffetAdulto");
+      const secciones = [
+        ["Dietas", datos.dieta],
+        ["Alergias o intolerancias", datos.alergias],
+        ["Necesidades especiales", datos.necesidadesEspeciales]
+      ];
 
-    const listaBuffetInfantil = document.getElementById("listaBuffetInfantil");
-
-    const totalPlatosAdulto = document.getElementById("totalPlatosAdulto");
-
-    const totalPlatosInfantil = document.getElementById("totalPlatosInfantil");
-
+      contenedor.innerHTML = secciones.map(([titulo, opciones]) => `
+        <strong>${titulo}</strong>
+        ${Object.entries(opciones || { Ninguna: 0 }).map(([opcion, total]) => `
+          <div class="summary-item">
+            <span>${opcion}</span>
+            <strong>${total}</strong>
+          </div>
+        `).join("")}
+      `).join("");
+    }
+    
     async function cargarResumen(){
 
       try{
@@ -774,29 +724,7 @@
 
         totalPescado.textContent = datos.totalPescado || 0;
 
-        // Renderizar buffet adulto
-        if (listadoBuffetAdulto && datos.buffetAdulto) {
-          listadoBuffetAdulto.innerHTML = "";
-          datos.buffetAdulto.forEach(item => {
-            const platoDiv = document.createElement("div");
-            platoDiv.className = "plato";
-            platoDiv.textContent = item.plato || "Sin especificar";
-            listadoBuffetAdulto.appendChild(platoDiv);
-          });
-          totalPlatosAdulto.textContent = datos.buffetAdulto.length + " platos";
-        }
-
-        // Renderizar buffet infantil
-        if (listaBuffetInfantil && datos.buffetInfantil) {
-          listaBuffetInfantil.innerHTML = "";
-          datos.buffetInfantil.forEach(item => {
-            const platoDiv = document.createElement("div");
-            platoDiv.className = "plato plato-kids";
-            platoDiv.textContent = item.plato || "Sin especificar";
-            listaBuffetInfantil.appendChild(platoDiv);
-          });
-          totalPlatosInfantil.textContent = datos.buffetInfantil.length + " platos";
-        }
+        mostrarResumenDietetico(datos);
 
       } catch(error){
 
