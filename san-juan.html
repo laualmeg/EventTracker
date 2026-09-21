@@ -757,7 +757,14 @@
 
           console.log("STATUS:", response.status);
 
-          const resultado = await response.json();
+          const respuestaTexto = await response.text();
+          let resultado;
+
+          try {
+            resultado = JSON.parse(respuestaTexto);
+          } catch {
+            throw new Error(`Respuesta no válida del servidor (${response.status}): ${respuestaTexto.slice(0, 200)}`);
+          }
           console.log("RESULTADO:", resultado);
 
           if(resultado.ok){
