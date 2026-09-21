@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Proclamación Falleras Mayores 2026 Belén y Julia</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI, sans-serif;
+    }
+
+    body{
+      background:#f3f4f6;
+      padding:30px;
+      color:#1f2937;
+    }
+
+    .container{
+      max-width:1400px;
+      margin:auto;
+
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:25px;
+    }
+
+    .card{
+      background:white;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    h1{
+      font-size:38px;
+      margin-bottom:10px;
+    }
+
+    h2{
+      margin-bottom:20px;
+      font-size:24px;
+    }
+
+    p.subtitle{
+      color:#6b7280;
+      margin-bottom:35px;
+    }
+
+    .section{
+      margin-bottom:40px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
+
+    .radio-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-top:8px;
+    }
+
+    .radio-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:auto;
+      min-width:170px;
+      background:#f9fafb;
+      border:1px solid #d1d5db;
+      border-radius:12px;
+      padding:12px 16px;
+      font-weight:600;
+    }
+
+    .radio-option input{
+      width:auto;
+      margin:0;
+    }
+
+    .counter-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:20px;
+      border:1px solid #e5e7eb;
+    }
+
+    .buttons{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:15px 25px;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:#2563eb;
+      color:white;
+    }
+
+    .btn-green{
+      background:#16a34a;
+      color:white;
+    }
+
+    .sidebar-title{
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    .plato{
+      background:#eff6ff;
+      padding:12px 15px;
+      border-radius:12px;
+      margin-bottom:10px;
+    }
+
+    .plato-kids{
+      background:#fdf2f8;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:16px;
+    }
+
+    .badge{
+      background:#dbeafe;
+      color:#1d4ed8;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:14px;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .success{
+      margin-top:20px;
+      padding:15px;
+      background:#dcfce7;
+      color:#166534;
+      border-radius:12px;
+    }
+
+    .error{
+      margin-top:20px;
+      padding:15px;
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:12px;
+    }
+
+    @media(max-width:900px){
+
+      .container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    /* Botón volver al menú principal */
+    .volver-menu {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .volver-menu:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div style="max-width:1400px; margin:auto;">
+
+    <!-- <a href="/index.html" class="volver-menu">
+      ← Volver al menú principal
+    </a> -->
+  <a href="/" class="volver-menu">
+  ← Volver al menú principal
+  </a>
+
+  </div>
+
+  <div class="container">
+
+    <!-- IZQUIERDA -->
+
+    <div>
+
+      <div class="card">
+
+        <h1> Proclamación Falleras Mayores 2026 Belén y Julia</h1>
+        <h2> 31 Octubre 2026</h2>
+        <h2> Racó de L'Arnau. Av. de les Corts Valencianes, 39, Campanar, 46015 València, Valencia</h2>
+
+        <p class="subtitle">
+          Gestión de asistentes
+        </p>
+
+        <!-- DATOS FAMILIA -->
+
+        <div class="section">
+
+          <h2>Datos inscripción</h2>
+
+          <div class="grid">
+
+            <div>
+              <label>Nombre y apellidos *</label>
+              <input type="text" id="nombre" placeholder="Ej. Rubén García" required />
+            </div>
+
+            <!-- <div>
+              <label>Persona contacto</label>
+
+              <input type="text" id="contacto" placeholder="Ej. María García" />
+            </div> -->
+
+          </div>
+
+        </div>
+
+        <!-- ASISTENTES -->
+
+        <div class="section">
+
+          <h2>Asistentes</h2>
+
+          <div class="grid">
+
+            <div class="counter-card">
+
+              <label>Adultos</label>
+
+              <input type="number" id="adultos" min="0" step="1" value="2" />
+
+            </div>
+
+            <!-- <div class="counter-card">
+
+              <label>Juveniles (12-18)</label>
+
+              <input type="number" id="juveniles" min="0" step="1" value="0" />
+
+            </div> -->
+
+            <div class="counter-card">
+
+              <label>Infantiles (&lt;14)</label>
+
+              <input type="number" id="infantiles" min="0" step="1" value="0" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- MENÚ -->
+
+        <div class="section">
+
+          <h2>Menú</h2>
+
+          <div class="grid">
+
+            <div>
+
+              <label>¿Qué va a comer?</label>
+
+              <div class="radio-group">
+
+                <label class="radio-option">
+                  <input type="radio" name="tipoComida" value="carne" checked />
+                  Carne
+                </label>
+
+                <label class="radio-option">
+                  <input type="radio" name="tipoComida" value="pescado" />
+                  Pescado
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- INFORMACIÓN DIETÉTICA -->
+
+        <div class="section">
+
+          <h2>Información dietética y alergias</h2>
+
+          <div class="grid">
+
+            <div>
+              <label for="alergias">Alergias o intolerancias</label>
+              <input type="text" id="alergias" placeholder="Ej. Gluten, frutos secos, lactosa, ninguna" />
+            </div>
+
+            <div>
+              <label for="necesidadesEspeciales">Necesidades especiales</label>
+              <input type="text" id="necesidadesEspeciales" placeholder="Ej. Sin sal, dieta blanda, ninguna" />
+            </div>
+
+            <div>
+              <label>Tipo de dieta</label>
+              <div class="radio-group">
+
+                <label class="radio-option">
+                  <input type="radio" name="tipoDieta" value="ninguna" checked />
+                  Ninguna
+                </label>
+
+                <label class="radio-option">
+                  <input type="radio" name="tipoDieta" value="vegano" />
+                  Vegano
+                </label>
+
+                <label class="radio-option">
+                  <input type="radio" name="tipoDieta" value="vegetariano" />
+                  Vegetariano
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- BOTONES -->
+
+        <div class="buttons">
+
+          <button class="btn-primary" id="btnConfirmar" >
+            Confirmar asistencia
+          </button>
+
+          <button class="btn-green" id="btnExcel" >
+            Exportar Excel
+          </button>
+
+        </div>
+
+        <div id="mensajeOk" class="success hidden">
+          Registro guardado correctamente
+        </div>
+
+        <div id="mensajeError" class="error hidden">
+          Error guardando el registro
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DERECHA -->
+
+    <div>
+
+      <!-- RESUMEN -->
+
+      <div class="card" style="margin-bottom:25px;">
+
+        <h2 class="sidebar-title">
+          Resumen
+        </h2>
+
+        <div class="summary-item">
+          <span>Adultos</span>
+          <strong id="totalAdultos">0</strong>
+        </div>
+
+        <!-- <div class="summary-item">
+          <span>Juveniles</span>
+          <strong id="totalJuveniles">0</strong>
+        </div> -->
+
+        <div class="summary-item">
+          <span>Infantiles</span>
+          <strong id="totalInfantiles">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Carne</span>
+          <strong id="totalCarne">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Pescado</span>
+          <strong id="totalPescado">0</strong>
+        </div>
+
+      </div>
+
+      <!-- BUFFET ADULTO -->
+
+      <div class="card" style="margin-bottom:25px;">
+
+        <div style=" display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
+
+          <h2 class="sidebar-title"> 
+            Buffet Adulto
+          </h2>
+
+          <span class="badge" id="totalPlatosAdulto">
+            0 platos
+          </span>
+
+        </div>
+
+        <div id="listadoBuffetAdulto">
+
+        </div>
+
+      </div>
+
+      <!-- BUFFET INFANTIL -->
+
+      <div class="card" id="buffetInfantilPanel" >
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; ">
+
+          <h2 class="sidebar-title">
+            Buffet Infantil
+          </h2>
+
+          <span class="badge" id="totalPlatosInfantil">
+            0 platos
+          </span>
+
+        </div>
+
+        <div id="listaBuffetInfantil"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script> // Frontend JavaScript
+
+    const adultosInput = document.getElementById("adultos");
+
+    const infantilesInput = document.getElementById("infantiles");
+
+    const tipoBuffetSelect = document.getElementById("tipoBuffet");
+
+    const buffetPanel = document.getElementById("buffetInfantilPanel");
+
+    const mensajeOk = document.getElementById("mensajeOk");
+
+    const mensajeError = document.getElementById("mensajeError");
+
+    function actualizarEleccionBuffet(){
+      const adultos = parseInt(adultosInput.value) || 0;
+      const infantiles = parseInt(infantilesInput.value) || 0;
+      const opcionAdulto = tipoBuffetSelect.querySelector('option[value="adulto"]');
+
+      if (infantiles > 0 && adultos === 0) {
+        tipoBuffetSelect.value = "infantil";
+        if (opcionAdulto) {
+          opcionAdulto.disabled = true;
+        }
+      } else {
+        if (opcionAdulto) {
+          opcionAdulto.disabled = false;
+        }
+      }
+
+      if (infantiles <= 0) {
+        buffetPanel.classList.add("hidden");
+      } else {
+        buffetPanel.classList.remove("hidden");
+      }
+    }
+
+    adultosInput.addEventListener("input", actualizarEleccionBuffet);
+    infantilesInput.addEventListener("input", actualizarEleccionBuffet);
+
+    actualizarEleccionBuffet();
+
+    // GUARDAR REGISTRO REAL
+
+    document
+      .getElementById("btnConfirmar")
+      .addEventListener("click", async (event) => {
+
+        event.preventDefault();
+
+        console.log("CLICK BOTON");
+
+        mensajeOk.classList.add("hidden");
+        mensajeError.classList.add("hidden");
+
+        const tipoComida = document.querySelector('input[name="tipoComida"]:checked')?.value || "";
+        const tipoDieta = document.querySelector('input[name="tipoDieta"]:checked')?.value || "ninguna";
+
+        const datos = {
+
+          nombre:
+            document.getElementById("nombre").value,
+
+          adultos:
+            parseInt(document.getElementById("adultos").value),
+
+          // juveniles:
+          //   parseInt(document.getElementById("juveniles").value   ),
+
+          infantiles:
+            parseInt(document.getElementById("infantiles").value),
+
+          invitados:
+            parseInt(document.getElementById("invitados").value),
+
+          plato:
+            document.getElementById("plato").value,
+
+          tipoComida,
+
+          tipoBuffet:
+            document.getElementById("tipoBuffet").value,
+
+          alergias:
+            document.getElementById("alergias").value.trim(),
+
+          necesidadesEspeciales:
+            document.getElementById("necesidadesEspeciales").value.trim(),
+
+          tipoDieta
+
+        };
+
+        // No permitir cantidades negativas
+        if (datos.adultos < 0 || datos.infantiles < 0) {
+          mensajeError.textContent =
+            "Adultos e infantiles no pueden ser negativos.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
+        if (!datos.tipoComida || !["carne", "pescado"].includes(datos.tipoComida)) {
+          mensajeError.textContent =
+            "Debes elegir si comes carne o pescado.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
+        if (!datos.alergias || !datos.necesidadesEspeciales) {
+          mensajeError.textContent =
+            "Indica si tienes alergias o intolerancias y si necesitas algo especial.";
+          mensajeError.classList.remove("hidden");
+          return;
+        }
+
+        console.log("DATOS:", datos);
+        
+        try{
+
+          console.log("ENVIANDO DATOS...");
+
+          const response = await fetch("/api/registrarAsistencia",
+            {
+              method:"POST",
+
+              headers:{"Content-Type":"application/json"},
+
+              body:JSON.stringify(datos)
+            }
+          );
+
+          console.log("STATUS:", response.status);
+
+          const resultado = await response.json();
+          console.log("RESULTADO:", resultado);
+
+          if(resultado.ok){
+
+            mensajeOk.classList.remove("hidden");
+            mensajeError.classList.add("hidden");
+            
+            await cargarResumen();
+
+          } else {
+
+            mensajeError.textContent = resultado.error || "Error guardando el registro";
+            mensajeError.classList.remove("hidden");
+
+          }
+
+        } catch(error){
+
+          console.error( "ERROR FETCH:", error);
+          mensajeError.textContent = error?.message || "Error guardando el registro";
+          mensajeError.classList.remove("hidden");
+
+        }
+
+      });
+
+    // EXPORTAR EXCEL
+
+    document
+      .getElementById("btnExcel")
+      .addEventListener("click", () => {
+
+      window.location.href = "/api/exportarExcel";
+
+    });
+
+    // CARGAR RESUMEN INICIAL
+
+    const totalAdultos = document.getElementById("totalAdultos");
+
+    const totalInfantiles = document.getElementById("totalInfantiles");
+
+    const totalCarne = document.getElementById("totalCarne");
+
+    const totalPescado = document.getElementById("totalPescado");
+
+    const totalInvitados = document.getElementById("totalInvitados");
+
+    const listadoBuffetAdulto = document.getElementById("listadoBuffetAdulto");
+
+    const listaBuffetInfantil = document.getElementById("listaBuffetInfantil");
+
+    const totalPlatosAdulto = document.getElementById("totalPlatosAdulto");
+
+    const totalPlatosInfantil = document.getElementById("totalPlatosInfantil");
+
+    async function cargarResumen(){
+
+      try{
+
+        const response = await fetch("/api/resumen");
+
+        const datos = await response.json();
+
+        totalAdultos.textContent = datos.totalAdultos || 0;
+
+        totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+        totalCarne.textContent = datos.totalCarne || 0;
+
+        totalPescado.textContent = datos.totalPescado || 0;
+
+        // Renderizar buffet adulto
+        if (listadoBuffetAdulto && datos.buffetAdulto) {
+          listadoBuffetAdulto.innerHTML = "";
+          datos.buffetAdulto.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listadoBuffetAdulto.appendChild(platoDiv);
+          });
+          totalPlatosAdulto.textContent = datos.buffetAdulto.length + " platos";
+        }
+
+        // Renderizar buffet infantil
+        if (listaBuffetInfantil && datos.buffetInfantil) {
+          listaBuffetInfantil.innerHTML = "";
+          datos.buffetInfantil.forEach(item => {
+            const platoDiv = document.createElement("div");
+            platoDiv.className = "plato plato-kids";
+            platoDiv.textContent = item.plato || "Sin especificar";
+            listaBuffetInfantil.appendChild(platoDiv);
+          });
+          totalPlatosInfantil.textContent = datos.buffetInfantil.length + " platos";
+        }
+
+      } catch(error){
+
+        console.error("Error cargando resumen", error);
+
+      }
+
+  }
+
+  cargarResumen();
+
+  </script>
+
+</body>
+</html>
