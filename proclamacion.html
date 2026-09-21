@@ -112,6 +112,16 @@
       margin-top:10px;
     }
 
+    .grupo-comidas{
+      margin-bottom:18px;
+    }
+
+    .grupo-titulo{
+      font-weight:700;
+      margin:8px 0 10px;
+      color:#374151;
+    }
+
     .comida-persona{
       display:flex;
       align-items:center;
@@ -336,8 +346,16 @@
 
             <div>
               <label>¿Qué va a comer cada persona?</label>
-              <div id="comidasAdultos" class="comidas-lista"></div>
-              <div id="comidasInfantiles" class="comidas-lista"></div>
+
+              <div id="grupoAdultos" class="grupo-comidas">
+                <div class="grupo-titulo">Adultos</div>
+                <div id="comidasAdultos" class="comidas-lista"></div>
+              </div>
+
+              <div id="grupoInfantiles" class="grupo-comidas">
+                <div class="grupo-titulo">Infantiles</div>
+                <div id="comidasInfantiles" class="comidas-lista"></div>
+              </div>
             </div>
 
           </div>
@@ -522,6 +540,12 @@
 
       comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
       comidasInfantiles.innerHTML = crearOpcionesComida("Infantil", infantiles);
+
+      document.getElementById("grupoAdultos").style.display =
+        adultos > 0 ? "block" : "none";
+
+      document.getElementById("grupoInfantiles").style.display =
+        infantiles > 0 ? "block" : "none";
     }
 
     function crearOpcionesComida(tipo, cantidad){
