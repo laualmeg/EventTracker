@@ -194,6 +194,11 @@
       font-size:16px;
     }
 
+    .diet-summary-title{
+      display:block;
+      margin-bottom:12px;
+    }
+
     .badge{
       background:#dbeafe;
       color:#1d4ed8;
@@ -751,7 +756,7 @@
         }
 
         return `
-          <strong>${titulo}</strong>
+          <strong class="diet-summary-title">${titulo}</strong>
           ${entradas.map(([opcion, total]) => `
             <div class="summary-item">
               <span>${opcion}</span>
