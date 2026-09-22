@@ -743,15 +743,23 @@
         ["Alergias o intolerancias", datos.alergias]
       ];
 
-      contenedor.innerHTML = secciones.map(([titulo, opciones]) => `
-        <strong>${titulo}</strong>
-        ${Object.entries(opciones || { Ninguna: 0 }).map(([opcion, total]) => `
-          <div class="summary-item">
-            <span>${opcion}</span>
-            <strong>${total}</strong>
-          </div>
-        `).join("")}
-      `).join("");
+      contenedor.innerHTML = secciones.map(([titulo, opciones]) => {
+        const entradas = Object.entries(opciones || {}).filter(([opcion]) => opcion !== "Ninguna");
+
+        if (!entradas.length) {
+          return "";
+        }
+
+        return `
+          <strong>${titulo}</strong>
+          ${entradas.map(([opcion, total]) => `
+            <div class="summary-item">
+              <span>${opcion}</span>
+              <strong>${total}</strong>
+            </div>
+          `).join("")}
+        `;
+      }).join("");
     }
     
     async function cargarResumen(){
