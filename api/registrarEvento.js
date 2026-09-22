@@ -21,18 +21,35 @@ export default async function handler(req, res) {
     const datos = req.body;
     const nombre = datos.nombre?.trim();
     const adultos = Number(datos.adultos);
-    const infantiles = Number(datos.infantiles);
+    const infantiles = Number(datos.infantiles ?? 0);
     const invitados = Number(datos.invitados || 0);
 
     if (!nombre) {
-      return res.status(400).json({ ok: false, error: "Nombre obligatorio" });
+      return res.status(400).json({ ok: false, error: "Nombre y apellidos obligatorios" });
     }
 
-    if (![adultos, infantiles, invitados].every(Number.isInteger) ||
-        ![adultos, infantiles, invitados].every(esEnteroNoNegativo)) {
+    if (datos.adultos === undefined || datos.adultos === null || String(datos.adultos).trim() === "") {
+      return res.status(400).json({ ok: false, error: "El número de adultos es obligatorio" });
+    }
+
+    if (!Number.isInteger(adultos) || adultos < 0) {
       return res.status(400).json({
         ok: false,
-        error: "Las cantidades deben ser numeros enteros no negativos"
+        error: "El número de adultos debe ser un entero no negativo"
+      });
+    }
+
+    if (!Number.isInteger(infantiles) || infantiles < 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "El número de infantiles no puede ser negativo"
+      });
+    }
+
+    if (!Number.isInteger(invitados) || invitados < 0) {
+      return res.status(400).json({
+        ok: false,
+        error: "Los invitados no pueden ser negativos"
       });
     }
 
@@ -76,9 +93,11 @@ export default async function handler(req, res) {
     } else {
       const adultosCarne = Number(datos.adultosCarne);
       const adultosPescado = Number(datos.adultosPescado);
-      const infantilesCarne = Number(datos.infantilesCarne);
-      const infantilesPescado = Number(datos.infantilesPescado);
-      const asistentesDieteticos = datos.asistentesDieteticos;
+      const infantilesCarne = Number(datos.infantilesCarne || 0);
+      const infantilesPescado = Number(datos.infantilesPescado || 0);
+      const asistentesDieteticos = Array.isArray(datos.asistentesDieteticos)
+        ? datos.asistentesDieteticos
+        : [];
 
       if (![adultosCarne, adultosPescado, infantilesCarne, infantilesPescado]
         .every(esEnteroNoNegativo) ||
@@ -91,18 +110,26 @@ export default async function handler(req, res) {
       }
 
       if (!Array.isArray(asistentesDieteticos) ||
-          asistentesDieteticos.length !== adultos + infantiles) {
+          asistentesDieteticos.length !== adultos + infantiles ||
+          !asistentesDieteticos.every(item => item && typeof item === "object")) {
         return res.status(400).json({
           ok: false,
           error: "La informacion dietetica no coincide con los asistentes"
         });
       }
 
+      const asistentesDieteticosValidados = asistentesDieteticos.map(item => ({
+        ...item,
+        alergias: Array.isArray(item.alergias) ? item.alergias : [item.alergias || "Ninguna"],
+        tipoDieta: item.tipoDieta || "Ninguna",
+        observaciones: item.observaciones ?? ""
+      }));
+
       registro.adultos_carne = adultosCarne;
       registro.adultos_pescado = adultosPescado;
       registro.infantiles_carne = infantilesCarne;
       registro.infantiles_pescado = infantilesPescado;
-      registro.asistentes_dieteticos = asistentesDieteticos;
+      registro.asistentes_dieteticos = asistentesDieteticosValidados;
       registro.tipo_dieta = datos.tipoDieta || "Ninguna";
       registro.alergias = datos.alergias?.trim() || "Ninguna";
     }

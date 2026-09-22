@@ -9,15 +9,27 @@ export default async function handler(req, res) {
     const datos = req.body;
     const nombre = datos.nombre?.trim();
     const adultos = Number(datos.adultos);
-    const infantiles = Number(datos.infantiles);
+    const infantiles = Number(datos.infantiles ?? 0);
     const adultosCarne = Number(datos.adultosCarne);
     const adultosPescado = Number(datos.adultosPescado);
-    const infantilesCarne = Number(datos.infantilesCarne);
-    const infantilesPescado = Number(datos.infantilesPescado);
-    const asistentesDieteticos = datos.asistentesDieteticos;
+    const infantilesCarne = Number(datos.infantilesCarne || 0);
+    const infantilesPescado = Number(datos.infantilesPescado || 0);
+    const asistentesDieteticos = Array.isArray(datos.asistentesDieteticos) ? datos.asistentesDieteticos : [];
 
     if (!nombre) {
-      return res.status(400).json({ ok: false, error: "Nombre obligatorio" });
+      return res.status(400).json({ ok: false, error: "Nombre y apellidos obligatorios" });
+    }
+
+    if (datos.adultos === undefined || datos.adultos === null || String(datos.adultos).trim() === "") {
+      return res.status(400).json({ ok: false, error: "El número de adultos es obligatorio" });
+    }
+
+    if (!Number.isInteger(adultos) || adultos < 0) {
+      return res.status(400).json({ ok: false, error: "El número de adultos debe ser un entero no negativo" });
+    }
+
+    if (!Number.isInteger(infantiles) || infantiles < 0) {
+      return res.status(400).json({ ok: false, error: "El número de infantiles no puede ser negativo" });
     }
 
     if (
@@ -44,13 +56,21 @@ export default async function handler(req, res) {
 
     if (
       !Array.isArray(asistentesDieteticos) ||
-      asistentesDieteticos.length !== adultos + infantiles
+      asistentesDieteticos.length !== adultos + infantiles ||
+      !asistentesDieteticos.every(item => item && typeof item === "object")
     ) {
       return res.status(400).json({
         ok: false,
         error: "La información dietética no coincide con el número de asistentes"
       });
     }
+
+    const asistentesDieteticosValidados = asistentesDieteticos.map(item => ({
+      ...item,
+      alergias: Array.isArray(item.alergias) ? item.alergias : [item.alergias || "Ninguna"],
+      tipoDieta: item.tipoDieta || "Ninguna",
+      observaciones: item.observaciones ?? ""
+    }));
 
     const { data: existentes, error: errorBusqueda } = await supabase
       .from("asistentes_proclamacion")
@@ -77,7 +97,7 @@ export default async function handler(req, res) {
         adultos_pescado: adultosPescado,
         infantiles_carne: infantilesCarne,
         infantiles_pescado: infantilesPescado,
-        asistentes_dieteticos: asistentesDieteticos,
+        asistentes_dieteticos: asistentesDieteticosValidados,
         tipo_dieta: datos.tipoDieta || "Ninguna",
         alergias: datos.alergias?.trim() || "Ninguna"
       }])
