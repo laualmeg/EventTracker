@@ -18,6 +18,7 @@
     .event:hover{background:#eff6ff;border-color:#93c5fd;transform:translateY(-1px)}
     .event-title{font-size:19px;font-weight:700;margin-bottom:4px}
     .event-description{color:#6b7280;font-size:14px}
+    .event-unavailable{opacity:.7;cursor:not-allowed}
     @media(max-width:600px){.container{padding:28px 20px}h1{font-size:28px}}
   </style>
 </head>
@@ -31,10 +32,26 @@
         <div class="event-title">🔥 San Juan 2026</div>
         <div class="event-description">Gestión de asistentes y buffet compartido</div>
       </a>
-      <a class="event" href="/proclamacion.html">
-        <div class="event-title">👑 Proclamación Falleras Mayores 2026</div>
-        <div class="event-description">Acceder al evento</div>
-      </a>
+      <script>
+        const fechaLimite = new Date("2026-10-05T00:00:00");
+        const ahora = new Date();
+
+        if (ahora < fechaLimite) {
+          document.write(`
+            <a class="event" href="/proclamacion.html">
+              <div class="event-title">👑 Proclamación Falleras Mayores 2026</div>
+              <div class="event-description">Inscripciones hasta el 4 de octubre de 2026 a las 23:59</div>
+            </a>
+          `);
+        } else {
+          document.write(`
+            <div class="event event-unavailable" aria-disabled="true">
+              <div class="event-title">👑 Proclamación Falleras Mayores 2026</div>
+              <div class="event-description">El registro ya no está disponible</div>
+            </div>
+          `);
+        }
+      </script>
       <a class="event" href="/halloween.html">
         <div class="event-title">🎃 Halloween</div>
         <div class="event-description">Acceder al evento</div>
