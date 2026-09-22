@@ -386,7 +386,7 @@
         <div class="section">
           <h2>Información dietética y alergias por persona</h2>
           <p class="ayuda-persona">
-            Indica para cada adulto e infantil sus alergias o intolerancias, necesidades especiales y tipo de alimentación.
+            Indica para cada adulto e infantil sus alergias o intolerancias y tipo de alimentación.
           </p>
           <div id="datosDieteticosPersonas" style="margin-top:18px;"></div>
         </div>
@@ -527,13 +527,8 @@
     const contenedorDietetico = document.getElementById("datosDieteticosPersonas");
 
     const alergiasOpciones = [
-      "Ninguna","Gluten / trigo","Leche / lactosa","Huevo","Frutos secos",
-      "Cacahuete","Pescado","Marisco","Soja","Sésamo","Mostaza","Apio","Sulfitos","Otra"
-    ];
-
-    const necesidadesOpciones = [
-      "Ninguna","Celíaco/a","Intolerancia a la lactosa","Dieta sin gluten",
-      "Dieta sin lactosa","Dieta baja en sal","Dieta blanda","Otra"
+      "Ninguna","Apio","Cacahuete","Frutos secos","Gluten / trigo","Huevo",
+      "Leche / lactosa","Marisco","Mostaza","Otra","Pescado","Soja","Sulfitos","Sésamo"
     ];
 
     function opcionesSelect(lista, prefijo, personaIndex) {
@@ -558,14 +553,9 @@
           </div>
 
           <div class="campo-persona">
-            <label>Necesidades especiales</label>
-            ${opcionesSelect(necesidadesOpciones, "necesidad", personaIndex)}
-          </div>
-
-          <div class="campo-persona">
             <label>Tipo de alimentación</label>
             ${opcionesSelect(
-              ["Ninguna", "Vegano", "Vegetariano", "Ovolactovegetariano"],
+              ["Ninguna", "Otra", "Ovolactovegetariano", "Pescetariano", "Vegano", "Vegetariano"],
               "dieta",
               personaIndex
             )}
@@ -578,6 +568,22 @@
         </div>`;
     }
 
+    function actualizarEstadoObservaciones() {
+      contenedorDietetico.querySelectorAll(".persona-dietetica").forEach(ficha => {
+        const dieta = ficha.querySelector(".dieta-select")?.value || "Ninguna";
+        const alergia = ficha.querySelector(".alergia-select")?.value || "Ninguna";
+        const textarea = ficha.querySelector("textarea");
+        const requiereObservaciones = dieta === "Otra" || alergia === "Otra";
+
+        if (textarea) {
+          textarea.required = requiereObservaciones;
+          textarea.placeholder = requiereObservaciones
+            ? "Obligatorio: indica qué opción concreta corresponde a 'Otra'."
+            : "Indica cualquier detalle importante o una indicación para el catering.";
+        }
+      });
+    }
+
     function actualizarDatosDieteticos() {
       const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
       const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
@@ -588,6 +594,11 @@
 
       contenedorDietetico.innerHTML = contenido || '<p style="color:#6b7280;">Indica primero el número de adultos e infantiles.</p>';
 
+      contenedorDietetico.querySelectorAll(".dieta-select, .alergia-select").forEach(select => {
+        select.addEventListener("change", actualizarEstadoObservaciones);
+      });
+
+      actualizarEstadoObservaciones();
     }
 
     function obtenerDatosDieteticos() {
@@ -596,7 +607,6 @@
         return {
           persona,
           alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
-          necesidadesEspeciales: [ficha.querySelector(".necesidad-select")?.value || "Ninguna"],
           tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
           observaciones: ficha.querySelector("textarea")?.value.trim() || ""
         };
@@ -642,7 +652,6 @@
 
         // Compatibilidad con el backend actual + detalle individual.
         alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
-        necesidadesEspeciales: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, necesidadesEspeciales:p.necesidadesEspeciales, observaciones:p.observaciones}))),
         tipoDieta: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, tipoDieta:p.tipoDieta}))),
         asistentesDieteticos: datosDieteticos
       };
@@ -661,6 +670,18 @@
 
       if (datosDieteticos.length !== datos.adultos + datos.infantiles) {
         mensajeError.textContent = "Indica la información dietética de cada adulto e infantil.";
+        mensajeError.classList.remove("hidden");
+        return;
+      }
+
+      const hayOtraSinObservacion = datosDieteticos.some(p => {
+        const dietaOtra = p.tipoDieta === "Otra";
+        const alergiaOtra = Array.isArray(p.alergias) ? p.alergias.includes("Otra") : p.alergias === "Otra";
+        return (dietaOtra || alergiaOtra) && !p.observaciones.trim();
+      });
+
+      if (hayOtraSinObservacion) {
+        mensajeError.textContent = "Si eliges 'Otra' en alergias o tipo de alimentación, escribe el detalle en observaciones.";
         mensajeError.classList.remove("hidden");
         return;
       }
@@ -719,8 +740,7 @@
 
       const secciones = [
         ["Dietas", datos.dieta],
-        ["Alergias o intolerancias", datos.alergias],
-        ["Necesidades especiales", datos.necesidadesEspeciales]
+        ["Alergias o intolerancias", datos.alergias]
       ];
 
       contenedor.innerHTML = secciones.map(([titulo, opciones]) => `
