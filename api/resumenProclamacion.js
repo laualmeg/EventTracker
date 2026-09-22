@@ -17,8 +17,7 @@ export default async function handler(req, res) {
         infantiles_pescado,
         plato,
         tipo_dieta,
-        alergias,
-        necesidades_especiales
+        alergias
       `);
 
     if (error) throw error;
@@ -85,9 +84,6 @@ export default async function handler(req, res) {
 
     const dieta = contarOpciones("tipo_dieta");
     const alergias = contarOpciones("alergias");
-    const necesidadesEspeciales = contarOpciones(
-      "necesidades_especiales"
-    );
 
     // -----------------------------------------
     // RESPUESTA
@@ -100,8 +96,7 @@ export default async function handler(req, res) {
       totalPescado,
 
       dieta,
-      alergias,
-      necesidadesEspeciales
+      alergias
     });
 
   } catch (error) {

@@ -79,8 +79,7 @@ export default async function handler(req, res) {
         infantiles_pescado: infantilesPescado,
         asistentes_dieteticos: asistentesDieteticos,
         tipo_dieta: datos.tipoDieta || "Ninguna",
-        alergias: datos.alergias?.trim() || "Ninguna",
-        necesidades_especiales: datos.necesidadesEspeciales?.trim() || "Ninguna"
+        alergias: datos.alergias?.trim() || "Ninguna"
       }])
       .select();
 

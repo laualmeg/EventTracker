@@ -55,7 +55,6 @@ export default async function handler(req, res) {
       asistentes_dieteticos: [],
       tipo_dieta: "Ninguna",
       alergias: "Ninguna",
-      necesidades_especiales: "Ninguna",
       plato: null,
       tipo_buffet: null
     };
@@ -106,7 +105,6 @@ export default async function handler(req, res) {
       registro.asistentes_dieteticos = asistentesDieteticos;
       registro.tipo_dieta = datos.tipoDieta || "Ninguna";
       registro.alergias = datos.alergias?.trim() || "Ninguna";
-      registro.necesidades_especiales = datos.necesidadesEspeciales?.trim() || "Ninguna";
     }
 
     const { id: eventoId, error: eventoError } = await obtenerEventoId(slug);

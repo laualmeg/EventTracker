@@ -24,7 +24,6 @@ export default async function handler(req, res) {
       { header: "Infantiles carne", key: "infantiles_carne", width: 17 },
       { header: "Infantiles pescado", key: "infantiles_pescado", width: 19 },
       { header: "Alergias", key: "alergias", width: 35 },
-      { header: "Necesidades especiales", key: "necesidades_especiales", width: 40 },
       { header: "Tipo de dieta", key: "tipo_dieta", width: 35 },
       { header: "Detalle por persona", key: "asistentes_dieteticos", width: 60 }
     ];
@@ -38,7 +37,6 @@ export default async function handler(req, res) {
       infantiles_carne: item.infantiles_carne,
       infantiles_pescado: item.infantiles_pescado,
       alergias: item.alergias,
-      necesidades_especiales: item.necesidades_especiales,
       tipo_dieta: item.tipo_dieta,
       asistentes_dieteticos: JSON.stringify(item.asistentes_dieteticos || [])
     }));

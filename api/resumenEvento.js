@@ -70,7 +70,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from("asistentes_eventos")
-      .select("adultos, infantiles, invitados, adultos_carne, adultos_pescado, infantiles_carne, infantiles_pescado, asistentes_dieteticos, tipo_dieta, alergias, necesidades_especiales, plato, tipo_buffet")
+      .select("adultos, infantiles, invitados, adultos_carne, adultos_pescado, infantiles_carne, infantiles_pescado, asistentes_dieteticos, tipo_dieta, alergias, plato, tipo_buffet")
       .eq("evento_id", eventoId);
 
     if (error) throw error;
@@ -89,15 +89,8 @@ export default async function handler(req, res) {
     }
 
     if (configuracion.dieta) {
-      const dieteticos = data.map(item => ({
-        tipo_dieta: item.tipo_dieta,
-        alergias: item.alergias,
-        necesidades_especiales: item.necesidades_especiales
-      }));
-
       respuesta.dieta = contarDatosDieteticos(data, "tipoDieta");
       respuesta.alergias = contarDatosDieteticos(data, "alergias");
-      respuesta.necesidadesEspeciales = contarDatosDieteticos(data, "necesidadesEspeciales");
     }
 
     return res.status(200).json(respuesta);

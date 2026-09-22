@@ -37,7 +37,6 @@ export default async function handler(req, res) {
       { header: "Plato", key: "plato", width: 25 },
       { header: "Tipo buffet", key: "tipo_buffet", width: 15 },
       { header: "Alergias", key: "alergias", width: 35 },
-      { header: "Necesidades especiales", key: "necesidades_especiales", width: 40 },
       { header: "Tipo de dieta", key: "tipo_dieta", width: 35 },
       { header: "Detalle por persona", key: "asistentes_dieteticos", width: 60 }
     ];
