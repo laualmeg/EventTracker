@@ -749,7 +749,9 @@
       ];
 
       contenedor.innerHTML = secciones.map(([titulo, opciones]) => {
-        const entradas = Object.entries(opciones || {}).filter(([opcion]) => opcion !== "Ninguna");
+        const entradas = Object.entries(opciones || {})
+          .filter(([opcion]) => opcion !== "Ninguna")
+          .sort(([opcionA], [opcionB]) => opcionA.localeCompare(opcionB, "es", { sensitivity: "base" }));
 
         if (!entradas.length) {
           return "";
