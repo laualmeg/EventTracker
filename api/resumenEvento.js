@@ -35,11 +35,12 @@ function contarDatosDieteticos(data, campo) {
 
   data.forEach(item => {
     let valores = item[campo];
+    if (valores === null || valores === undefined) return;
     if (!Array.isArray(valores)) valores = [valores];
 
     valores.forEach(valor => {
-      const texto = valor?.toString().trim() || "Ninguna";
-      if (texto === "Ninguna") return;
+      const texto = String(valor ?? "").trim();
+      if (!texto || texto === "Ninguna" || texto === "null") return;
       resultado[texto] = (resultado[texto] || 0) + 1;
     });
   });
