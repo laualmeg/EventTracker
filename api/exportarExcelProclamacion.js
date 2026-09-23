@@ -21,11 +21,8 @@ export default async function handler(req, res) {
       { header: "Infantiles", key: "infantiles", width: 12 },
       { header: "Adultos carne", key: "adultos_carne", width: 15 },
       { header: "Adultos pescado", key: "adultos_pescado", width: 17 },
-      { header: "Infantiles carne", key: "infantiles_carne", width: 17 },
-      { header: "Infantiles pescado", key: "infantiles_pescado", width: 19 },
-      { header: "Alergias", key: "alergias", width: 35 },
       { header: "Tipo de dieta", key: "tipo_dieta", width: 35 },
-      { header: "Detalle por persona", key: "asistentes_dieteticos", width: 60 }
+      { header: "Alergias", key: "alergias", width: 35 }
     ];
 
     data.forEach(item => worksheet.addRow({
@@ -34,11 +31,8 @@ export default async function handler(req, res) {
       infantiles: item.infantiles,
       adultos_carne: item.adultos_carne,
       adultos_pescado: item.adultos_pescado,
-      infantiles_carne: item.infantiles_carne,
-      infantiles_pescado: item.infantiles_pescado,
-      alergias: item.alergias,
       tipo_dieta: item.tipo_dieta,
-      asistentes_dieteticos: JSON.stringify(item.asistentes_dieteticos || [])
+      alergias: item.alergias
     }));
 
     const buffer = await workbook.xlsx.writeBuffer();

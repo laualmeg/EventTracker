@@ -12,8 +12,6 @@ export default async function handler(req, res) {
     const infantiles = Number(datos.infantiles ?? 0);
     const adultosCarne = Number(datos.adultosCarne);
     const adultosPescado = Number(datos.adultosPescado);
-    const infantilesCarne = Number(datos.infantilesCarne || 0);
-    const infantilesPescado = Number(datos.infantilesPescado || 0);
     const asistentesDieteticos = Array.isArray(datos.asistentesDieteticos) ? datos.asistentesDieteticos : [];
 
     if (!nombre) {
@@ -33,13 +31,11 @@ export default async function handler(req, res) {
     }
 
     if (
-      ![adultos, infantiles, adultosCarne, adultosPescado, infantilesCarne, infantilesPescado]
+      ![adultos, infantiles, adultosCarne, adultosPescado]
         .every(Number.isInteger) ||
       adultos < 0 || infantiles < 0 ||
       adultosCarne < 0 || adultosPescado < 0 ||
-      infantilesCarne < 0 || infantilesPescado < 0 ||
       adultosCarne + adultosPescado !== adultos ||
-      infantilesCarne + infantilesPescado !== infantiles
     ) {
       return res.status(400).json({
         ok: false,
@@ -95,8 +91,8 @@ export default async function handler(req, res) {
         infantiles,
         adultos_carne: adultosCarne,
         adultos_pescado: adultosPescado,
-        infantiles_carne: infantilesCarne,
-        infantiles_pescado: infantilesPescado,
+        infantiles_carne: 0,
+        infantiles_pescado: 0,
         asistentes_dieteticos: asistentesDieteticosValidados,
         tipo_dieta: datos.tipoDieta || "Ninguna",
         alergias: datos.alergias?.trim() || "Ninguna"

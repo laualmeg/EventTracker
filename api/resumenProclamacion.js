@@ -41,18 +41,12 @@ export default async function handler(req, res) {
     // -----------------------------------------
 
     const totalCarne = data.reduce(
-      (total, item) =>
-        total +
-        (item.adultos_carne || 0) +
-        (item.infantiles_carne || 0),
+      (total, item) => total + (item.adultos_carne || 0),
       0
     );
 
     const totalPescado = data.reduce(
-      (total, item) =>
-        total +
-        (item.adultos_pescado || 0) +
-        (item.infantiles_pescado || 0),
+      (total, item) => total + (item.adultos_pescado || 0),
       0
     );
 

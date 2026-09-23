@@ -376,11 +376,6 @@
                 <div class="grupo-titulo">Adultos</div>
                 <div id="comidasAdultos" class="comidas-lista"></div>
               </div>
-
-              <div id="grupoInfantiles" class="grupo-comidas">
-                <div class="grupo-titulo">Infantiles</div>
-                <div id="comidasInfantiles" class="comidas-lista"></div>
-              </div>
             </div>
 
           </div>
@@ -502,20 +497,13 @@
 
     const comidasAdultos = document.getElementById("comidasAdultos");
 
-    const comidasInfantiles = document.getElementById("comidasInfantiles");
-
     function actualizarComidas(){
       const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
-      const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
 
       comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
-      comidasInfantiles.innerHTML = crearOpcionesComida("Infantil", infantiles);
 
       document.getElementById("grupoAdultos").style.display =
         adultos > 0 ? "block" : "none";
-
-      document.getElementById("grupoInfantiles").style.display =
-        infantiles > 0 ? "block" : "none";
     }
 
     function crearOpcionesComida(tipo, cantidad){
@@ -633,15 +621,10 @@
       mensajeOk.classList.add("hidden");
       mensajeError.classList.add("hidden");
 
-      const comidasSeleccionadas = [
-        ...comidasAdultos.querySelectorAll("select"),
-        ...comidasInfantiles.querySelectorAll("select")
-      ].map(select => select.value);
+      const comidasSeleccionadas = [...comidasAdultos.querySelectorAll("select")].map(select => select.value);
 
       const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "carne").length;
       const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "pescado").length;
-      const comidasInfantilesCarne = [...comidasInfantiles.querySelectorAll("select")].filter(s => s.value === "carne").length;
-      const comidasInfantilesPescado = [...comidasInfantiles.querySelectorAll("select")].filter(s => s.value === "pescado").length;
 
       const datosDieteticos = obtenerDatosDieteticos();
 
@@ -652,8 +635,6 @@
         invitados: 0,
         adultosCarne: comidasAdultosCarne,
         adultosPescado: comidasAdultosPescado,
-        infantilesCarne: comidasInfantilesCarne,
-        infantilesPescado: comidasInfantilesPescado,
 
         // Compatibilidad con el backend actual + detalle individual.
         alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
@@ -667,8 +648,8 @@
         return;
       }
 
-      if (comidasSeleccionadas.length !== datos.adultos + datos.infantiles) {
-        mensajeError.textContent = "Indica si cada adulto e infantil comerá carne o pescado.";
+      if (comidasSeleccionadas.length !== datos.adultos) {
+        mensajeError.textContent = "Indica la comida de cada adulto.";
         mensajeError.classList.remove("hidden");
         return;
       }

@@ -67,8 +67,6 @@ export default async function handler(req, res) {
       invitados: configuracion.buffet ? invitados : 0,
       adultos_carne: 0,
       adultos_pescado: 0,
-      infantiles_carne: 0,
-      infantiles_pescado: 0,
       asistentes_dieteticos: [],
       tipo_dieta: "Ninguna",
       alergias: "Ninguna",
@@ -93,16 +91,13 @@ export default async function handler(req, res) {
     } else {
       const adultosCarne = Number(datos.adultosCarne);
       const adultosPescado = Number(datos.adultosPescado);
-      const infantilesCarne = Number(datos.infantilesCarne || 0);
-      const infantilesPescado = Number(datos.infantilesPescado || 0);
       const asistentesDieteticos = Array.isArray(datos.asistentesDieteticos)
         ? datos.asistentesDieteticos
         : [];
 
-      if (![adultosCarne, adultosPescado, infantilesCarne, infantilesPescado]
+      if (![adultosCarne, adultosPescado]
         .every(esEnteroNoNegativo) ||
-        adultosCarne + adultosPescado !== adultos ||
-        infantilesCarne + infantilesPescado !== infantiles) {
+        adultosCarne + adultosPescado !== adultos) {
         return res.status(400).json({
           ok: false,
           error: "La eleccion de carne o pescado no coincide con los asistentes"
@@ -118,17 +113,25 @@ export default async function handler(req, res) {
         });
       }
 
-      const asistentesDieteticosValidados = asistentesDieteticos.map(item => ({
-        ...item,
-        alergias: Array.isArray(item.alergias) ? item.alergias : [item.alergias || "Ninguna"],
-        tipoDieta: item.tipoDieta || "Ninguna",
-        observaciones: item.observaciones ?? ""
-      }));
+      const asistentesDieteticosValidados = asistentesDieteticos.map(item => {
+        const alergias = Array.isArray(item.alergias) ? item.alergias : [item.alergias];
+        const alergiasFiltradas = alergias
+          .filter(Boolean)
+          .map(valor => String(valor).trim())
+          .filter(valor => valor !== "Ninguna");
+
+        const tipoDieta = typeof item.tipoDieta === "string" ? item.tipoDieta.trim() : "";
+
+        return {
+          ...item,
+          alergias: alergiasFiltradas,
+          tipoDieta: tipoDieta && tipoDieta !== "Ninguna" ? tipoDieta : "Ninguna",
+          observaciones: item.observaciones ?? ""
+        };
+      });
 
       registro.adultos_carne = adultosCarne;
       registro.adultos_pescado = adultosPescado;
-      registro.infantiles_carne = infantilesCarne;
-      registro.infantiles_pescado = infantilesPescado;
       registro.asistentes_dieteticos = asistentesDieteticosValidados;
       registro.tipo_dieta = datos.tipoDieta || "Ninguna";
       registro.alergias = datos.alergias?.trim() || "Ninguna";
