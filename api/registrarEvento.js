@@ -67,7 +67,6 @@ export default async function handler(req, res) {
       invitados: configuracion.buffet ? invitados : 0,
       adultos_carne: 0,
       adultos_pescado: 0,
-      asistentes_dieteticos: [],
       tipo_dieta: "Ninguna",
       alergias: "Ninguna",
       plato: null,
@@ -132,7 +131,6 @@ export default async function handler(req, res) {
 
       registro.adultos_carne = adultosCarne;
       registro.adultos_pescado = adultosPescado;
-      registro.asistentes_dieteticos = asistentesDieteticosValidados;
       registro.tipo_dieta = datos.tipoDieta || "Ninguna";
       registro.alergias = datos.alergias?.trim() || "Ninguna";
     }

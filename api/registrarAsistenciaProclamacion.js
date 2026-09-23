@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         .every(Number.isInteger) ||
       adultos < 0 || infantiles < 0 ||
       adultosCarne < 0 || adultosPescado < 0 ||
-      adultosCarne + adultosPescado !== adultos ||
+      adultosCarne + adultosPescado !== adultos
     ) {
       return res.status(400).json({
         ok: false,
@@ -61,12 +61,44 @@ export default async function handler(req, res) {
       });
     }
 
-    const asistentesDieteticosValidados = asistentesDieteticos.map(item => ({
-      ...item,
-      alergias: Array.isArray(item.alergias) ? item.alergias : [item.alergias || "Ninguna"],
-      tipoDieta: item.tipoDieta || "Ninguna",
-      observaciones: item.observaciones ?? ""
-    }));
+    const asistentesDieteticosValidados = asistentesDieteticos.map(item => {
+      const alergias = Array.isArray(item.alergias) ? item.alergias : [item.alergias];
+      const alergiasFiltradas = alergias
+        .filter(Boolean)
+        .map(valor => String(valor).trim())
+        .filter(valor => valor !== "Ninguna");
+
+      const tipoDieta = typeof item.tipoDieta === "string" ? item.tipoDieta.trim() : "";
+
+      return {
+        ...item,
+        alergias: alergiasFiltradas,
+        tipoDieta: tipoDieta && tipoDieta !== "Ninguna" ? tipoDieta : null,
+        observaciones: item.observaciones ?? ""
+      };
+    });
+
+    const alergiasGenerales = (() => {
+      const valor = typeof datos.alergias === "string" ? datos.alergias.trim() : "";
+      if (!valor || valor === "Ninguna") return null;
+
+      try {
+        const parsed = JSON.parse(valor);
+        const lista = Array.isArray(parsed)
+          ? parsed
+          : [parsed];
+
+        const filtradas = lista
+          .flatMap(item => Array.isArray(item?.alergias) ? item.alergias : [item?.alergias])
+          .filter(Boolean)
+          .map(item => String(item).trim())
+          .filter(item => item !== "Ninguna");
+
+        return filtradas.length ? filtradas.join(", ") : null;
+      } catch {
+        return valor !== "Ninguna" ? valor : null;
+      }
+    })();
 
     const { data: existentes, error: errorBusqueda } = await supabase
       .from("asistentes_proclamacion")
@@ -91,11 +123,11 @@ export default async function handler(req, res) {
         infantiles,
         adultos_carne: adultosCarne,
         adultos_pescado: adultosPescado,
-        infantiles_carne: 0,
-        infantiles_pescado: 0,
-        asistentes_dieteticos: asistentesDieteticosValidados,
-        tipo_dieta: datos.tipoDieta || "Ninguna",
-        alergias: datos.alergias?.trim() || "Ninguna"
+        tipo_dieta: (() => {
+          const valor = typeof datos.tipoDieta === "string" ? datos.tipoDieta.trim() : "";
+          return valor && valor !== "Ninguna" ? valor : null;
+        })(),
+        alergias: alergiasGenerales
       }])
       .select();
 

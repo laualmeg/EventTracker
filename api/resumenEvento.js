@@ -34,18 +34,13 @@ function contarDatosDieteticos(data, campo) {
   const resultado = {};
 
   data.forEach(item => {
-    const personas = Array.isArray(item.asistentes_dieteticos)
-      ? item.asistentes_dieteticos
-      : [];
+    let valores = item[campo];
+    if (!Array.isArray(valores)) valores = [valores];
 
-    personas.forEach(persona => {
-      let valores = persona[campo];
-      if (!Array.isArray(valores)) valores = [valores];
-
-      valores.forEach(valor => {
-        const texto = valor?.toString().trim() || "Ninguna";
-        resultado[texto] = (resultado[texto] || 0) + 1;
-      });
+    valores.forEach(valor => {
+      const texto = valor?.toString().trim() || "Ninguna";
+      if (texto === "Ninguna") return;
+      resultado[texto] = (resultado[texto] || 0) + 1;
     });
   });
 
@@ -70,7 +65,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from("asistentes_eventos")
-      .select("adultos, infantiles, invitados, adultos_carne, adultos_pescado, infantiles_carne, infantiles_pescado, asistentes_dieteticos, tipo_dieta, alergias, plato, tipo_buffet")
+      .select("adultos, infantiles, invitados, adultos_carne, adultos_pescado, tipo_dieta, alergias, plato, tipo_buffet")
       .eq("evento_id", eventoId);
 
     if (error) throw error;
@@ -79,8 +74,8 @@ export default async function handler(req, res) {
       totalAdultos: sumar(data, "adultos"),
       totalInfantiles: sumar(data, "infantiles"),
       totalInvitados: sumar(data, "invitados"),
-      totalCarne: sumar(data, "adultos_carne") + sumar(data, "infantiles_carne"),
-      totalPescado: sumar(data, "adultos_pescado") + sumar(data, "infantiles_pescado")
+      totalCarne: sumar(data, "adultos_carne"),
+      totalPescado: sumar(data, "adultos_pescado")
     };
 
     if (configuracion.buffet) {

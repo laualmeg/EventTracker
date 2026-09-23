@@ -32,18 +32,14 @@ export default async function handler(req, res) {
       { header: "Invitados", key: "invitados", width: 12 },
       { header: "Adultos carne", key: "adultos_carne", width: 15 },
       { header: "Adultos pescado", key: "adultos_pescado", width: 17 },
-      { header: "Infantiles carne", key: "infantiles_carne", width: 17 },
-      { header: "Infantiles pescado", key: "infantiles_pescado", width: 19 },
       { header: "Plato", key: "plato", width: 25 },
       { header: "Tipo buffet", key: "tipo_buffet", width: 15 },
       { header: "Alergias", key: "alergias", width: 35 },
-      { header: "Tipo de dieta", key: "tipo_dieta", width: 35 },
-      { header: "Detalle por persona", key: "asistentes_dieteticos", width: 60 }
+      { header: "Tipo de dieta", key: "tipo_dieta", width: 35 }
     ];
 
     data.forEach(item => worksheet.addRow({
-      ...item,
-      asistentes_dieteticos: JSON.stringify(item.asistentes_dieteticos || [])
+      ...item
     }));
 
     const buffer = await workbook.xlsx.writeBuffer();

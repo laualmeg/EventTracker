@@ -13,8 +13,6 @@ export default async function handler(req, res) {
         infantiles,
         adultos_carne,
         adultos_pescado,
-        infantiles_carne,
-        infantiles_pescado,
         plato,
         tipo_dieta,
         alergias
