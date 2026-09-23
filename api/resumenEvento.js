@@ -5,16 +5,76 @@ function sumar(data, campo) {
   return data.reduce((total, item) => total + (Number(item[campo]) || 0), 0);
 }
 
+function extraerValoresDieteticos(valor, clave) {
+  const salida = [];
+
+  function anadir(v) {
+    if (v === null || v === undefined) return;
+
+    if (Array.isArray(v)) {
+      v.forEach(anadir);
+      return;
+    }
+
+    if (typeof v === "string") {
+      const texto = v.trim();
+      if (!texto || texto === "Ninguna" || texto === "null") return;
+
+      try {
+        const parsed = JSON.parse(texto);
+        anadir(parsed);
+        return;
+      } catch {
+        salida.push(texto);
+        return;
+      }
+    }
+
+    if (typeof v === "object") {
+      if (Array.isArray(v[clave])) {
+        v[clave].forEach(anadir);
+        return;
+      }
+
+      if (v[clave] !== undefined && v[clave] !== null) {
+        anadir(v[clave]);
+        return;
+      }
+
+      if (v.persona && v.tipoDieta !== undefined) {
+        anadir(v.tipoDieta);
+        return;
+      }
+
+      if (v.persona && Array.isArray(v.alergias)) {
+        v.alergias.forEach(anadir);
+        return;
+      }
+
+      return;
+    }
+
+    const texto = String(v).trim();
+    if (!texto || texto === "Ninguna" || texto === "null") return;
+    salida.push(texto);
+  }
+
+  anadir(valor);
+  return salida;
+}
+
 function contarDatosDieteticos(data, campo) {
   const resultado = {};
+  const clave = campo === "tipo_dieta" ? "tipoDieta" : "alergias";
 
   data.forEach(item => {
-    const valor = item[campo];
-    const texto = typeof valor === "string" ? valor.trim() : "";
+    const valores = extraerValoresDieteticos(item[campo], clave);
 
-    if (!texto || texto === "Ninguna" || texto === "null") return;
-
-    resultado[texto] = (resultado[texto] || 0) + 1;
+    valores.forEach(valor => {
+      const texto = String(valor).trim();
+      if (!texto || texto === "Ninguna" || texto === "null") return;
+      resultado[texto] = (resultado[texto] || 0) + 1;
+    });
   });
 
   return resultado;
