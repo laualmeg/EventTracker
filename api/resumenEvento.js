@@ -5,44 +5,16 @@ function sumar(data, campo) {
   return data.reduce((total, item) => total + (Number(item[campo]) || 0), 0);
 }
 
-function contarValores(data, campo) {
-  const resultado = {};
-
-  data.forEach(item => {
-    let valores = item[campo];
-
-    if (typeof valores === "string") {
-      try {
-        valores = JSON.parse(valores);
-      } catch {
-        valores = [valores];
-      }
-    }
-
-    if (!Array.isArray(valores)) valores = [valores];
-
-    valores.forEach(valor => {
-      const texto = valor?.toString().trim() || "Ninguna";
-      resultado[texto] = (resultado[texto] || 0) + 1;
-    });
-  });
-
-  return resultado;
-}
-
 function contarDatosDieteticos(data, campo) {
   const resultado = {};
 
   data.forEach(item => {
-    let valores = item[campo];
-    if (valores === null || valores === undefined) return;
-    if (!Array.isArray(valores)) valores = [valores];
+    const valor = item[campo];
+    const texto = typeof valor === "string" ? valor.trim() : "";
 
-    valores.forEach(valor => {
-      const texto = String(valor ?? "").trim();
-      if (!texto || texto === "Ninguna" || texto === "null") return;
-      resultado[texto] = (resultado[texto] || 0) + 1;
-    });
+    if (!texto || texto === "Ninguna" || texto === "null") return;
+
+    resultado[texto] = (resultado[texto] || 0) + 1;
   });
 
   return resultado;
@@ -85,7 +57,7 @@ export default async function handler(req, res) {
     }
 
     if (configuracion.dieta) {
-      respuesta.dieta = contarDatosDieteticos(data, "tipoDieta");
+      respuesta.dieta = contarDatosDieteticos(data, "tipo_dieta");
       respuesta.alergias = contarDatosDieteticos(data, "alergias");
     }
 
