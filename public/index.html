@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Define UTF-8 para mostrar correctamente tildes, eñes y emojis. -->
+  <meta charset="UTF-8" />
+  <!-- Ajusta el ancho de la página al dispositivo para que sea adaptable (responsive). -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Hace que la página se adapte correctamente a móviles y tablets -->
+
+  <!-- Texto que aparece en la pestaña del navegador. -->
+  <title>Eventos</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/script.js" defer></script>
+</head>
+<body>
+
+  <!-- =========================================================
+       CONTENEDOR PRINCIPAL
+       ========================================================= -->
+  <main class="container">
+    <!-- Encabezado identificativo de la página o entidad organizadora. -->
+    <h1>Alta Santo Tomas</h1>
+    <h2>🎉 Eventos</h2>
+    <p class="subtitle">Selecciona el evento al que quieres acceder</p>
+
+    <!-- Contenedor que agrupa todas las opciones de eventos. -->
+    <div class="events">
+      <!-- Enlace al detalle o gestión del evento de San Juan. La ruta es relativa al dominio actual. -->
+      <a class="event" href="/pages/san-juan.html">
+        <div class="event-title">🔥 San Juan 2026</div>
+        <div class="event-description">Gestión de asistentes y buffet compartido</div>
+      </a>
+      <div id="proclamation-event"></div>
+      <!-- Acceso directo a la página del evento de Halloween. -->
+      <a class="event" href="/halloween.html">
+        <div class="event-title">🎃 Halloween</div>
+        <div class="event-description">Acceder al evento</div>
+      </a>
+      <!-- Acceso directo a la página de la comida de Navidad. -->
+      <a class="event" href="/comida-navidad.html">
+        <div class="event-title">🎄 Comida de Navidad</div>
+        <div class="event-description">Acceder al evento</div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
