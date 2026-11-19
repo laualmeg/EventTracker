@@ -5,7 +5,8 @@ if (!eventoProclamacion) {
   throw new Error("No se encontró el contenedor del evento de Proclamación.");
 }
 
-const estaDisponible = new Date() < fechaLimite;
+//const estaDisponible = new Date() < fechaLimite;
+const estaDisponible = true;
 const tarjetaEvento = document.createElement(estaDisponible ? "a" : "div");
 tarjetaEvento.className = estaDisponible ? "event" : "event event-unavailable";
 
