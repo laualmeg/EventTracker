@@ -444,28 +444,6 @@
 
         </div>
 
-        <!-- DATOS ASISTENTES -->
-
-        <!-- <div class="section">
-
-          <h2>Datos de los asistentes</h2>
-
-          <div class="grid">
-
-            <div>
-              <label>¿Qué va a comer cada persona?</label>
-
-              <div id="grupoAdultos" class="grupo-comidas">
-                <div class="grupo-titulo">Adultos</div>
-                <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
-                <!-- <div id="comidasAdultos" class="comidas-lista"></div>
-              </div>
-            </div>
-
-          </div>
-
-        </div> --> -->
-
         <!-- BOTONES -->
         <div class="buttons">
 
@@ -553,43 +531,6 @@
     const mensajeOk = document.getElementById("mensajeOk");
 
     const mensajeError = document.getElementById("mensajeError");
-
-    // const comidasAdultos = document.getElementById("comidasAdultos");
-
-    // // Funcion actualizar comidas
-    // function actualizarComidas(){
-    //   // convierte el numero de adultos de string a entero y evita trabajar con cantidades inferiores a cero
-    //   const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
-
-    //   // innerHTML permite introducir código HTML dentro de un elemento. 
-    //   // Por tanto, llama a otra función que construye los selectores de comida.
-    //   comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
-
-    //   // Si hay adultos, muestra el apartado. Si no hay, lo oculta.
-    //   document.getElementById("grupoAdultos").style.display =
-    //     adultos > 0 ? "block" : "none";
-    // }
-
-    // // Función crearOpcionesComida()
-    // // genera tantos selectores como personas haya.
-    // function crearOpcionesComida(tipo, cantidad){
-    //   // Array.from() Crea un array a partir de una estructura con una longitud determinada.
-    //   return Array.from({ length: cantidad }, (_, indice) => `
-    //     <div class="comida-persona">
-    //       <span>${tipo} ${indice + 1}</span>
-    //       <select name="${tipo.toLowerCase()}-${indice}" aria-label="Comida ${tipo.toLowerCase()} ${indice + 1}">
-    //         <option value="carne">Carne</option>
-    //         <option value="pescado">Pescado</option>
-    //       </select>
-    //     </div>
-    //   `).join("");
-    // }
-
-    // // Eventos: detectar cambios del usuario
-    // adultosInput.addEventListener("input", actualizarComidas);
-    // infantilesInput.addEventListener("input", actualizarComidas);
-
-    // actualizarComidas();
 
     //        <!-- ===================================================== -->
     //        <!-- Aviso construcción:  Deshabilita los botones -->
