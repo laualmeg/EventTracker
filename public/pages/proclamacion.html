@@ -1,36 +1,47 @@
+<!-- =========================================================
+    Estructura general del documento HTML
+    ========================================================= -->
+
 <!DOCTYPE html>
 <html lang="es">
+
+<!-- =========================================================
+    <head> contiene información de configuración y estilos.
+    ========================================================= -->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" /> <!--Permite mostrar correctamente caracteres especiales, como las tildes, la ñ y otros caracteres del español. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Hace que la página se adapte al tamaño de la pantalla del dispositivo. -->
 
   <title>Proclamación Falleras Mayores 2027: Belén y Julia</title>
 
+  <!-- =========================================================
+    CSS: diseño de la página
+    ========================================================= -->
   <style>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    *{  /* El selector * significa que se aplica a todos los elementos HTML.   */
+      margin:0; /* elimina los márgenes predeterminados. */
+      padding:0; /* elimina los rellenos predeterminados. */
+      box-sizing:border-box; /* hace que el tamaño de los elementos incluya el padding y el borde.. */
       font-family:Segoe UI, sans-serif;
     }
 
-    body{
+    body{ /* Diseño del fondo. Fondo gris claro, separación 30 pixeles respecto a los bordes  */
       background:#f3f4f6;
       padding:30px;
       color:#1f2937;
     }
 
-    .container{
+    .container{ /* Distribución de las dos columnas */
       max-width:1400px;
-      margin:auto;
+      margin:auto; /* centra el contenido*/
 
       display:grid;
-      grid-template-columns:2fr 1fr;
+      grid-template-columns:2fr 1fr; /* crea dos columnas. La primera ocupa el doble que la segunda */ 
       gap:25px;
     }
 
-    .card{
+    .card{ /* Define las tarjetas blancas donde se agrupa el contenido. */
       background:white;
       border-radius:20px;
       padding:30px;
@@ -247,6 +258,7 @@
       border-radius:12px;
     }
 
+    /* Diseño adaptable a móviles. Significa que cuando la pantalla tiene una anchura máxima de 900 píxeles, las dos columnas se convierten en una sola. Es decir, el formulario y el resumen pasan a colocarse uno debajo del otro. */
     @media(max-width:900px){
 
       .container{
@@ -271,6 +283,9 @@
   </style>
 </head>
 
+<!-- =========================================================
+    <body> contiene todo lo que verá el usuario en pantalla.
+    ========================================================= -->
 <body>
 
   <div style="max-width:1400px; margin:auto;">
@@ -283,6 +298,10 @@
   </a>
 
   </div>
+
+  <!-- =====================================================
+    CONTENEDOR PRINCIPAL
+    ===================================================== -->
 
   <div class="container">
 
@@ -312,6 +331,7 @@
 
             <div>
               <label>Nombre y apellidos *</label>
+              <!-- input: campo de texto para introducir el nombre y los apellidos -->
               <input type="text" id="nombre" placeholder="Ej. Rubén García" required />
             </div>
 
@@ -337,6 +357,7 @@
 
               <label>Adultos</label>
 
+              <!-- permite introducir el número de adultos, value: valor inicial que aparece, en este caso 2 -->
               <input type="number" id="adultos" min="0" step="1" value="2" />
 
             </div>
@@ -374,6 +395,7 @@
 
               <div id="grupoAdultos" class="grupo-comidas">
                 <div class="grupo-titulo">Adultos</div>
+                <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
                 <div id="comidasAdultos" class="comidas-lista"></div>
               </div>
             </div>
@@ -388,6 +410,7 @@
           <p class="ayuda-persona">
             Indica para cada adulto e infantil sus alergias o intolerancias y tipo de alimentación.
           </p>
+          <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
           <div id="datosDieteticosPersonas" style="margin-top:18px;"></div>
         </div>
 
@@ -485,8 +508,12 @@
 
   </div>
 
+    <!-- =========================================================
+    JavaScript: la parte que hace funcionar la aplicación
+    ========================================================= -->
   <script> // Frontend JavaScript
 
+    /* Obtiene los datos del HTML busca los id = "" */
     const adultosInput = document.getElementById("adultos");
 
     const infantilesInput = document.getElementById("infantiles");
@@ -497,16 +524,24 @@
 
     const comidasAdultos = document.getElementById("comidasAdultos");
 
+    // Funcion actualizar comidas
     function actualizarComidas(){
+      // convierte el numero de adultos de string a entero y evita trabajar con cantidades inferiores a cero
       const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
 
+      // innerHTML permite introducir código HTML dentro de un elemento. 
+      // Por tanto, llama a otra función que construye los selectores de comida.
       comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
 
+      // Si hay adultos, muestra el apartado. Si no hay, lo oculta.
       document.getElementById("grupoAdultos").style.display =
         adultos > 0 ? "block" : "none";
     }
 
+    // Función crearOpcionesComida()
+    // genera tantos selectores como personas haya.
     function crearOpcionesComida(tipo, cantidad){
+      // Array.from() Crea un array a partir de una estructura con una longitud determinada.
       return Array.from({ length: cantidad }, (_, indice) => `
         <div class="comida-persona">
           <span>${tipo} ${indice + 1}</span>
@@ -517,13 +552,17 @@
         </div>
       `).join("");
     }
+
+    /* Gestión de alergias y dietas */
     const contenedorDietetico = document.getElementById("datosDieteticosPersonas");
 
+    // array que contiene todas las alergias que se pueden seleccionar.
     const alergiasOpciones = [
       "Ninguna","Apio","Cacahuete","Frutos secos","Gluten / trigo","Huevo",
       "Leche / lactosa","Marisco","Mostaza","Otra","Pescado","Soja","Sulfitos","Sésamo"
     ];
 
+    // Función opcionesSelect() Esta función genera un desplegable HTML.
     function opcionesSelect(lista, prefijo, personaIndex) {
       return `
         <select name="${prefijo}-${personaIndex}"
@@ -534,7 +573,9 @@
       `;
     }
 
+    // Función crearFichaDietetica() Esta función genera una ficha individual para cada persona.
     function crearFichaDietetica(tipo, indice) {
+      // Genera identificadores diferentes para cada persona:
       const personaIndex = `${tipo}-${indice}`;
       return `
         <div class="persona-dietetica" data-persona="${personaIndex}">
@@ -561,6 +602,7 @@
         </div>`;
     }
 
+    // Actualizar observaciones obligatorias
     function actualizarEstadoObservaciones() {
       contenedorDietetico.querySelectorAll(".persona-dietetica").forEach(ficha => {
         const dieta = ficha.querySelector(".dieta-select")?.value || "Ninguna";
@@ -577,6 +619,7 @@
       });
     }
 
+    // Función actualizarDatosDieteticos() Esta función genera las fichas dietéticas de todas las personas.
     function actualizarDatosDieteticos() {
       const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
       const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
@@ -594,18 +637,24 @@
       actualizarEstadoObservaciones();
     }
 
+    // Obtener datos dietéticos. Genera el json con los datos 
     function obtenerDatosDieteticos() {
-      return [...contenedorDietetico.querySelectorAll(".persona-dietetica")].map(ficha => {
-        const persona = ficha.dataset.persona;
-        return {
-          persona,
-          alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
-          tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
-          observaciones: ficha.querySelector("textarea")?.value.trim() || ""
-        };
-      });
+      return [
+        // querySelectorAll(): busca todos los elementos que coinciden con un selector CSS.
+        // map(): transforma las fichas en objetos JavaScript.
+        ...contenedorDietetico.querySelectorAll(".persona-dietetica")].map(ficha => {
+          // dataset.persona: obtiene el atributo data-persona del HTML.
+          const persona = ficha.dataset.persona;
+          return {
+            persona,
+            alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
+            tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
+            observaciones: ficha.querySelector("textarea")?.value.trim() || ""
+          };
+        });
     }
 
+    // Eventos: detectar cambios del usuario
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
     adultosInput.addEventListener("input", actualizarDatosDieteticos);
@@ -614,20 +663,26 @@
     actualizarComidas();
     actualizarDatosDieteticos();
 
-    // GUARDAR REGISTRO REAL
+    // Confirmar asistencia: guardar los datos
+    // Conecta el frontend con el backend
+    // Significa que cuando el usuario pulsa el botón «Confirmar asistencia», se ejecuta esta función.
     document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
       event.preventDefault();
 
       mensajeOk.classList.add("hidden");
       mensajeError.classList.add("hidden");
 
+      // Recoger los platos seleccionados. Obtiene la comida seleccionada por cada adulto
       const comidasSeleccionadas = [...comidasAdultos.querySelectorAll("select")].map(select => select.value);
 
+      // Cuenta cuántos adultos han seleccionado carne.
       const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "carne").length;
+      // Cuenta cuántos han seleccionado pescado.
       const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "pescado").length;
 
       const datosDieteticos = obtenerDatosDieteticos();
 
+      // Construir el objeto datos: Aquí construimos un objeto JavaScript (tipo json) que contiene toda la información que queremos guardar.
       const datos = {
         nombre: document.getElementById("nombre").value,
         adultos: parseInt(document.getElementById("adultos").value),
@@ -637,11 +692,13 @@
         adultosPescado: comidasAdultosPescado,
 
         // Compatibilidad con el backend actual + detalle individual.
+        // JSON.stringify() Convierte un objeto o array de JavaScript en una cadena de texto con formato JSON.
         alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
         tipoDieta: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, tipoDieta:p.tipoDieta}))),
         asistentesDieteticos: datosDieteticos
       };
 
+      // Validaciones antes de guardar
       if (datos.adultos < 0 || datos.infantiles < 0) {
         mensajeError.textContent = "Adultos e infantiles no pueden ser negativos.";
         mensajeError.classList.remove("hidden");
@@ -674,6 +731,7 @@
 
       console.log("DATOS:", datos);
 
+      // Comunicación con el backend mediante FETCH. Estamos enviando la información del formulario al servidor.
       try{
         const response = await fetch("/api/registrarEvento?evento=proclamacion",
           {
@@ -685,6 +743,12 @@
 
         const resultado = await response.json();
 
+        // Convierte la respuesta del servidor en un objeto JavaScript.
+//         Si el servidor indica que todo ha ido bien:
+// Muestra el mensaje de éxito.
+// Oculta el mensaje de error.
+// Actualiza el resumen de asistentes.
+// Si hay algún problema, muestra el mensaje de error devuelto por el backend.
         if(resultado.ok){
           mensajeOk.classList.remove("hidden");
           mensajeError.classList.add("hidden");
@@ -701,6 +765,11 @@
     });
 
     // EXPORTAR EXCEL
+//     Cuando pulsamos el botón:
+// JavaScript detecta el clic.
+// Cambia la dirección del navegador.
+// Accede al endpoint /api/exportarExcelEvento.
+// El backend genera y devuelve el Excel.
 
     document
       .getElementById("btnExcel")

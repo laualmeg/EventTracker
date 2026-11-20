@@ -1,0 +1,949 @@
+<!-- =========================================================
+    Estructura general del documento HTML
+    ========================================================= -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<!-- =========================================================
+    <head> contiene información de configuración y estilos.
+    ========================================================= -->
+<head>
+  <meta charset="UTF-8" /> <!--Permite mostrar correctamente caracteres especiales, como las tildes, la ñ y otros caracteres del español. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Hace que la página se adapte al tamaño de la pantalla del dispositivo. -->
+
+  <title>Comida Navidad 12 Diciembre 2026</title>
+
+  <!-- =========================================================
+    CSS: diseño de la página
+    ========================================================= -->
+  <style>
+
+    /* ========================================================= */
+    /* Aviso de evento en construcción */
+    .aviso-construccion {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      border-left: 5px solid #f97316;
+      color: #9a3412;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin: 20px 0 25px;
+    }
+
+    .aviso-construccion .icono {
+      font-size: 25px;
+    }
+
+    .aviso-construccion strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .aviso-construccion p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Botones deshabilitados */
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    /* Fin: Aviso de evento en construcción */
+    /* ========================================================= */
+
+    *{  /* El selector * significa que se aplica a todos los elementos HTML.   */
+      margin:0; /* elimina los márgenes predeterminados. */
+      padding:0; /* elimina los rellenos predeterminados. */
+      box-sizing:border-box; /* hace que el tamaño de los elementos incluya el padding y el borde.. */
+      font-family:Segoe UI, sans-serif;
+    }
+
+    body{ /* Diseño del fondo. Fondo gris claro, separación 30 pixeles respecto a los bordes  */
+      background:#f3f4f6;
+      padding:30px;
+      color:#1f2937;
+    }
+
+    .container{ /* Distribución de las dos columnas */
+      max-width:1400px;
+      margin:auto; /* centra el contenido*/
+
+      display:grid;
+      grid-template-columns:2fr 1fr; /* crea dos columnas. La primera ocupa el doble que la segunda */ 
+      gap:25px;
+    }
+
+    .card{ /* Define las tarjetas blancas donde se agrupa el contenido. */
+      background:white;
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    h1{
+      font-size:38px;
+      margin-bottom:10px;
+    }
+
+    .event-info {
+      margin: 6px 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    p.subtitle{
+      color:#6b7280;
+      margin-bottom:35px;
+    }
+
+    .section{
+      margin-bottom:40px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-size:15px;
+    }
+
+    .radio-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-top:8px;
+    }
+
+    .radio-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:auto;
+      min-width:170px;
+      background:#f9fafb;
+      border:1px solid #d1d5db;
+      border-radius:12px;
+      padding:12px 16px;
+      font-weight:600;
+    }
+
+    .radio-option input{
+      width:auto;
+      margin:0;
+    }
+
+    .comidas-lista{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .grupo-comidas{
+      margin-bottom:18px;
+    }
+
+    .grupo-titulo{
+      font-weight:700;
+      margin:8px 0 10px;
+      color:#374151;
+    }
+
+    .comida-persona{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:10px 12px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+    }
+
+    .comida-persona select{
+      width:auto;
+      min-width:130px;
+      padding:8px 10px;
+    }
+
+    .counter-card{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:20px;
+      border:1px solid #e5e7eb;
+    }
+
+    .buttons{
+      display:flex;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:15px 25px;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:#2563eb;
+      color:white;
+    }
+
+    .btn-green{
+      background:#16a34a;
+      color:white;
+    }
+
+    .sidebar-title{
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    .plato{
+      background:#eff6ff;
+      padding:12px 15px;
+      border-radius:12px;
+      margin-bottom:10px;
+    }
+
+    .plato-kids{
+      background:#fdf2f8;
+    }
+
+    .summary-item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      font-size:16px;
+    }
+
+    .diet-summary-title{
+      display:block;
+      margin-bottom:12px;
+    }
+
+    .badge{
+      background:#dbeafe;
+      color:#1d4ed8;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:14px;
+    }
+
+
+    .persona-dietetica{background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin-bottom:14px}
+    .persona-dietetica h3{margin-bottom:14px;font-size:17px;color:#374151}
+    .checks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:8px}
+    .check-option{display:flex;align-items:center;gap:8px;background:white;border:1px solid #d1d5db;border-radius:10px;padding:9px 11px;font-weight:500;cursor:pointer}
+    .check-option input{width:auto;margin:0}
+    .campo-persona{margin-top:14px}
+    .campo-persona textarea{width:100%;min-height:70px;padding:11px;border-radius:10px;border:1px solid #d1d5db;font-size:14px;resize:vertical;font-family:inherit}
+    .ayuda-persona{color:#6b7280;font-size:13px;margin-top:6px}
+
+
+    .persona-dietetica select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+      background:white;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+    .success{
+      margin-top:20px;
+      padding:15px;
+      background:#dcfce7;
+      color:#166534;
+      border-radius:12px;
+    }
+
+    .error{
+      margin-top:20px;
+      padding:15px;
+      background:#fee2e2;
+      color:#991b1b;
+      border-radius:12px;
+    }
+
+    /* Diseño adaptable a móviles. Significa que cuando la pantalla tiene una anchura máxima de 900 píxeles, las dos columnas se convierten en una sola. Es decir, el formulario y el resumen pasan a colocarse uno debajo del otro. */
+    @media(max-width:900px){
+
+      .container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    /* Botón volver al menú principal */
+    .volver-menu {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .volver-menu:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+
+<!-- =========================================================
+    <body> contiene todo lo que verá el usuario en pantalla.
+    ========================================================= -->
+<body>
+
+  <div style="max-width:1400px; margin:auto;">
+
+    <!-- <a href="/index.html" class="volver-menu">
+      ← Volver al menú principal
+    </a> -->
+  <a href="/" class="volver-menu">
+  ← Volver al menú principal
+  </a>
+
+  </div>
+
+  <!-- =====================================================
+    CONTENEDOR PRINCIPAL
+    ===================================================== -->
+
+  <div class="container">
+
+    <!-- IZQUIERDA -->
+
+    <div>
+
+      <div class="card">
+
+        <h1> Comida Navidad 2026</h1>
+
+        <!-- ===================================================== -->
+        <!-- Aviso construcción -->
+        <div class="aviso-construccion">
+
+          <div class="icono">🚧</div>
+
+          <div>
+            <strong>Evento en construcción y fase de pruebas</strong>
+
+            <p>
+              Estamos preparando este evento y realizando pruebas
+              para garantizar su correcto funcionamiento.
+              <br>
+              <strong>La inscripción todavía no está disponible.</strong>
+              Próximamente anunciaremos cuándo se abrirá el plazo
+              de inscripción.
+            </p>
+          </div>
+
+        </div>
+        <!-- Fin: Aviso construcción -->
+        <!-- ===================================================== -->
+
+        <p class="event-info">12 Diciembre 2026</p>
+        <!-- <p class="event-info">
+          Racó de L'Arnau. Av. de les Corts Valencianes, 39, Campanar, 46015 València, Valencia
+        </p> -->
+        <div class="event-info">
+          <strong>Menú:</strong> Arroz al horno
+        </div>
+
+        <div class="event-info">
+          <strong>Precio adultos:</strong> 10 € por persona
+        </div>
+
+        <div class="event-info">
+          <strong>Precio infantiles:</strong> 8 € por persona
+        </div>
+
+        <p class="subtitle">
+          Gestión de asistentes
+        </p>
+
+        <!-- DATOS FAMILIA -->
+
+        <div class="section">
+
+          <h2>Datos inscripción</h2>
+
+          <div class="grid">
+
+            <div>
+              <label>Nombre y apellidos *</label>
+              <!-- input: campo de texto para introducir el nombre y los apellidos -->
+              <input type="text" id="nombre" placeholder="Ej. Rubén García" required />
+            </div>
+
+            <!-- <div>
+              <label>Persona contacto</label>
+
+              <input type="text" id="contacto" placeholder="Ej. María García" />
+            </div> -->
+
+          </div>
+
+        </div>
+
+        <!-- ASISTENTES -->
+
+        <div class="section">
+
+          <h2>Asistentes</h2>
+
+          <div class="grid">
+
+            <div class="counter-card">
+
+              <label>Adultos</label>
+
+              <!-- permite introducir el número de adultos, value: valor inicial que aparece, en este caso 2 -->
+              <input type="number" id="adultos" min="0" step="1" value="2" />
+
+            </div>
+
+            <!-- <div class="counter-card">
+
+              <label>Juveniles (12-18)</label>
+
+              <input type="number" id="juveniles" min="0" step="1" value="0" />
+
+            </div> -->
+
+            <div class="counter-card">
+
+              <label>Infantiles (&lt;14)</label>
+
+              <input type="number" id="infantiles" min="0" step="1" value="0" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- DATOS ASISTENTES -->
+
+        <div class="section">
+
+          <h2>Datos de los asistentes</h2>
+
+          <div class="grid">
+
+            <div>
+              <label>¿Qué va a comer cada persona?</label>
+
+              <div id="grupoAdultos" class="grupo-comidas">
+                <div class="grupo-titulo">Adultos</div>
+                <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
+                <div id="comidasAdultos" class="comidas-lista"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- INFORMACIÓN DIETÉTICA POR PERSONA -->
+        <!-- <div class="section">
+          <h2>Información dietética y alergias por persona</h2>
+          <p class="ayuda-persona">
+            Indica para cada adulto e infantil sus alergias o intolerancias y tipo de alimentación.
+          </p> -->
+          <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
+          <!-- <div id="datosDieteticosPersonas" style="margin-top:18px;"></div>
+        </div> -->
+
+        <!-- BOTONES -->
+        <div class="buttons">
+
+        <!-- ===================================================== -->
+        <!-- Aviso construcción:  Deshabilita los botones -->
+          <!-- <button class="btn-primary" id="btnConfirmar" >
+            Confirmar asistencia
+          </button>
+
+          <button class="btn-green" id="btnExcel" >
+            Exportar Excel
+          </button> -->
+
+          <button class="btn-primary" id="btnConfirmar" disabled>
+            Inscripción próximamente
+          </button>
+
+          <button class="btn-green" id="btnExcel" disabled>
+            Exportar Excel
+          </button>
+
+        <!-- Fin: Aviso construcción. Habilitar los botones -->
+        <!-- ===================================================== -->
+
+        </div>
+
+        <div id="mensajeOk" class="success hidden">
+          Registro guardado correctamente
+        </div>
+
+        <div id="mensajeError" class="error hidden">
+          Error guardando el registro
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DERECHA -->
+
+    <div>
+
+      <!-- RESUMEN -->
+
+      <div class="card" style="margin-bottom:25px;">
+
+        <h2 class="sidebar-title">
+          Resumen
+        </h2>
+
+        <!-- ASISTENTES -->
+        <!-- <h3>Asistentes</h3> -->
+
+        <div class="summary-item">
+          <span>Adultos</span>
+          <strong id="totalAdultos">0</strong>
+        </div>
+
+        <!-- <div class="summary-item">
+          <span>Juveniles</span>
+          <strong id="totalJuveniles">0</strong>
+        </div> -->
+
+        <div class="summary-item">
+          <span>Infantiles</span>
+          <strong id="totalInfantiles">0</strong>
+        </div>
+
+      </div>
+
+      <!-- TIPO DE PLATO -->
+
+      <!-- <div class="card" style="margin-bottom:25px;">
+
+        <h2 class="sidebar-title">Tipo de plato</h2>
+
+        <div class="summary-item">
+          <span>Carne</span>
+          <strong id="totalCarne">0</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Pescado</span>
+          <strong id="totalPescado">0</strong>
+        </div>
+
+      </div> -->
+
+      <!-- INFORMACIÓN DIETÉTICA -->
+
+      <!-- <div class="card">
+
+        <h2 class="sidebar-title">Información dietética y alergias</h2>
+
+        <div id="resumenDietetico">
+          <p style="color:#6b7280;">
+            No hay información dietética registrada.
+          </p>
+        </div>
+
+      </div> -->
+
+    </div>
+
+  </div>
+
+    <!-- =========================================================
+    JavaScript: la parte que hace funcionar la aplicación
+    ========================================================= -->
+  <script> // Frontend JavaScript
+
+    /* Obtiene los datos del HTML busca los id = "" */
+    const adultosInput = document.getElementById("adultos");
+
+    const infantilesInput = document.getElementById("infantiles");
+
+    const mensajeOk = document.getElementById("mensajeOk");
+
+    const mensajeError = document.getElementById("mensajeError");
+
+    const comidasAdultos = document.getElementById("comidasAdultos");
+
+    // Funcion actualizar comidas
+    function actualizarComidas(){
+      // convierte el numero de adultos de string a entero y evita trabajar con cantidades inferiores a cero
+      const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
+
+      // innerHTML permite introducir código HTML dentro de un elemento. 
+      // Por tanto, llama a otra función que construye los selectores de comida.
+      comidasAdultos.innerHTML = crearOpcionesComida("Adulto", adultos);
+
+      // Si hay adultos, muestra el apartado. Si no hay, lo oculta.
+      document.getElementById("grupoAdultos").style.display =
+        adultos > 0 ? "block" : "none";
+    }
+
+    // Función crearOpcionesComida()
+    // genera tantos selectores como personas haya.
+    function crearOpcionesComida(tipo, cantidad){
+      // Array.from() Crea un array a partir de una estructura con una longitud determinada.
+      return Array.from({ length: cantidad }, (_, indice) => `
+        <div class="comida-persona">
+          <span>${tipo} ${indice + 1}</span>
+          <select name="${tipo.toLowerCase()}-${indice}" aria-label="Comida ${tipo.toLowerCase()} ${indice + 1}">
+            <option value="carne">Carne</option>
+            <option value="pescado">Pescado</option>
+          </select>
+        </div>
+      `).join("");
+    }
+
+    // /* Gestión de alergias y dietas */
+    // const contenedorDietetico = document.getElementById("datosDieteticosPersonas");
+
+    // // array que contiene todas las alergias que se pueden seleccionar.
+    // const alergiasOpciones = [
+    //   "Ninguna","Apio","Cacahuete","Frutos secos","Gluten / trigo","Huevo",
+    //   "Leche / lactosa","Marisco","Mostaza","Otra","Pescado","Soja","Sulfitos","Sésamo"
+    // ];
+
+    // // Función opcionesSelect() Esta función genera un desplegable HTML.
+    // function opcionesSelect(lista, prefijo, personaIndex) {
+    //   return `
+    //     <select name="${prefijo}-${personaIndex}"
+    //             class="${prefijo}-select"
+    //             data-persona="${personaIndex}">
+    //       ${lista.map(opcion => `<option value="${opcion}">${opcion}</option>`).join("")}
+    //     </select>
+    //   `;
+    // }
+
+    // // Función crearFichaDietetica() Esta función genera una ficha individual para cada persona.
+    // function crearFichaDietetica(tipo, indice) {
+    //   // Genera identificadores diferentes para cada persona:
+    //   const personaIndex = `${tipo}-${indice}`;
+    //   return `
+    //     <div class="persona-dietetica" data-persona="${personaIndex}">
+    //       <h3>${tipo} ${indice}</h3>
+
+    //       <div>
+    //         <label>Alergias o intolerancias</label>
+    //         ${opcionesSelect(alergiasOpciones, "alergia", personaIndex)}
+    //       </div>
+
+    //       <div class="campo-persona">
+    //         <label>Tipo de alimentación</label>
+    //         ${opcionesSelect(
+    //           ["Ninguna", "Otra", "Ovolactovegetariano", "Pescetariano", "Vegano", "Vegetariano"],
+    //           "dieta",
+    //           personaIndex
+    //         )}
+    //       </div>
+
+    //       <div class="campo-persona">
+    //         <label>Observaciones</label>
+    //         <textarea placeholder="Indica cualquier detalle importante o una indicación para el catering."></textarea>
+    //       </div>
+    //     </div>`;
+    // }
+
+    // // Actualizar observaciones obligatorias
+    // function actualizarEstadoObservaciones() {
+    //   contenedorDietetico.querySelectorAll(".persona-dietetica").forEach(ficha => {
+    //     const dieta = ficha.querySelector(".dieta-select")?.value || "Ninguna";
+    //     const alergia = ficha.querySelector(".alergia-select")?.value || "Ninguna";
+    //     const textarea = ficha.querySelector("textarea");
+    //     const requiereObservaciones = dieta === "Otra" || alergia === "Otra";
+
+    //     if (textarea) {
+    //       textarea.required = requiereObservaciones;
+    //       textarea.placeholder = requiereObservaciones
+    //         ? "Obligatorio: indica qué opción concreta corresponde a 'Otra'."
+    //         : "Indica cualquier detalle importante o una indicación para el catering.";
+    //     }
+    //   });
+    // }
+
+    // // Función actualizarDatosDieteticos() Esta función genera las fichas dietéticas de todas las personas.
+    // function actualizarDatosDieteticos() {
+    //   const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
+    //   const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
+    //   let contenido = "";
+
+    //   for (let i = 1; i <= adultos; i++) contenido += crearFichaDietetica("Adulto", i);
+    //   for (let i = 1; i <= infantiles; i++) contenido += crearFichaDietetica("Infantil", i);
+
+    //   contenedorDietetico.innerHTML = contenido || '<p style="color:#6b7280;">Indica primero el número de adultos e infantiles.</p>';
+
+    //   contenedorDietetico.querySelectorAll(".dieta-select, .alergia-select").forEach(select => {
+    //     select.addEventListener("change", actualizarEstadoObservaciones);
+    //   });
+
+    //   actualizarEstadoObservaciones();
+    // }
+
+    // // Obtener datos dietéticos. Genera el json con los datos 
+    // function obtenerDatosDieteticos() {
+    //   return [
+    //     // querySelectorAll(): busca todos los elementos que coinciden con un selector CSS.
+    //     // map(): transforma las fichas en objetos JavaScript.
+    //     ...contenedorDietetico.querySelectorAll(".persona-dietetica")].map(ficha => {
+    //       // dataset.persona: obtiene el atributo data-persona del HTML.
+    //       const persona = ficha.dataset.persona;
+    //       return {
+    //         persona,
+    //         alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
+    //         tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
+    //         observaciones: ficha.querySelector("textarea")?.value.trim() || ""
+    //       };
+    //     });
+    // }
+
+    // Eventos: detectar cambios del usuario
+    adultosInput.addEventListener("input", actualizarComidas);
+    infantilesInput.addEventListener("input", actualizarComidas);
+    // adultosInput.addEventListener("input", actualizarDatosDieteticos);
+    // infantilesInput.addEventListener("input", actualizarDatosDieteticos);
+
+    actualizarComidas();
+    //actualizarDatosDieteticos();
+
+    //        <!-- ===================================================== -->
+    //        <!-- Aviso construcción:  Deshabilita los botones -->
+    // Confirmar asistencia: guardar los datos
+    // Conecta el frontend con el backend
+    // Significa que cuando el usuario pulsa el botón «Confirmar asistencia», se ejecuta esta función.
+//     document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
+//       event.preventDefault();
+
+//       mensajeOk.classList.add("hidden");
+//       mensajeError.classList.add("hidden");
+
+//       // Recoger los platos seleccionados. Obtiene la comida seleccionada por cada adulto
+//       const comidasSeleccionadas = [...comidasAdultos.querySelectorAll("select")].map(select => select.value);
+
+//       // Cuenta cuántos adultos han seleccionado carne.
+//       const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "carne").length;
+//       // Cuenta cuántos han seleccionado pescado.
+//       const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "pescado").length;
+
+//       // const datosDieteticos = obtenerDatosDieteticos();
+
+//       // Construir el objeto datos: Aquí construimos un objeto JavaScript (tipo json) que contiene toda la información que queremos guardar.
+//       const datos = {
+//         nombre: document.getElementById("nombre").value,
+//         adultos: parseInt(document.getElementById("adultos").value),
+//         infantiles: parseInt(document.getElementById("infantiles").value),
+//         invitados: 0,
+//         adultosCarne: comidasAdultosCarne,
+//         adultosPescado: comidasAdultosPescado,
+
+//         // // Compatibilidad con el backend actual + detalle individual.
+//         // // JSON.stringify() Convierte un objeto o array de JavaScript en una cadena de texto con formato JSON.
+//         // alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
+//         // tipoDieta: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, tipoDieta:p.tipoDieta}))),
+//         // asistentesDieteticos: datosDieteticos
+//       };
+
+//       // Validaciones antes de guardar
+//       if (datos.adultos < 0 || datos.infantiles < 0) {
+//         mensajeError.textContent = "Adultos e infantiles no pueden ser negativos.";
+//         mensajeError.classList.remove("hidden");
+//         return;
+//       }
+
+//       if (comidasSeleccionadas.length !== datos.adultos) {
+//         mensajeError.textContent = "Indica la comida de cada adulto.";
+//         mensajeError.classList.remove("hidden");
+//         return;
+//       }
+
+//       // if (datosDieteticos.length !== datos.adultos + datos.infantiles) {
+//       //   mensajeError.textContent = "Indica la información dietética de cada adulto e infantil.";
+//       //   mensajeError.classList.remove("hidden");
+//       //   return;
+//       // }
+
+//       // const hayOtraSinObservacion = datosDieteticos.some(p => {
+//       //   const dietaOtra = p.tipoDieta === "Otra";
+//       //   const alergiaOtra = Array.isArray(p.alergias) ? p.alergias.includes("Otra") : p.alergias === "Otra";
+//       //   return (dietaOtra || alergiaOtra) && !p.observaciones.trim();
+//       // });
+
+//       // if (hayOtraSinObservacion) {
+//       //   mensajeError.textContent = "Si eliges 'Otra' en alergias o tipo de alimentación, escribe el detalle en observaciones.";
+//       //   mensajeError.classList.remove("hidden");
+//       //   return;
+//       // }
+
+//       console.log("DATOS:", datos);
+
+//       // Comunicación con el backend mediante FETCH. Estamos enviando la información del formulario al servidor.
+//       try{
+//         const response = await fetch("/api/registrarEvento?evento=proclamacion",
+//           {
+//             method:"POST",
+//             headers:{"Content-Type":"application/json"},
+//             body:JSON.stringify(datos)
+//           }
+//         );
+
+//         const resultado = await response.json();
+
+//         // Convierte la respuesta del servidor en un objeto JavaScript.
+// //         Si el servidor indica que todo ha ido bien:
+// // Muestra el mensaje de éxito.
+// // Oculta el mensaje de error.
+// // Actualiza el resumen de asistentes.
+// // Si hay algún problema, muestra el mensaje de error devuelto por el backend.
+//         if(resultado.ok){
+//           mensajeOk.classList.remove("hidden");
+//           mensajeError.classList.add("hidden");
+//           await cargarResumen();
+//         } else {
+//           mensajeError.textContent = resultado.error || "Error guardando el registro";
+//           mensajeError.classList.remove("hidden");
+//         }
+//       } catch(error){
+//         console.error("ERROR FETCH:", error);
+//         mensajeError.textContent = error?.message || "Error guardando el registro";
+//         mensajeError.classList.remove("hidden");
+//       }
+//     });
+
+document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
+
+  event.preventDefault();
+
+  return; // Evento en construcción: no permitir inscripciones
+
+  // Resto del código...
+});
+
+    // EXPORTAR EXCEL
+//     Cuando pulsamos el botón:
+// JavaScript detecta el clic.
+// Cambia la dirección del navegador.
+// Accede al endpoint /api/exportarExcelEvento.
+// El backend genera y devuelve el Excel.
+
+    document
+      .getElementById("btnExcel")
+      .addEventListener("click", () => {
+
+      window.location.href = "/api/exportarExcelEvento?evento=proclamacion";
+
+    });
+
+    // CARGAR RESUMEN INICIAL
+
+    const totalAdultos = document.getElementById("totalAdultos");
+
+    const totalInfantiles = document.getElementById("totalInfantiles");
+
+    // const totalCarne = document.getElementById("totalCarne");
+
+    // const totalPescado = document.getElementById("totalPescado");
+
+    // function mostrarResumenDietetico(datos) {
+    //   const contenedor = document.getElementById("resumenDietetico");
+    //   if (!contenedor) return;
+
+      // const secciones = [
+      //   ["Dietas", datos.dieta],
+      //   ["Alergias o intolerancias", datos.alergias]
+      // ];
+
+      // contenedor.innerHTML = secciones.map(([titulo, opciones]) => {
+      //   const entradas = Object.entries(opciones || {})
+      //     .filter(([opcion]) => opcion !== "Ninguna")
+      //     .sort(([opcionA], [opcionB]) => opcionA.localeCompare(opcionB, "es", { sensitivity: "base" }));
+
+      //   if (!entradas.length) {
+      //     return "";
+      //   }
+
+      //   return `
+      //     <strong class="diet-summary-title">${titulo}</strong>
+      //     ${entradas.map(([opcion, total]) => `
+      //       <div class="summary-item">
+      //         <span>${opcion}</span>
+      //         <strong>${total}</strong>
+      //       </div>
+      //     `).join("")}
+      //   `;
+      // }).join("");
+    //}
+    
+    async function cargarResumen(){
+
+      try{
+
+        const response = await fetch("/api/resumenEvento?evento=proclamacion");
+
+        const datos = await response.json();
+
+        totalAdultos.textContent = datos.totalAdultos || 0;
+
+        totalInfantiles.textContent = datos.totalInfantiles || 0;
+
+        // totalCarne.textContent = datos.totalCarne || 0;
+
+        // totalPescado.textContent = datos.totalPescado || 0;
+
+        //mostrarResumenDietetico(datos);
+
+      } catch(error){
+
+        console.error("Error cargando resumen", error);
+
+      }
+
+  }
+
+  cargarResumen();
+
+  </script>
+
+</body>
+</html>
