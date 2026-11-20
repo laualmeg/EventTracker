@@ -328,9 +328,6 @@
 
   <div style="max-width:1400px; margin:auto;">
 
-    <!-- <a href="/index.html" class="volver-menu">
-      ← Volver al menú principal
-    </a> -->
   <a href="/" class="volver-menu">
   ← Volver al menú principal
   </a>
@@ -375,9 +372,7 @@
         <!-- ===================================================== -->
 
         <p class="event-info">12 Diciembre 2026</p>
-        <!-- <p class="event-info">
-          Racó de L'Arnau. Av. de les Corts Valencianes, 39, Campanar, 46015 València, Valencia
-        </p> -->
+
         <div class="event-info">
           <strong>Menú:</strong> Arroz al horno
         </div>
@@ -407,12 +402,6 @@
               <!-- input: campo de texto para introducir el nombre y los apellidos -->
               <input type="text" id="nombre" placeholder="Ej. Rubén García" required />
             </div>
-
-            <!-- <div>
-              <label>Persona contacto</label>
-
-              <input type="text" id="contacto" placeholder="Ej. María García" />
-            </div> -->
 
           </div>
 
@@ -457,7 +446,7 @@
 
         <!-- DATOS ASISTENTES -->
 
-        <div class="section">
+        <!-- <div class="section">
 
           <h2>Datos de los asistentes</h2>
 
@@ -469,23 +458,13 @@
               <div id="grupoAdultos" class="grupo-comidas">
                 <div class="grupo-titulo">Adultos</div>
                 <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
-                <div id="comidasAdultos" class="comidas-lista"></div>
+                <!-- <div id="comidasAdultos" class="comidas-lista"></div>
               </div>
             </div>
 
           </div>
 
-        </div>
-
-        <!-- INFORMACIÓN DIETÉTICA POR PERSONA -->
-        <!-- <div class="section">
-          <h2>Información dietética y alergias por persona</h2>
-          <p class="ayuda-persona">
-            Indica para cada adulto e infantil sus alergias o intolerancias y tipo de alimentación.
-          </p> -->
-          <!-- Contenedor dinámicos inicialmente vacios, JavaScript se encarga de introducir contenido dentro de el dependiendo del número de asistentes -->
-          <!-- <div id="datosDieteticosPersonas" style="margin-top:18px;"></div>
-        </div> -->
+        </div> --> -->
 
         <!-- BOTONES -->
         <div class="buttons">
@@ -557,38 +536,6 @@
 
       </div>
 
-      <!-- TIPO DE PLATO -->
-
-      <!-- <div class="card" style="margin-bottom:25px;">
-
-        <h2 class="sidebar-title">Tipo de plato</h2>
-
-        <div class="summary-item">
-          <span>Carne</span>
-          <strong id="totalCarne">0</strong>
-        </div>
-
-        <div class="summary-item">
-          <span>Pescado</span>
-          <strong id="totalPescado">0</strong>
-        </div>
-
-      </div> -->
-
-      <!-- INFORMACIÓN DIETÉTICA -->
-
-      <!-- <div class="card">
-
-        <h2 class="sidebar-title">Información dietética y alergias</h2>
-
-        <div id="resumenDietetico">
-          <p style="color:#6b7280;">
-            No hay información dietética registrada.
-          </p>
-        </div>
-
-      </div> -->
-
     </div>
 
   </div>
@@ -638,115 +585,11 @@
       `).join("");
     }
 
-    // /* Gestión de alergias y dietas */
-    // const contenedorDietetico = document.getElementById("datosDieteticosPersonas");
-
-    // // array que contiene todas las alergias que se pueden seleccionar.
-    // const alergiasOpciones = [
-    //   "Ninguna","Apio","Cacahuete","Frutos secos","Gluten / trigo","Huevo",
-    //   "Leche / lactosa","Marisco","Mostaza","Otra","Pescado","Soja","Sulfitos","Sésamo"
-    // ];
-
-    // // Función opcionesSelect() Esta función genera un desplegable HTML.
-    // function opcionesSelect(lista, prefijo, personaIndex) {
-    //   return `
-    //     <select name="${prefijo}-${personaIndex}"
-    //             class="${prefijo}-select"
-    //             data-persona="${personaIndex}">
-    //       ${lista.map(opcion => `<option value="${opcion}">${opcion}</option>`).join("")}
-    //     </select>
-    //   `;
-    // }
-
-    // // Función crearFichaDietetica() Esta función genera una ficha individual para cada persona.
-    // function crearFichaDietetica(tipo, indice) {
-    //   // Genera identificadores diferentes para cada persona:
-    //   const personaIndex = `${tipo}-${indice}`;
-    //   return `
-    //     <div class="persona-dietetica" data-persona="${personaIndex}">
-    //       <h3>${tipo} ${indice}</h3>
-
-    //       <div>
-    //         <label>Alergias o intolerancias</label>
-    //         ${opcionesSelect(alergiasOpciones, "alergia", personaIndex)}
-    //       </div>
-
-    //       <div class="campo-persona">
-    //         <label>Tipo de alimentación</label>
-    //         ${opcionesSelect(
-    //           ["Ninguna", "Otra", "Ovolactovegetariano", "Pescetariano", "Vegano", "Vegetariano"],
-    //           "dieta",
-    //           personaIndex
-    //         )}
-    //       </div>
-
-    //       <div class="campo-persona">
-    //         <label>Observaciones</label>
-    //         <textarea placeholder="Indica cualquier detalle importante o una indicación para el catering."></textarea>
-    //       </div>
-    //     </div>`;
-    // }
-
-    // // Actualizar observaciones obligatorias
-    // function actualizarEstadoObservaciones() {
-    //   contenedorDietetico.querySelectorAll(".persona-dietetica").forEach(ficha => {
-    //     const dieta = ficha.querySelector(".dieta-select")?.value || "Ninguna";
-    //     const alergia = ficha.querySelector(".alergia-select")?.value || "Ninguna";
-    //     const textarea = ficha.querySelector("textarea");
-    //     const requiereObservaciones = dieta === "Otra" || alergia === "Otra";
-
-    //     if (textarea) {
-    //       textarea.required = requiereObservaciones;
-    //       textarea.placeholder = requiereObservaciones
-    //         ? "Obligatorio: indica qué opción concreta corresponde a 'Otra'."
-    //         : "Indica cualquier detalle importante o una indicación para el catering.";
-    //     }
-    //   });
-    // }
-
-    // // Función actualizarDatosDieteticos() Esta función genera las fichas dietéticas de todas las personas.
-    // function actualizarDatosDieteticos() {
-    //   const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
-    //   const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
-    //   let contenido = "";
-
-    //   for (let i = 1; i <= adultos; i++) contenido += crearFichaDietetica("Adulto", i);
-    //   for (let i = 1; i <= infantiles; i++) contenido += crearFichaDietetica("Infantil", i);
-
-    //   contenedorDietetico.innerHTML = contenido || '<p style="color:#6b7280;">Indica primero el número de adultos e infantiles.</p>';
-
-    //   contenedorDietetico.querySelectorAll(".dieta-select, .alergia-select").forEach(select => {
-    //     select.addEventListener("change", actualizarEstadoObservaciones);
-    //   });
-
-    //   actualizarEstadoObservaciones();
-    // }
-
-    // // Obtener datos dietéticos. Genera el json con los datos 
-    // function obtenerDatosDieteticos() {
-    //   return [
-    //     // querySelectorAll(): busca todos los elementos que coinciden con un selector CSS.
-    //     // map(): transforma las fichas en objetos JavaScript.
-    //     ...contenedorDietetico.querySelectorAll(".persona-dietetica")].map(ficha => {
-    //       // dataset.persona: obtiene el atributo data-persona del HTML.
-    //       const persona = ficha.dataset.persona;
-    //       return {
-    //         persona,
-    //         alergias: [ficha.querySelector(".alergia-select")?.value || "Ninguna"],
-    //         tipoDieta: ficha.querySelector(".dieta-select")?.value || "Ninguna",
-    //         observaciones: ficha.querySelector("textarea")?.value.trim() || ""
-    //       };
-    //     });
-    // }
-
     // Eventos: detectar cambios del usuario
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
-    // adultosInput.addEventListener("input", actualizarDatosDieteticos);
-    // infantilesInput.addEventListener("input", actualizarDatosDieteticos);
 
     actualizarComidas();
-    //actualizarDatosDieteticos();
 
     //        <!-- ===================================================== -->
     //        <!-- Aviso construcción:  Deshabilita los botones -->
@@ -880,40 +723,6 @@ document.getElementById("btnConfirmar").addEventListener("click", async (event) 
     const totalAdultos = document.getElementById("totalAdultos");
 
     const totalInfantiles = document.getElementById("totalInfantiles");
-
-    // const totalCarne = document.getElementById("totalCarne");
-
-    // const totalPescado = document.getElementById("totalPescado");
-
-    // function mostrarResumenDietetico(datos) {
-    //   const contenedor = document.getElementById("resumenDietetico");
-    //   if (!contenedor) return;
-
-      // const secciones = [
-      //   ["Dietas", datos.dieta],
-      //   ["Alergias o intolerancias", datos.alergias]
-      // ];
-
-      // contenedor.innerHTML = secciones.map(([titulo, opciones]) => {
-      //   const entradas = Object.entries(opciones || {})
-      //     .filter(([opcion]) => opcion !== "Ninguna")
-      //     .sort(([opcionA], [opcionB]) => opcionA.localeCompare(opcionB, "es", { sensitivity: "base" }));
-
-      //   if (!entradas.length) {
-      //     return "";
-      //   }
-
-      //   return `
-      //     <strong class="diet-summary-title">${titulo}</strong>
-      //     ${entradas.map(([opcion, total]) => `
-      //       <div class="summary-item">
-      //         <span>${opcion}</span>
-      //         <strong>${total}</strong>
-      //       </div>
-      //     `).join("")}
-      //   `;
-      // }).join("");
-    //}
     
     async function cargarResumen(){
 
@@ -926,12 +735,6 @@ document.getElementById("btnConfirmar").addEventListener("click", async (event) 
         totalAdultos.textContent = datos.totalAdultos || 0;
 
         totalInfantiles.textContent = datos.totalInfantiles || 0;
-
-        // totalCarne.textContent = datos.totalCarne || 0;
-
-        // totalPescado.textContent = datos.totalPescado || 0;
-
-        //mostrarResumenDietetico(datos);
 
       } catch(error){
 
