@@ -496,7 +496,7 @@
 
         <!-- ===================================================== -->
         <!-- Aviso construcción -->
-        <div class="aviso-construccion">
+        <div class="aviso-construccion" id="avisoEvento">
 
           <div class="icono">🚧</div>
 
@@ -725,7 +725,15 @@
     ========================================================= -->
   <script> // Frontend JavaScript
 
+    // CONFIGURACIÓN DEL EVENTO
+    // - `true`: estás realizando pruebas. Puedes inscribir asistentes y exportar Excel.
+    // - `false`: evento en funcionamiento normal. Las inscripciones estarán disponibles para los usuarios.
+    const MODO_PRUEBAS = true;
+    const PERMITIR_INSCRIPCIONES = MODO_PRUEBAS;
+    const PERMITIR_EXPORTACION = MODO_PRUEBAS;
+
     /* Obtiene los datos del HTML busca los id = "" */
+    if (MODO_PRUEBAS) {
     const adultosInput = document.getElementById("adultos");
 
     const infantilesInput = document.getElementById("infantiles");
@@ -733,6 +741,7 @@
     const mensajeOk = document.getElementById("mensajeOk");
 
     const mensajeError = document.getElementById("mensajeError");
+    }
 
     //        <!-- ===================================================== -->
     //        <!-- Aviso construcción:  Deshabilita los botones -->
