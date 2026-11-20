@@ -318,6 +318,147 @@
       text-decoration: underline;
     }
 
+
+    /* =====================================
+     NUEVO DISEÑO INFORMACIÓN DEL EVENTO
+     ===================================== */
+    /* INFORMACIÓN DEL EVENTO */
+
+    .evento-info {
+    margin: 25px 0 30px;
+    padding: 20px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    }
+
+    .evento-fecha,
+    .evento-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    }
+
+    .evento-icono {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 21px;
+    }
+
+    .fecha-icono {
+    background: #eff6ff;
+    color: #2563eb;
+    }
+
+    .menu-icono {
+    background: #fff7ed;
+    color: #ea580c;
+    }
+
+    .evento-etiqueta {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 700;
+    letter-spacing: .5px;
+    margin-bottom: 5px;
+    }
+
+    .evento-fecha strong,
+    .evento-menu strong {
+    font-size: 16px;
+    color: #1f2937;
+    }
+
+    .evento-precios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 5px;
+    }
+
+    .precio-card {
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    }
+
+    .precio-card span {
+    font-size: 14px;
+    font-weight: 600;
+    }
+
+    .precio-card strong {
+    font-size: 27px;
+    }
+
+    .precio-card small {
+    font-size: 12px;
+    color: #6b7280;
+    }
+
+    .adultos-precio {
+    background: #eff6ff;
+    color: #1d4ed8;
+    }
+
+    .infantiles-precio {
+    background: #fdf2f8;
+    color: #be185d;
+    }
+
+    /* GESTIÓN DE ASISTENTES */
+
+    .gestion-asistentes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 35px 0 15px;
+    color: #1f2937;
+    }
+
+    .gestion-asistentes > i {
+    font-size: 23px;
+    color: #2563eb;
+    }
+
+    .gestion-asistentes h3 {
+    font-size: 21px;
+    margin-bottom: 4px;
+    }
+
+    .gestion-asistentes p {
+    font-size: 13px;
+    color: #6b7280;
+    }
+
+    /* ADAPTACIÓN A MÓVILES */
+
+    @media(max-width:500px) {
+    .evento-precios {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .evento-info {
+        padding: 15px;
+    }
+
+    .evento-fecha strong,
+    .evento-menu strong {
+        font-size: 14px;
+    }
+    }
+
+
   </style>
 </head>
 
@@ -371,7 +512,7 @@
         <!-- Fin: Aviso construcción -->
         <!-- ===================================================== -->
 
-        <p class="event-info">12 Diciembre 2026</p>
+        <!-- <p class="event-info">12 Diciembre 2026</p>
 
         <div class="event-info">
           <strong>Menú:</strong> Arroz al horno
@@ -387,7 +528,63 @@
 
         <p class="subtitle">
           Gestión de asistentes
-        </p>
+        </p> -->
+
+
+        <!-- INFORMACIÓN DEL EVENTO -->
+
+        <div class="evento-info">
+
+        <div class="evento-fecha">
+            <div class="evento-icono fecha-icono">
+            <i class="fa-regular fa-calendar-days"></i>
+            </div>
+
+            <div>
+            <span class="evento-etiqueta">FECHA DEL EVENTO</span>
+            <strong>Sábado, 12 de diciembre de 2026</strong>
+            </div>
+        </div>
+
+        <div class="evento-menu">
+            <div class="evento-icono menu-icono">
+            <i class="fa-solid fa-utensils"></i>
+            </div>
+
+            <div>
+            <span class="evento-etiqueta">MENÚ</span>
+            <strong>Arroz al horno</strong>
+            </div>
+        </div>
+
+        <div class="evento-precios">
+
+            <div class="precio-card adultos-precio">
+            <span>Adultos</span>
+            <strong>10 €</strong>
+            <small>Por persona</small>
+            </div>
+
+            <div class="precio-card infantiles-precio">
+            <span>Infantiles</span>
+            <strong>8 €</strong>
+            <small>Por persona</small>
+            </div>
+
+        </div>
+
+        </div>
+
+        <!-- GESTIÓN DE ASISTENTES -->
+
+        <div class="gestion-asistentes">
+        <i class="fa-solid fa-users"></i>
+        <div>
+            <h3>Gestión de asistentes</h3>
+            <p>Indica cuántos adultos e infantiles asistirán al evento.</p>
+        </div>
+        </div>
+
 
         <!-- DATOS FAMILIA -->
 
