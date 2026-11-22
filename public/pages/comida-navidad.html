@@ -525,6 +525,112 @@
     }
 
 
+    /* =====================================
+      RESUMEN DE PAGO
+      ===================================== */
+
+    .resumen-pago {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 15px;
+    }
+
+    .resumen-pago-titulo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      margin-bottom: 20px;
+      color: #1f2937;
+    }
+
+    .resumen-pago-titulo i {
+      color: #2563eb;
+      font-size: 21px;
+    }
+
+    .total-pago {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-top: 2px solid #d1d5db;
+      margin-top: 15px;
+      padding-top: 18px;
+      color: #166534;
+    }
+
+    .total-pago span {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .total-pago strong {
+      font-size: 27px;
+    }
+
+    /* DATOS TRANSFERENCIA */
+
+    .datos-transferencia {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .datos-transferencia h3 {
+      font-size: 17px;
+      margin-bottom: 12px;
+      color: #1e40af;
+    }
+
+    .datos-transferencia h3 i {
+      margin-right: 7px;
+    }
+
+    .datos-transferencia > p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .dato-bancario {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 11px 0;
+      border-bottom: 1px solid #bfdbfe;
+    }
+
+    .dato-bancario span {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .dato-bancario strong {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .aviso-transferencia {
+      margin-top: 15px;
+      color: #1e40af;
+    }
+
+    @media(max-width:500px) {
+      .total-pago strong {
+        font-size: 23px;
+      }
+
+      .datos-transferencia,
+      .resumen-pago {
+        padding: 15px;
+      }
+    }
+
   </style>
 </head>
 
@@ -772,6 +878,71 @@
 
           </div>
 
+        
+        <!-- RESUMEN DE INSCRIPCIÓN Y PAGO -->
+        <div class="section">
+
+          <h2>Resumen de inscripción y pago</h2>
+
+          <div class="resumen-pago">
+
+            <div class="resumen-pago-titulo">
+              <i class="fa-solid fa-receipt"></i>
+              <strong>Importe de la inscripción</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Adultos (10 €)</span>
+              <strong id="totalAdultosPago">0 €</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>Infantiles (8 €)</span>
+              <strong id="totalInfantilesPago">0 €</strong>
+            </div>
+
+            <div class="total-pago">
+              <span>TOTAL A PAGAR</span>
+              <strong id="importeTotal">0,00 €</strong>
+            </div>
+
+          </div>
+
+          <!-- DATOS PARA REALIZAR LA TRANSFERENCIA -->
+          <div class="datos-transferencia">
+
+            <h3><i class="fa-solid fa-building-columns"></i>
+              Datos para realizar el pago
+            </h3>
+
+            <p>El importe de la inscripción deberá abonarse mediante transferencia bancaria a la cuenta de la falla.</p>
+
+            <div class="dato-bancario">
+              <span>Beneficiario</span>
+              <strong>[Nombre de la falla]</strong>
+            </div>
+
+            <div class="dato-bancario">
+              <span>IBAN</span>
+              <strong>[IBAN DE LA FALLA]</strong>
+            </div>
+
+            <div class="dato-bancario">
+              <span>Concepto de la transferencia</span>
+              <strong>Comida Navidad + Nombre y apellidos</strong>
+            </div>
+
+            <p class="aviso-transferencia">
+              <i class="fa-solid fa-circle-info"></i>
+              Es importante indicar el nombre y apellidos de la persona
+              que realiza la inscripción para poder identificar el pago.
+            </p>
+
+          </div>
+
+        </div>
+        <!-- FIN RESUMEN DE INSCRIPCIÓN Y PAGO -->
+
 
         <!-- BOTONES -->
         <div class="buttons">
@@ -925,8 +1096,53 @@
     // Eventos: detectar cambios del usuario
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
+
+
+    // ========================================
+    // CALCULAR TOTAL DE LA INSCRIPCIÓN
+    // ========================================
+
+    function actualizarTotalPago() {
+
+      const precioAdulto = 10;
+      const precioInfantil = 8;
+
+      // Obtener los asistentes que han elegido arroz
+      const adultosArroz = [
+        ...menu.querySelectorAll("select")
+      ].filter(select => select.value === "arroz al horno").length;
+
+      const infantilesArroz = [
+        ...menuInfantiles.querySelectorAll("select")
+      ].filter(select => select.value === "arroz al horno").length;
+
+      // Calcular importes
+      const importeAdultos = adultosArroz * precioAdulto;
+      const importeInfantiles = infantilesArroz * precioInfantil;
+
+      const importeTotal = importeAdultos + importeInfantiles;
+
+      // Actualizar pantalla
+      document.getElementById("totalAdultosPago").textContent =
+        importeAdultos.toFixed(2) + " €";
+
+      document.getElementById("totalInfantilesPago").textContent =
+        importeInfantiles.toFixed(2) + " €";
+
+      document.getElementById("importeTotal").textContent =
+        importeTotal.toFixed(2) + " €";
+    }
+
+    // Actualizar cuando se modifica cualquier desplegable
+    menu.addEventListener("change", actualizarTotalPago);
+
+    menuInfantiles.addEventListener("change", actualizarTotalPago);
+
     
     actualizarComidas();
+    actualizarTotalPago();
+
+    
 
     //        <!-- ===================================================== -->
     //        <!-- Aviso construcción:  Deshabilita los botones -->
