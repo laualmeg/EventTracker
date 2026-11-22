@@ -464,6 +464,67 @@
     }
 
 
+    /* =====================================
+      AVISO INFORMATIVO DEL MENÚ
+      ===================================== */
+
+    .aviso-menu {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 5px solid #2563eb;
+      color: #1e40af;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin: 25px 0 30px;
+    }
+
+    .aviso-menu-icono {
+      font-size: 23px;
+      color: #2563eb;
+      padding-top: 2px;
+    }
+
+    .aviso-menu-contenido strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 9px;
+    }
+
+    .aviso-menu-contenido p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .aviso-menu-contenido p:last-child {
+      margin-bottom: 0;
+    }
+
+    .aviso-menu-destacado {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* Adaptación a móviles */
+    @media(max-width:500px) {
+      .aviso-menu {
+        padding: 15px;
+        gap: 10px;
+      }
+
+      .aviso-menu-icono {
+        font-size: 20px;
+      }
+
+      .aviso-menu-contenido p {
+        font-size: 13px;
+      }
+    }
+
+
   </style>
 </head>
 
@@ -609,6 +670,41 @@
 
         </div>
 
+
+        
+        <!-- AVISO INFORMATIVO DEL MENÚ -->
+        <div class="aviso-menu">
+
+          <div class="aviso-menu-icono">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+
+          <div class="aviso-menu-contenido">
+
+            <strong>Información importante sobre el menú</strong>
+
+            <p>
+              El menú de la comida será arroz al horno para todos los asistentes.
+              <!-- Por motivos de organización, no se podrán elegir otros platos
+              ni solicitar menús alternativos. -->
+            </p>
+
+            <p>
+              Las personas que tengan alguna intolerancia o alergia alimentaria
+              que les impida consumir el arroz podrán asistir al evento,
+              pero deberán traer su propia comida.
+            </p>
+
+            <p class="aviso-menu-destacado">
+              Si es tu caso, indícalo durante la inscripción para que podamos
+              tenerlo en cuenta en la organización.
+            </p>
+
+          </div>
+
+        </div>
+        <!-- FIN AVISO INFORMATIVO -->
+
         <!-- ASISTENTES -->
 
         <div class="section">
@@ -725,15 +821,29 @@
     ========================================================= -->
   <script> // Frontend JavaScript
 
+    // ========================================
     // CONFIGURACIÓN DEL EVENTO
+    // ========================================
+
     // - `true`: estás realizando pruebas. Puedes inscribir asistentes y exportar Excel.
     // - `false`: evento en funcionamiento normal. Las inscripciones estarán disponibles para los usuarios.
-    const MODO_PRUEBAS = true;
-    const PERMITIR_INSCRIPCIONES = MODO_PRUEBAS;
-    const PERMITIR_EXPORTACION = MODO_PRUEBAS;
+
+    // Evento en construcción
+    const EVENTO_EN_CONSTRUCCION = true;
+
+    // Permitir pruebas al administrador
+    const MODO_PRUEBAS_ADMIN = true;
+
+    // El administrador puede inscribirse
+    const PERMITIR_INSCRIPCIONES_ADMIN = true;
+
+    // El administrador puede exportar Excel
+    const PERMITIR_EXPORTACION_ADMIN = true;
+
+    // ========================================
 
     /* Obtiene los datos del HTML busca los id = "" */
-    if (MODO_PRUEBAS) {
+    //if (MODO_PRUEBAS) {
     const adultosInput = document.getElementById("adultos");
 
     const infantilesInput = document.getElementById("infantiles");
@@ -741,7 +851,7 @@
     const mensajeOk = document.getElementById("mensajeOk");
 
     const mensajeError = document.getElementById("mensajeError");
-    }
+    //}
 
     //        <!-- ===================================================== -->
     //        <!-- Aviso construcción:  Deshabilita los botones -->
