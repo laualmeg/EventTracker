@@ -80,8 +80,9 @@
       margin:auto; /* centra el contenido*/
 
       display:grid;
-      grid-template-columns:2fr 1fr; /* crea dos columnas. La primera ocupa el doble que la segunda */ 
+      grid-template-columns:minmax(0, 2fr) minmax(280px, 1fr);
       gap:25px;
+      align-items:start;
     }
 
     .card{ /* Define las tarjetas blancas donde se agrupa el contenido. */
@@ -282,7 +283,11 @@
     }
 
     .hidden{
-      display:none;
+      display:none !important;
+    }
+
+    [hidden] {
+      display:none !important;
     }
 
     .success{
@@ -302,7 +307,7 @@
     }
 
     /* Diseño adaptable a móviles. Significa que cuando la pantalla tiene una anchura máxima de 900 píxeles, las dos columnas se convierten en una sola. Es decir, el formulario y el resumen pasan a colocarse uno debajo del otro. */
-    @media(max-width:900px){
+    @media(max-width:800px){
 
       .container{
         grid-template-columns:1fr;
@@ -1063,6 +1068,12 @@
     const totalAdultos = document.getElementById("totalAdultos");
     const totalInfantiles = document.getElementById("totalInfantiles");
 
+    function mostrarMensaje(elemento, texto) {
+        if (!elemento) return;
+        elemento.textContent = texto;
+        elemento.classList.toggle("hidden", !texto);
+    }
+
 
     // ======================================================
     // ACTIVAR O DESACTIVAR MODO CONSTRUCCIÓN
@@ -1259,14 +1270,13 @@
         // Comprobar modo construcción
 
         if (EVENTO_EN_CONSTRUCCION) {
-            mensajeError.textContent =
-                "La inscripción todavía no está disponible.";
-            mensajeOk.textContent = "";
+            mostrarMensaje(mensajeError, "La inscripción todavía no está disponible.");
+            mostrarMensaje(mensajeOk, "");
             return;
         }
 
-        mensajeOk.textContent = "";
-        mensajeError.textContent = "";
+        mostrarMensaje(mensajeOk, "");
+        mostrarMensaje(mensajeError, "");
 
         const nombre = nombreInput.value.trim();
 
@@ -1276,8 +1286,7 @@
         // Validar nombre
 
         if (!nombre) {
-            mensajeError.textContent =
-                "Introduce el nombre de la persona responsable.";
+            mostrarMensaje(mensajeError, "Introduce el nombre de la persona responsable.");
             return;
         }
 
@@ -1289,16 +1298,14 @@
             adultos < 0 ||
             infantiles < 0
         ) {
-            mensajeError.textContent =
-                "Introduce cantidades válidas de adultos e infantiles.";
+            mostrarMensaje(mensajeError, "Introduce cantidades válidas de adultos e infantiles.");
             return;
         }
 
         // Comprobar que haya participantes
 
         if (adultos + infantiles === 0) {
-            mensajeError.textContent =
-                "Debes inscribir al menos a una persona.";
+            mostrarMensaje(mensajeError, "Debes inscribir al menos a una persona.");
             return;
         }
 
@@ -1313,8 +1320,7 @@
             comidasAdultos.length !== adultos ||
             comidasInfantiles.length !== infantiles
         ) {
-            mensajeError.textContent =
-                "Revisa las opciones de comida de todas las personas.";
+            mostrarMensaje(mensajeError, "Revisa las opciones de comida de todas las personas.");
             return;
         }
 
@@ -1359,10 +1365,9 @@
                 resultado.importe_total ?? actualizarTotalPago()
             );
 
-            mensajeOk.textContent =
-                `Inscripción realizada correctamente. Importe total: ${importe.toFixed(2)} €.`;
+            mostrarMensaje(mensajeOk, `Inscripción realizada correctamente. Importe total: ${importe.toFixed(2)} €.`);
 
-            mensajeError.textContent = "";
+            mostrarMensaje(mensajeError, "");
 
             // Limpiar formulario
 
@@ -1380,11 +1385,10 @@
 
             console.error("Error al registrar:", error);
 
-            mensajeError.textContent =
-                error.message ||
-                "Ha ocurrido un error al realizar la inscripción.";
+            mostrarMensaje(mensajeError, error.message ||
+                "Ha ocurrido un error al realizar la inscripción.");
 
-            mensajeOk.textContent = "";
+            mostrarMensaje(mensajeOk, "");
 
         } finally {
 
