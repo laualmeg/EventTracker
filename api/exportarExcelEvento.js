@@ -168,17 +168,38 @@ export default async function handler(req, res) {
     // FORMATO GENERAL
     // ==================================================
 
-    worksheet.getRow(1).font = {
+    // FORMATO DE LOS ENCABEZADOS
+    const encabezados = worksheet.getRow(1);
+
+    encabezados.font = {
       bold: true,
-      color: { argb: "FFFFFFFF" }
+      color: { argb: "FFFFFFFF" },
+      size: 11
     };
 
-    worksheet.getRow(1).alignment = {
+    encabezados.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF245447" }
+    };
+
+    encabezados.alignment = {
       vertical: "middle",
-      horizontal: "center"
+      horizontal: "center",
+      wrapText: true
     };
 
-    worksheet.getRow(1).height = 25;
+    encabezados.height = 35;
+
+    // Bordes de los encabezados
+    encabezados.eachCell(cell => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" }
+      };
+    });
 
     worksheet.views = [
       { state: "frozen", ySplit: 1 }
