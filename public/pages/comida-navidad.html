@@ -949,21 +949,21 @@
 
         <!-- ===================================================== -->
         <!-- Aviso construcción:  Deshabilita los botones -->
-          <!-- <button class="btn-primary" id="btnConfirmar" >
-            Confirmar asistencia
+          <button class="btn-primary" id="btnConfirmar" >
+            Confirmar inscripción
           </button>
 
           <button class="btn-green" id="btnExcel" >
             Exportar Excel
-          </button> -->
+          </button>
 
-          <button class="btn-primary" id="btnConfirmar" disabled>
+          <!-- <button class="btn-primary" id="btnConfirmar" disabled>
             Inscripción próximamente
           </button>
 
           <button class="btn-green" id="btnExcel" disabled>
             Exportar Excel
-          </button>
+          </button> -->
 
         <!-- Fin: Aviso construcción. Habilitar los botones -->
         <!-- ===================================================== -->
@@ -1022,285 +1022,447 @@
     JavaScript: la parte que hace funcionar la aplicación
     ========================================================= -->
   <script> // Frontend JavaScript
-
-    // ========================================
+    // ======================================================
     // CONFIGURACIÓN DEL EVENTO
-    // ========================================
+    // ======================================================
 
-    // - `true`: estás realizando pruebas. Puedes inscribir asistentes y exportar Excel.
-    // - `false`: evento en funcionamiento normal. Las inscripciones estarán disponibles para los usuarios.
+    const SLUG_EVENTO = "comida-navidad-2026";
 
-    // Evento en construcción
-    const EVENTO_EN_CONSTRUCCION = true;
+    const PRECIO_ADULTO = 10;
+    const PRECIO_INFANTIL = 8;
 
-    // Permitir pruebas al administrador
-    const MODO_PRUEBAS_ADMIN = true;
+    // ======================================================
+    // MODO PÁGINA EN CONSTRUCCIÓN
+    // ======================================================
 
-    // El administrador puede inscribirse
-    const PERMITIR_INSCRIPCIONES_ADMIN = true;
+    // false = página activa y permite inscripciones.
+    // true  = página en construcción y bloquea las inscripciones.
 
-    // El administrador puede exportar Excel
-    const PERMITIR_EXPORTACION_ADMIN = true;
+    const EVENTO_EN_CONSTRUCCION = false;
 
-    // ========================================
 
-    /* Obtiene los datos del HTML busca los id = "" */
-    //if (MODO_PRUEBAS) {
+    // ======================================================
+    // ELEMENTOS HTML
+    // ======================================================
+
+    const nombreInput = document.getElementById("nombre");
     const adultosInput = document.getElementById("adultos");
-
     const infantilesInput = document.getElementById("infantiles");
 
-    const menu = document.getElementById("menu");
+    const menuAdultos = document.getElementById("menu");
     const menuInfantiles = document.getElementById("menuInfantiles");
 
+    const avisoEvento = document.getElementById("avisoEvento");
+
+    const btnConfirmar = document.getElementById("btnConfirmar");
+    const btnExcel = document.getElementById("btnExcel");
+
     const mensajeOk = document.getElementById("mensajeOk");
-
     const mensajeError = document.getElementById("mensajeError");
-    //}
 
-    // Funcion actualizar comidas
-    function actualizarComidas(){
-      // convierte el numero de adultos de string a entero y evita trabajar con cantidades inferiores a cero
-      const adultos = Math.max(0, parseInt(adultosInput.value) || 0);
-      const infantiles = Math.max(0, parseInt(infantilesInput.value) || 0);
+    const totalAdultos = document.getElementById("totalAdultos");
+    const totalInfantiles = document.getElementById("totalInfantiles");
 
-      // innerHTML permite introducir código HTML dentro de un elemento. 
-      // Por tanto, llama a otra función que construye los selectores de comida.
-      menu.innerHTML = crearOpcionesComida("Adulto", adultos);
-      menuInfantiles.innerHTML = crearOpcionesComida("Infantil", infantiles);
 
-      // Si hay adultos, muestra el apartado. Si no hay, lo oculta.
-      document.getElementById("grupoAdultos").style.display =
-        adultos > 0 ? "block" : "none";
+    // ======================================================
+    // ACTIVAR O DESACTIVAR MODO CONSTRUCCIÓN
+    // ======================================================
 
-      // Si hay infantiles, muestra el apartado. Si no hay, lo oculta.
-      document.getElementById("grupoInfantiles").style.display =
-        infantiles > 0 ? "block" : "none";
+    function aplicarModoConstruccion() {
+
+        if (EVENTO_EN_CONSTRUCCION) {
+
+            // MODO PÁGINA EN CONSTRUCCIÓN ACTIVADO
+
+            if (avisoEvento) {
+                avisoEvento.hidden = false;
+            }
+
+            if (btnConfirmar) {
+                btnConfirmar.disabled = true;
+                btnConfirmar.textContent = "Inscripción próximamente";
+            }
+
+            if (btnExcel) {
+                btnExcel.disabled = true;
+            }
+
+            return;
+        }
+
+        // MODO PÁGINA ACTIVA
+
+        if (avisoEvento) {
+            avisoEvento.hidden = true;
+        }
+
+        if (btnConfirmar) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = "Confirmar inscripción";
+        }
+
+        if (btnExcel) {
+            btnExcel.disabled = false;
+        }
     }
 
-    // Función crearOpcionesComida()
-    // genera tantos selectores como personas haya.
-    function crearOpcionesComida(tipo, cantidad){
-      // Array.from() Crea un array a partir de una estructura con una longitud determinada.
-      return Array.from({ length: cantidad }, (_, indice) => `
-        <div class="comida-persona">
-          <span>${tipo} ${indice + 1}</span>
-          <select name="${tipo.toLowerCase()}-${indice}" aria-label="Comida ${tipo.toLowerCase()} ${indice + 1}">
-            <option value="arroz al horno">Arroz al horno</option>
-            <option value="intolerancia o alergia alimentaria">Tengo intolerancia o alergia y llevaré mi propia comida.</option>
-          </select>
-        </div>
-      `).join("");
+
+    // ======================================================
+    // CREAR SELECTORES DE COMIDA
+    // ======================================================
+
+    function crearOpcionesComida(tipo, cantidad) {
+
+        let html = "";
+
+        for (let i = 0; i < cantidad; i++) {
+
+            const numero = i + 1;
+
+            html += `
+                <div class="comida-persona">
+                    <label>
+                        ${tipo} ${numero}
+                    </label>
+
+                    <select class="selector-comida" required>
+                        <option value="arroz al horno">
+                            Arroz al horno
+                        </option>
+
+                        <option value="intolerancia o alergia alimentaria">
+                            Intolerancia o alergia alimentaria
+                        </option>
+                    </select>
+                </div>
+            `;
+        }
+
+        return html;
     }
 
-    // Eventos: detectar cambios del usuario
+
+    // ======================================================
+    // ACTUALIZAR LOS SELECTORES SEGÚN EL NÚMERO DE PERSONAS
+    // ======================================================
+
+    function actualizarComidas() {
+
+        const adultos = Math.max(
+            0,
+            parseInt(adultosInput.value, 10) || 0
+        );
+
+        const infantiles = Math.max(
+            0,
+            parseInt(infantilesInput.value, 10) || 0
+        );
+
+        menuAdultos.innerHTML = crearOpcionesComida(
+            "Adulto",
+            adultos
+        );
+
+        menuInfantiles.innerHTML = crearOpcionesComida(
+            "Infantil",
+            infantiles
+        );
+
+        actualizarTotalPago();
+    }
+
+
+    // ======================================================
+    // OBTENER LAS COMIDAS SELECCIONADAS
+    // ======================================================
+
+    function obtenerComidasAdultos() {
+
+        return Array.from(
+            menuAdultos.querySelectorAll(".selector-comida")
+        ).map(select => select.value);
+    }
+
+
+    function obtenerComidasInfantiles() {
+
+        return Array.from(
+            menuInfantiles.querySelectorAll(".selector-comida")
+        ).map(select => select.value);
+    }
+
+
+    // ======================================================
+    // CALCULAR EL IMPORTE TOTAL
+    // ======================================================
+
+    function actualizarTotalPago() {
+
+        const comidasAdultos = obtenerComidasAdultos();
+        const comidasInfantiles = obtenerComidasInfantiles();
+
+        const adultosArroz = comidasAdultos.filter(
+            comida => comida === "arroz al horno"
+        ).length;
+
+        const infantilesArroz = comidasInfantiles.filter(
+            comida => comida === "arroz al horno"
+        ).length;
+
+        const importeAdultos = adultosArroz * PRECIO_ADULTO;
+        const importeInfantiles = infantilesArroz * PRECIO_INFANTIL;
+
+        const importeTotal = importeAdultos + importeInfantiles;
+
+        const totalAdultosPago = document.getElementById("totalAdultosPago");
+        const totalInfantilesPago = document.getElementById("totalInfantilesPago");
+        const importeTotalElemento = document.getElementById("importeTotal");
+
+        if (totalAdultosPago) {
+            totalAdultosPago.textContent =
+                `${importeAdultos.toFixed(2)} €`;
+        }
+
+        if (totalInfantilesPago) {
+            totalInfantilesPago.textContent =
+                `${importeInfantiles.toFixed(2)} €`;
+        }
+
+        if (importeTotalElemento) {
+            importeTotalElemento.textContent =
+                `${importeTotal.toFixed(2)} €`;
+        }
+
+        return importeTotal;
+    }
+
+
+    // ======================================================
+    // ESCUCHAR CAMBIOS EN LOS SELECTORES
+    // ======================================================
+
+    menuAdultos.addEventListener("change", actualizarTotalPago);
+    menuInfantiles.addEventListener("change", actualizarTotalPago);
+
     adultosInput.addEventListener("input", actualizarComidas);
     infantilesInput.addEventListener("input", actualizarComidas);
 
 
-    // ========================================
-    // CALCULAR TOTAL DE LA INSCRIPCIÓN
-    // ========================================
+    // ======================================================
+    // CONFIRMAR INSCRIPCIÓN
+    // ======================================================
 
-    function actualizarTotalPago() {
+    btnConfirmar.addEventListener("click", async function (event) {
 
-      const precioAdulto = 10;
-      const precioInfantil = 8;
+        event.preventDefault();
 
-      // Obtener los asistentes que han elegido arroz
-      const adultosArroz = [
-        ...menu.querySelectorAll("select")
-      ].filter(select => select.value === "arroz al horno").length;
+        // Comprobar modo construcción
 
-      const infantilesArroz = [
-        ...menuInfantiles.querySelectorAll("select")
-      ].filter(select => select.value === "arroz al horno").length;
+        if (EVENTO_EN_CONSTRUCCION) {
+            mensajeError.textContent =
+                "La inscripción todavía no está disponible.";
+            mensajeOk.textContent = "";
+            return;
+        }
 
-      // Calcular importes
-      const importeAdultos = adultosArroz * precioAdulto;
-      const importeInfantiles = infantilesArroz * precioInfantil;
+        mensajeOk.textContent = "";
+        mensajeError.textContent = "";
 
-      const importeTotal = importeAdultos + importeInfantiles;
+        const nombre = nombreInput.value.trim();
 
-      // Actualizar pantalla
-      document.getElementById("totalAdultosPago").textContent =
-        importeAdultos.toFixed(2) + " €";
+        const adultos = Number(adultosInput.value);
+        const infantiles = Number(infantilesInput.value);
 
-      document.getElementById("totalInfantilesPago").textContent =
-        importeInfantiles.toFixed(2) + " €";
+        // Validar nombre
 
-      document.getElementById("importeTotal").textContent =
-        importeTotal.toFixed(2) + " €";
-    }
+        if (!nombre) {
+            mensajeError.textContent =
+                "Introduce el nombre de la persona responsable.";
+            return;
+        }
 
-    // Actualizar cuando se modifica cualquier desplegable
-    menu.addEventListener("change", actualizarTotalPago);
+        // Validar cantidades
 
-    menuInfantiles.addEventListener("change", actualizarTotalPago);
+        if (
+            !Number.isInteger(adultos) ||
+            !Number.isInteger(infantiles) ||
+            adultos < 0 ||
+            infantiles < 0
+        ) {
+            mensajeError.textContent =
+                "Introduce cantidades válidas de adultos e infantiles.";
+            return;
+        }
 
-    
-    actualizarComidas();
-    actualizarTotalPago();
+        // Comprobar que haya participantes
 
-    
+        if (adultos + infantiles === 0) {
+            mensajeError.textContent =
+                "Debes inscribir al menos a una persona.";
+            return;
+        }
 
-    //        <!-- ===================================================== -->
-    //        <!-- Aviso construcción:  Deshabilita los botones -->
-    // Confirmar asistencia: guardar los datos
-    // Conecta el frontend con el backend
-    // Significa que cuando el usuario pulsa el botón «Confirmar asistencia», se ejecuta esta función.
-//     document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
-//       event.preventDefault();
+        // Obtener selecciones
 
-//       mensajeOk.classList.add("hidden");
-//       mensajeError.classList.add("hidden");
+        const comidasAdultos = obtenerComidasAdultos();
+        const comidasInfantiles = obtenerComidasInfantiles();
 
-//       // Recoger los platos seleccionados. Obtiene la comida seleccionada por cada adulto
-//       const comidasSeleccionadas = [...comidasAdultos.querySelectorAll("select")].map(select => select.value);
+        // Comprobar que haya una selección por persona
 
-//       // Cuenta cuántos adultos han seleccionado carne.
-//       const comidasAdultosCarne = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "carne").length;
-//       // Cuenta cuántos han seleccionado pescado.
-//       const comidasAdultosPescado = [...comidasAdultos.querySelectorAll("select")].filter(s => s.value === "pescado").length;
+        if (
+            comidasAdultos.length !== adultos ||
+            comidasInfantiles.length !== infantiles
+        ) {
+            mensajeError.textContent =
+                "Revisa las opciones de comida de todas las personas.";
+            return;
+        }
 
-//       // const datosDieteticos = obtenerDatosDieteticos();
+        // Preparar datos
 
-//       // Construir el objeto datos: Aquí construimos un objeto JavaScript (tipo json) que contiene toda la información que queremos guardar.
-//       const datos = {
-//         nombre: document.getElementById("nombre").value,
-//         adultos: parseInt(document.getElementById("adultos").value),
-//         infantiles: parseInt(document.getElementById("infantiles").value),
-//         invitados: 0,
-//         adultosCarne: comidasAdultosCarne,
-//         adultosPescado: comidasAdultosPescado,
+        const datos = {
+            nombre,
+            adultos,
+            infantiles,
+            comidasAdultos,
+            comidasInfantiles
+        };
 
-//         // // Compatibilidad con el backend actual + detalle individual.
-//         // // JSON.stringify() Convierte un objeto o array de JavaScript en una cadena de texto con formato JSON.
-//         // alergias: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, alergias:p.alergias}))),
-//         // tipoDieta: JSON.stringify(datosDieteticos.map(p => ({persona:p.persona, tipoDieta:p.tipoDieta}))),
-//         // asistentesDieteticos: datosDieteticos
-//       };
+        btnConfirmar.disabled = true;
+        btnConfirmar.textContent = "Enviando inscripción...";
 
-//       // Validaciones antes de guardar
-//       if (datos.adultos < 0 || datos.infantiles < 0) {
-//         mensajeError.textContent = "Adultos e infantiles no pueden ser negativos.";
-//         mensajeError.classList.remove("hidden");
-//         return;
-//       }
+        try {
 
-//       if (comidasSeleccionadas.length !== datos.adultos) {
-//         mensajeError.textContent = "Indica la comida de cada adulto.";
-//         mensajeError.classList.remove("hidden");
-//         return;
-//       }
+            const respuesta = await fetch(
+                `/api/registrarEvento?evento=${SLUG_EVENTO}`,
+                {
+                    method: "POST",
 
-//       // if (datosDieteticos.length !== datos.adultos + datos.infantiles) {
-//       //   mensajeError.textContent = "Indica la información dietética de cada adulto e infantil.";
-//       //   mensajeError.classList.remove("hidden");
-//       //   return;
-//       // }
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-//       // const hayOtraSinObservacion = datosDieteticos.some(p => {
-//       //   const dietaOtra = p.tipoDieta === "Otra";
-//       //   const alergiaOtra = Array.isArray(p.alergias) ? p.alergias.includes("Otra") : p.alergias === "Otra";
-//       //   return (dietaOtra || alergiaOtra) && !p.observaciones.trim();
-//       // });
+                    body: JSON.stringify(datos)
+                }
+            );
 
-//       // if (hayOtraSinObservacion) {
-//       //   mensajeError.textContent = "Si eliges 'Otra' en alergias o tipo de alimentación, escribe el detalle en observaciones.";
-//       //   mensajeError.classList.remove("hidden");
-//       //   return;
-//       // }
+            const resultado = await respuesta.json();
 
-//       console.log("DATOS:", datos);
+            if (!respuesta.ok) {
+                throw new Error(
+                    resultado.error ||
+                    "No se ha podido realizar la inscripción."
+                );
+            }
 
-//       // Comunicación con el backend mediante FETCH. Estamos enviando la información del formulario al servidor.
-//       try{
-//         const response = await fetch("/api/registrarEvento?evento=proclamacion",
-//           {
-//             method:"POST",
-//             headers:{"Content-Type":"application/json"},
-//             body:JSON.stringify(datos)
-//           }
-//         );
+            const importe = Number(
+                resultado.importe_total ?? actualizarTotalPago()
+            );
 
-//         const resultado = await response.json();
+            mensajeOk.textContent =
+                `Inscripción realizada correctamente. Importe total: ${importe.toFixed(2)} €.`;
 
-//         // Convierte la respuesta del servidor en un objeto JavaScript.
-// //         Si el servidor indica que todo ha ido bien:
-// // Muestra el mensaje de éxito.
-// // Oculta el mensaje de error.
-// // Actualiza el resumen de asistentes.
-// // Si hay algún problema, muestra el mensaje de error devuelto por el backend.
-//         if(resultado.ok){
-//           mensajeOk.classList.remove("hidden");
-//           mensajeError.classList.add("hidden");
-//           await cargarResumen();
-//         } else {
-//           mensajeError.textContent = resultado.error || "Error guardando el registro";
-//           mensajeError.classList.remove("hidden");
-//         }
-//       } catch(error){
-//         console.error("ERROR FETCH:", error);
-//         mensajeError.textContent = error?.message || "Error guardando el registro";
-//         mensajeError.classList.remove("hidden");
-//       }
-//     });
+            mensajeError.textContent = "";
 
-document.getElementById("btnConfirmar").addEventListener("click", async (event) => {
+            // Limpiar formulario
 
-  event.preventDefault();
+            nombreInput.value = "";
+            adultosInput.value = 0;
+            infantilesInput.value = 0;
 
-  return; // Evento en construcción: no permitir inscripciones
+            actualizarComidas();
 
-  // Resto del código...
-});
+            // Actualizar resumen
 
-    // EXPORTAR EXCEL
-//     Cuando pulsamos el botón:
-// JavaScript detecta el clic.
-// Cambia la dirección del navegador.
-// Accede al endpoint /api/exportarExcelEvento.
-// El backend genera y devuelve el Excel.
+            await cargarResumen();
 
-    document
-      .getElementById("btnExcel")
-      .addEventListener("click", () => {
+        } catch (error) {
 
-      window.location.href = "/api/exportarExcelEvento?evento=proclamacion";
+            console.error("Error al registrar:", error);
+
+            mensajeError.textContent =
+                error.message ||
+                "Ha ocurrido un error al realizar la inscripción.";
+
+            mensajeOk.textContent = "";
+
+        } finally {
+
+            if (!EVENTO_EN_CONSTRUCCION) {
+                btnConfirmar.disabled = false;
+                btnConfirmar.textContent = "Confirmar inscripción";
+            }
+        }
 
     });
 
-    // CARGAR RESUMEN INICIAL
 
-    const totalAdultos = document.getElementById("totalAdultos");
+    // ======================================================
+    // EXPORTAR EXCEL
+    // ======================================================
 
-    const totalInfantiles = document.getElementById("totalInfantiles");
-    
-    async function cargarResumen(){
+    btnExcel.addEventListener("click", function (event) {
 
-      try{
+        event.preventDefault();
 
-        const response = await fetch("/api/resumenEvento?evento=proclamacion");
+        if (EVENTO_EN_CONSTRUCCION) {
+            return;
+        }
 
-        const datos = await response.json();
+        window.location.href =
+            `/api/exportarExcelEvento?evento=${SLUG_EVENTO}`;
 
-        totalAdultos.textContent = datos.totalAdultos || 0;
+    });
 
-        totalInfantiles.textContent = datos.totalInfantiles || 0;
 
-      } catch(error){
+    // ======================================================
+    // CARGAR RESUMEN DE INSCRIPCIONES
+    // ======================================================
 
-        console.error("Error cargando resumen", error);
+    async function cargarResumen() {
 
-      }
+        try {
 
-  }
+            const respuesta = await fetch(
+                `/api/resumenEvento?evento=${SLUG_EVENTO}`
+            );
 
-//   cargarResumen();
-// Evento en construcción: resumen sin inscripciones
-totalAdultos.textContent = 0;
-totalInfantiles.textContent = 0;
+            if (!respuesta.ok) {
+                throw new Error("No se ha podido cargar el resumen.");
+            }
+
+            const datos = await respuesta.json();
+
+            if (totalAdultos) {
+                totalAdultos.textContent =
+                    datos.totalAdultos ?? datos.adultos ?? 0;
+            }
+
+            if (totalInfantiles) {
+                totalInfantiles.textContent =
+                    datos.totalInfantiles ?? datos.infantiles ?? 0;
+            }
+
+        } catch (error) {
+
+            console.error("Error al cargar el resumen:", error);
+
+        }
+    }
+
+
+    // ======================================================
+    // INICIALIZACIÓN DE LA PÁGINA
+    // ======================================================
+
+    aplicarModoConstruccion();
+
+    actualizarComidas();
+
+    if (!EVENTO_EN_CONSTRUCCION) {
+        cargarResumen();
+    }
+
 
   </script>
 

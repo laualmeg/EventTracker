@@ -1,3 +1,4 @@
+
 import supabase from "../lib/supabase.js";
 import { obtenerEvento, obtenerEventoId } from "../lib/eventos.js";
 
@@ -5,48 +6,92 @@ function esEnteroNoNegativo(valor) {
   return Number.isInteger(valor) && valor >= 0;
 }
 
+// Normaliza las opciones de comida de Navidad
+function normalizarComida(valor) {
+  if (typeof valor !== "string") return null;
+
+  const comida = valor.trim().toLowerCase();
+
+  if (["arroz", "arroz al horno"].includes(comida)) {
+    return "arroz";
+  }
+
+  if (
+    [
+      "propia",
+      "intolerancia o alergia alimentaria",
+      "comida propia",
+      "traigo mi comida"
+    ].includes(comida)
+  ) {
+    return "propia";
+  }
+
+  return null;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Metodo no permitido" });
+    return res.status(405).json({
+      ok: false,
+      error: "Metodo no permitido"
+    });
   }
 
   const slug = req.query?.evento;
   const configuracion = obtenerEvento(slug);
 
   if (!configuracion) {
-    return res.status(400).json({ ok: false, error: "Evento no valido" });
+    return res.status(400).json({
+      ok: false,
+      error: "Evento no valido"
+    });
   }
 
   try {
-    const datos = req.body;
-    const nombre = datos.nombre?.trim();
+    const datos = req.body || {};
+
+    const nombre = typeof datos.nombre === "string"
+      ? datos.nombre.trim()
+      : "";
+
     const adultos = Number(datos.adultos);
     const infantiles = Number(datos.infantiles ?? 0);
     const invitados = Number(datos.invitados || 0);
 
     if (!nombre) {
-      return res.status(400).json({ ok: false, error: "Nombre y apellidos obligatorios" });
+      return res.status(400).json({
+        ok: false,
+        error: "Nombre y apellidos obligatorios"
+      });
     }
 
-    if (datos.adultos === undefined || datos.adultos === null || String(datos.adultos).trim() === "") {
-      return res.status(400).json({ ok: false, error: "El número de adultos es obligatorio" });
+    if (
+      datos.adultos === undefined ||
+      datos.adultos === null ||
+      String(datos.adultos).trim() === ""
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "El número de adultos es obligatorio"
+      });
     }
 
-    if (!Number.isInteger(adultos) || adultos < 0) {
+    if (!esEnteroNoNegativo(adultos)) {
       return res.status(400).json({
         ok: false,
         error: "El número de adultos debe ser un entero no negativo"
       });
     }
 
-    if (!Number.isInteger(infantiles) || infantiles < 0) {
+    if (!esEnteroNoNegativo(infantiles)) {
       return res.status(400).json({
         ok: false,
         error: "El número de infantiles no puede ser negativo"
       });
     }
 
-    if (!Number.isInteger(invitados) || invitados < 0) {
+    if (!esEnteroNoNegativo(invitados)) {
       return res.status(400).json({
         ok: false,
         error: "Los invitados no pueden ser negativos"
@@ -73,39 +118,119 @@ export default async function handler(req, res) {
       tipo_buffet: null
     };
 
-    if (configuracion.buffet) {
+    let importeTotal = 0;
+
+    // ==================================================
+    // NAVIDAD 2026
+    // ==================================================
+
+    if (configuracion.tipo === "navidad") {
+
+      const comidasAdultos = Array.isArray(datos.comidasAdultos)
+        ? datos.comidasAdultos
+        : [];
+
+      const comidasInfantiles = Array.isArray(datos.comidasInfantiles)
+        ? datos.comidasInfantiles
+        : [];
+
+      if (
+        comidasAdultos.length !== adultos ||
+        comidasInfantiles.length !== infantiles
+      ) {
+        return res.status(400).json({
+          ok: false,
+          error: "La elección de comida no coincide con el número de asistentes"
+        });
+      }
+
+      const adultosValidados = comidasAdultos.map(normalizarComida);
+      const infantilesValidados = comidasInfantiles.map(normalizarComida);
+
+      if (
+        adultosValidados.some(comida => comida === null) ||
+        infantilesValidados.some(comida => comida === null)
+      ) {
+        return res.status(400).json({
+          ok: false,
+          error: "Hay alguna opción de comida no válida"
+        });
+      }
+
+      const adultosArroz = adultosValidados.filter(
+        comida => comida === "arroz"
+      ).length;
+
+      const infantilesArroz = infantilesValidados.filter(
+        comida => comida === "arroz"
+      ).length;
+
+      const importeTotal = adultosArroz * 10 + infantilesArroz * 8;
+
+      registro.comidas_navidad = {
+        adultos: adultosValidados,
+        infantiles: infantilesValidados
+      };
+
+      registro.importe_total = importeTotal;
+    }
+
+    // ==================================================
+    // SAN JUAN: BUFFET
+    // ==================================================
+
+    else if (configuracion.buffet) {
+
       const plato = datos.plato?.trim();
       const tipoBuffet = datos.tipoBuffet;
 
       if (!plato) {
-        return res.status(400).json({ ok: false, error: "Debes indicar el plato que traeras" });
+        return res.status(400).json({
+          ok: false,
+          error: "Debes indicar el plato que traeras"
+        });
       }
 
       if (!["adulto", "infantil"].includes(tipoBuffet)) {
-        return res.status(400).json({ ok: false, error: "Tipo de buffet no valido" });
+        return res.status(400).json({
+          ok: false,
+          error: "Tipo de buffet no valido"
+        });
       }
 
       registro.plato = plato;
       registro.tipo_buffet = tipoBuffet;
-    } else {
+    }
+
+    // ==================================================
+    // PROCLAMACIÓN: DIETAS Y ALERGIAS
+    // ==================================================
+
+    else {
+
       const adultosCarne = Number(datos.adultosCarne);
       const adultosPescado = Number(datos.adultosPescado);
+
       const asistentesDieteticos = Array.isArray(datos.asistentesDieteticos)
         ? datos.asistentesDieteticos
         : [];
 
-      if (![adultosCarne, adultosPescado]
-        .every(esEnteroNoNegativo) ||
-        adultosCarne + adultosPescado !== adultos) {
+      if (
+        ![adultosCarne, adultosPescado].every(esEnteroNoNegativo) ||
+        adultosCarne + adultosPescado !== adultos
+      ) {
         return res.status(400).json({
           ok: false,
           error: "La eleccion de carne o pescado no coincide con los asistentes"
         });
       }
 
-      if (!Array.isArray(asistentesDieteticos) ||
-          asistentesDieteticos.length !== adultos + infantiles ||
-          !asistentesDieteticos.every(item => item && typeof item === "object")) {
+      if (
+        asistentesDieteticos.length !== adultos + infantiles ||
+        !asistentesDieteticos.every(
+          item => item && typeof item === "object"
+        )
+      ) {
         return res.status(400).json({
           ok: false,
           error: "La informacion dietetica no coincide con los asistentes"
@@ -113,18 +238,25 @@ export default async function handler(req, res) {
       }
 
       const asistentesDieteticosValidados = asistentesDieteticos.map(item => {
-        const alergias = Array.isArray(item.alergias) ? item.alergias : [item.alergias];
+        const alergias = Array.isArray(item.alergias)
+          ? item.alergias
+          : [item.alergias];
+
         const alergiasFiltradas = alergias
           .filter(Boolean)
           .map(valor => String(valor).trim())
           .filter(valor => valor !== "Ninguna");
 
-        const tipoDieta = typeof item.tipoDieta === "string" ? item.tipoDieta.trim() : "";
+        const tipoDieta = typeof item.tipoDieta === "string"
+          ? item.tipoDieta.trim()
+          : "";
 
         return {
           ...item,
           alergias: alergiasFiltradas,
-          tipoDieta: tipoDieta && tipoDieta !== "Ninguna" ? tipoDieta : "Ninguna",
+          tipoDieta: tipoDieta && tipoDieta !== "Ninguna"
+            ? tipoDieta
+            : "Ninguna",
           observaciones: item.observaciones ?? ""
         };
       });
@@ -135,8 +267,20 @@ export default async function handler(req, res) {
       registro.alergias = datos.alergias?.trim() || "Ninguna";
     }
 
-    const { id: eventoId, error: eventoError } = await obtenerEventoId(slug);
-    if (eventoError || !eventoId) throw eventoError || new Error("Evento no encontrado");
+    // ==================================================
+    // OBTENER ID DEL EVENTO
+    // ==================================================
+
+    const { id: eventoId, error: eventoError } =
+      await obtenerEventoId(slug);
+
+    if (eventoError || !eventoId) {
+      throw eventoError || new Error("Evento no encontrado");
+    }
+
+    // ==================================================
+    // EVITAR INSCRIPCIONES DUPLICADAS
+    // ==================================================
 
     const { data: existentes, error: busquedaError } = await supabase
       .from("asistentes_eventos")
@@ -148,19 +292,42 @@ export default async function handler(req, res) {
     if (busquedaError) throw busquedaError;
 
     if (existentes?.length) {
-      return res.status(409).json({ ok: false, error: "Esta persona ya esta registrada en este evento" });
+      return res.status(409).json({
+        ok: false,
+        error: "Esta persona ya esta registrada en este evento"
+      });
     }
+
+    // ==================================================
+    // GUARDAR INSCRIPCIÓN
+    // ==================================================
 
     const { data, error } = await supabase
       .from("asistentes_eventos")
-      .insert([{ evento_id: eventoId, ...registro }])
+      .insert([{
+        evento_id: eventoId,
+        ...registro
+      }])
       .select();
 
     if (error) throw error;
 
-    return res.status(200).json({ ok: true, mensaje: "Asistente guardado", data });
+    return res.status(200).json({
+      ok: true,
+      mensaje: "Inscripcion guardada correctamente",
+      data,
+      importe_total: configuracion.tipo === "navidad"
+        ? importeTotal
+        : null
+    });
+
   } catch (error) {
+
     console.error("Error registrando asistencia:", error);
-    return res.status(500).json({ ok: false, error: error?.message || "Error interno" });
+
+    return res.status(500).json({
+      ok: false,
+      error: error?.message || "Error interno"
+    });
   }
 }
