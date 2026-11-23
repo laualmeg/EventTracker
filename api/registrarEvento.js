@@ -165,7 +165,7 @@ export default async function handler(req, res) {
         comida => comida === "arroz"
       ).length;
 
-      const importeTotal = adultosArroz * 10 + infantilesArroz * 8;
+      importeTotal = adultosArroz * 10 + infantilesArroz * 8;
 
       registro.comidas_navidad = {
         adultos: adultosValidados,
