@@ -80,9 +80,8 @@
       margin:auto; /* centra el contenido*/
 
       display:grid;
-      grid-template-columns:minmax(0, 2fr) minmax(280px, 1fr);
+      grid-template-columns:2fr 1fr; /* crea dos columnas. La primera ocupa el doble que la segunda */ 
       gap:25px;
-      align-items:start;
     }
 
     .card{ /* Define las tarjetas blancas donde se agrupa el contenido. */
@@ -307,7 +306,7 @@
     }
 
     /* Diseño adaptable a móviles. Significa que cuando la pantalla tiene una anchura máxima de 900 píxeles, las dos columnas se convierten en una sola. Es decir, el formulario y el resumen pasan a colocarse uno debajo del otro. */
-    @media(max-width:800px){
+    @media(max-width:900px){
 
       .container{
         grid-template-columns:1fr;
@@ -340,6 +339,23 @@
     background: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
+    }
+
+    .aviso-plazo {
+    margin: 0 0 20px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 14px;
+    line-height: 1.5;
+    }
+
+    .aviso-plazo.cerrado {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
     }
 
     .evento-fecha,
@@ -712,6 +728,11 @@
 
         <div class="evento-info">
 
+        <div id="avisoPlazo" class="aviso-plazo" role="status">
+          <strong>Fecha límite de inscripción:</strong>
+          viernes, 4 de diciembre de 2026 a las 23:59 h.
+        </div>
+
         <div class="evento-fecha">
             <div class="evento-icono fecha-icono">
             <i class="fa-regular fa-calendar-days"></i>
@@ -1060,6 +1081,7 @@
     const menuInfantiles = document.getElementById("menuInfantiles");
 
     const avisoEvento = document.getElementById("avisoEvento");
+    const avisoPlazo = document.getElementById("avisoPlazo");
 
     const btnConfirmar = document.getElementById("btnConfirmar");
     const btnExcel = document.getElementById("btnExcel");
@@ -1074,6 +1096,50 @@
         if (!elemento) return;
         elemento.textContent = texto;
         elemento.classList.toggle("hidden", !texto);
+    }
+
+
+    // ======================================================
+    // FECHA LÍMITE DE INSCRIPCIÓN (hora peninsular española)
+    // ======================================================
+
+    function inscripcionesCerradas() {
+        const partes = new Intl.DateTimeFormat("en-GB", {
+            timeZone: "Europe/Madrid",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hourCycle: "h23"
+        }).formatToParts(new Date());
+
+        const fecha = Object.fromEntries(
+            partes.map(parte => [parte.type, parte.value])
+        );
+
+        const fechaHoraMadrid =
+            `${fecha.year}-${fecha.month}-${fecha.day}T${fecha.hour}:${fecha.minute}`;
+
+        // El plazo termina el 4 de diciembre a las 23:59.
+        return fechaHoraMadrid >= "2026-12-05T00:00";
+    }
+
+    function actualizarEstadoPlazo() {
+        const cerrado = inscripcionesCerradas();
+
+        if (avisoPlazo && cerrado) {
+            avisoPlazo.classList.add("cerrado");
+            avisoPlazo.innerHTML =
+                "<strong>Inscripciones cerradas.</strong> El plazo terminó el 4 de diciembre de 2026 a las 23:59 h.";
+        }
+
+        if (btnConfirmar && cerrado) {
+            btnConfirmar.disabled = true;
+            btnConfirmar.textContent = "Inscripciones cerradas";
+        }
+
+        return cerrado;
     }
 
 
@@ -1110,8 +1176,11 @@
         }
 
         if (btnConfirmar) {
-            btnConfirmar.disabled = false;
-            btnConfirmar.textContent = "Confirmar inscripción";
+            const cerrado = actualizarEstadoPlazo();
+            btnConfirmar.disabled = cerrado;
+            btnConfirmar.textContent = cerrado
+                ? "Inscripciones cerradas"
+                : "Confirmar inscripción";
         }
 
         if (btnExcel) {
@@ -1277,6 +1346,12 @@
             return;
         }
 
+        if (actualizarEstadoPlazo()) {
+            mostrarMensaje(mensajeError, "El plazo de inscripción terminó el 4 de diciembre de 2026 a las 23:59 h.");
+            mostrarMensaje(mensajeOk, "");
+            return;
+        }
+
         mostrarMensaje(mensajeOk, "");
         mostrarMensaje(mensajeError, "");
 
@@ -1395,8 +1470,7 @@
         } finally {
 
             if (!EVENTO_EN_CONSTRUCCION) {
-                btnConfirmar.disabled = false;
-                btnConfirmar.textContent = "Confirmar inscripción";
+                aplicarModoConstruccion();
             }
         }
 
@@ -1462,6 +1536,9 @@
     // ======================================================
 
     aplicarModoConstruccion();
+
+    // Si la página permanece abierta al llegar la medianoche, cerrar el botón.
+    setInterval(actualizarEstadoPlazo, 15000);
 
     actualizarComidas();
 
